@@ -14,7 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    mainwindow.cpp
+    Sources/mainwindow.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,4 +30,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    mainwindow.h
+    Headers/mainwindow.h
+
+SUBDIRS += \
+    Baiso.pro
+
+DISTFILES += \
+    README.md \
+    UIs/main.qml
