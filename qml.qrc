@@ -2,4 +2,7 @@
     <qresource prefix="/UIs">
         <file>UIs/main.qml</file>
     </qresource>
+    <qresource prefix="/UIs/MyParts">
+        <file>UIs/MyQMLParts/MyButton.qml</file>
+    </qresource>
 </RCC>
