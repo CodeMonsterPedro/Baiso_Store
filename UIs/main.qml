@@ -6,28 +6,46 @@ import QtQuick.Layouts 1.3
 Window {
     id:rootWindow
     visible: true
-    width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    width: rootCanvas.width
+    height: rootCanvas.height
+    x:rootCanvas.x
+    y:rootCanvas.y
     title: qsTr("Baiso")
     Rectangle{
         id:rootCanvas
-        anchors.fill: rootWindow
-        state:LogIn
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        state:"LogIn"
+
+        Loader{
+            id:logInPart
+
+
+        }
+
+
+
         states:[
             State {
                 name: "LogIn"
+                PropertyChanges {
+                    target: rootCanvas
+                    width:450;height:650;
+                    x:(Screen.desktopAvailableWidth/2)-225;
+                    y:(Screen.desktopAvailableHeight/2)-325;
+                }
             },
             State {
-                name: "BecomeSalaMan"
+                name: "BecomeSaleMan"
                 PropertyChanges {
-                    target: rootWindow
+                    target: rootCanvas
                     color:blue
                 }
             },
             State {
-                name: "BecomeFinancier"
+                name: "BecomeStorageMan"
                 PropertyChanges {
-                    target: rootWindow
+                    target: rootCanvas
                     color:red
                 }
             }
