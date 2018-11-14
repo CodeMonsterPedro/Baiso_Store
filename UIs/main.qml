@@ -8,22 +8,23 @@ Window {
     visible: true
     width: rootCanvas.width
     height: rootCanvas.height
-    x:rootCanvas.x
-    y:rootCanvas.y
+    x:0
+    y:0
     title: qsTr("Baiso")
     Rectangle{
         id:rootCanvas
         width: Screen.desktopAvailableWidth
         height: Screen.desktopAvailableHeight
+        x:0;y:0;
         state:"LogIn"
 
         Loader{
             id:logInPart
-
-
+            anchors.fill: rootCanvas
+            x:0;y:0;
+            visible: false
+            source: "logInPage.qml"
         }
-
-
 
         states:[
             State {
@@ -31,8 +32,16 @@ Window {
                 PropertyChanges {
                     target: rootCanvas
                     width:450;height:650;
-                    x:(Screen.desktopAvailableWidth/2)-225;
-                    y:(Screen.desktopAvailableHeight/2)-325;
+                }
+                PropertyChanges {
+                    target: logInPart
+                    visible:true;
+                }
+                PropertyChanges {
+                    target: rootWindow
+                    x:(Screen.desktopAvailableWidth/2)-rootCanvas.width/2;
+                    y:(Screen.desktopAvailableHeight/2)-rootCanvas.height/2;
+
                 }
             },
             State {
