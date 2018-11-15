@@ -37,4 +37,6 @@ SUBDIRS += \
 
 DISTFILES += \
     README.md \
-    UIs/main.qml
+    UIs/main.qml\
+    UIs/MyButton.qml\
+    UIs/logInPage.qml

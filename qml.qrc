@@ -2,8 +2,6 @@
     <qresource prefix="/UIs">
         <file>UIs/main.qml</file>
         <file>UIs/logInPage.qml</file>
-    </qresource>
-    <qresource prefix="/UIs/MyParts">
-        <file>UIs/MyQMLParts/MyButton.qml</file>
+        <file>UIs/MyButton.qml</file>
     </qresource>
 </RCC>

@@ -3,18 +3,54 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
+
 Item {
     id:rootLogInPage
-    width: 450
-    height: 650
     Rectangle{
         id:rootLogInCanvas
         anchors.fill: parent
-        color:Qt.red
-        /*TextInput{
-            width: rootLogInPage.width-20
-            height: rootLogInPage.height-20
-            x:10;y:10;
-        }*/
+        color:"white";
+
+        Text{
+            color:"green"
+            width:100;height:40;
+            x:15;y:15;
+            text:qsTr("Welcome ;)");
+            font.pixelSize: 25;
+        }
+
+        TextInput{
+            id:loginfield
+            width: rootLogInPage.width-30;height: 30;
+            x:15;y:(rootLogInCanvas.height/2)-60;
+        }
+        Rectangle{
+            width: loginfield.width;height: 1;
+            x:loginfield.x;y:loginfield.y+31;
+            color:"green"
+        }
+
+        TextInput{
+            id:passwordfield
+            width: rootLogInPage.width-30;height: 30;
+            x:15;y:(rootLogInCanvas.height/2)+60;
+        }
+        Rectangle{
+            width: passwordfield.width;height: 1;
+            x:passwordfield.x;y:passwordfield.y+31;
+            color:"green"
+        }
+
+        MyButton{
+            id:loginSubmit
+            width:160;height: 60;
+            x: (rootLogInCanvas.width/2)-loginSubmit.width/2;
+            y: (rootLogInCanvas.height/4)*3;
+            button_text_color: "green"
+            button_border_color: "green"
+            button_round: 25;
+            button_text: qsTr("Log in");
+
+        }
     }
 }
