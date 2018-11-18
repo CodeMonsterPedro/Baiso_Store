@@ -2,6 +2,7 @@
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import backend.login 1.0
 
 
 Item {
@@ -50,7 +51,14 @@ Item {
             button_border_color: "green"
             button_round: 25;
             button_text: qsTr("Log in");
+            onButton_clicked: {
+                backend_id.sendRequest(loginfield.text,passwordfield.text);
+            }
 
         }
+
+    }
+    Backend_logIn{
+        id:backend_id
     }
 }
