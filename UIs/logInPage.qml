@@ -35,6 +35,7 @@ Item {
             id:passwordfield
             width: rootLogInPage.width-30;height: 30;
             x:15;y:(rootLogInCanvas.height/2)+60;
+            echoMode: TextInput.Password;
         }
         Rectangle{
             width: passwordfield.width;height: 1;
@@ -52,7 +53,15 @@ Item {
             button_round: 25;
             button_text: qsTr("Log in");
             onButton_clicked: {
-                backend_id.sendRequest(loginfield.text,passwordfield.text);
+                switch(backend_id.sendRequest(loginfield.text,passwordfield.text)){
+                case 0://bad
+                case 1://admin
+                case 2://sklad
+                case 3://manager
+                default://error
+                l
+
+                }
             }
 
         }

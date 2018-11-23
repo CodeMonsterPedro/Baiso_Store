@@ -13,7 +13,7 @@ class logInPageU : public QObject
 public:
     explicit logInPageU(QObject *parent = nullptr);
 
-    Q_INVOKABLE void sendRequest(QString login, QString password);
+    Q_INVOKABLE bool sendRequest(QString login, QString password);
 
 
 signals:
