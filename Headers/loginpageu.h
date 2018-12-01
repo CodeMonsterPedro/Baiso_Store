@@ -3,6 +3,7 @@
 
 #include<QObject>
 #include<QString>
+#include"RepositoryU/repositoryu.h"
 
 
 class logInPageU : public QObject
@@ -13,7 +14,7 @@ class logInPageU : public QObject
 public:
     explicit logInPageU(QObject *parent = nullptr);
 
-    Q_INVOKABLE bool sendRequest(QString login, QString password);
+    Q_INVOKABLE int sendRequest(QString login, QString password);
 
 
 signals:
@@ -21,7 +22,6 @@ signals:
 public slots:
 
 private:
-
     QString Login="";
     QString Password="";
 

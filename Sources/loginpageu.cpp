@@ -3,14 +3,14 @@
 
 logInPageU::logInPageU(QObject *parent) : QObject(parent)
 {
-
+    qDebug()<<RepositoryU::isConnected;
 }
 
-bool logInPageU::sendRequest(QString login, QString password)
+int logInPageU::sendRequest(QString login, QString password)
 {
-    qDebug()<<"log - " + login + " \t pass - " + password;
-    qDebug()<<"OK!!!";
-    return false;
+    QStringList strl = RepositoryU::GetRequest("SELECT role FROM account WHERE log=" + login + " AND pass="+password);
+    qDebug()<<"login - " + login + " Password - " + password;
+    return 0;
 }
 
 

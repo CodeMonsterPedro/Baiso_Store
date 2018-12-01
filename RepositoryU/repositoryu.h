@@ -23,16 +23,19 @@ class RepositoryU : public QObject
 public:
     explicit RepositoryU(QObject *parent = nullptr);
 
-    QStringList GetRequest(QString request);
-    int SetRequest(QString request);
-
+    static QStringList GetRequest(QString request);
+    static int SetRequest(QString request);
+    static bool isConnected;
+    static QSqlDatabase db;
 
 signals:
 
 public slots:
 
 private:
-    bool isConnected=false;
+    static bool CreateConnection();
+
+
 };
 
 #endif // REPOSITORYU_H

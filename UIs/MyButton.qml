@@ -35,7 +35,7 @@ Item {
         color:button_text_color;
         font.pixelSize:backbgound.height/2;
         onTextChanged: {
-            if(textlabel.text!="text")icon.visible=fasle;
+            if(textlabel.text!="text")icon.visible=false;
             else if(icon.source=="")icon.visible=false;
             else {icon.visible=true;textlabel.visible=false;}
         }

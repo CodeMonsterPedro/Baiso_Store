@@ -54,12 +54,11 @@ Item {
             button_text: qsTr("Log in");
             onButton_clicked: {
                 switch(backend_id.sendRequest(loginfield.text,passwordfield.text)){
-                case 0://bad
-                case 1://admin
-                case 2://sklad
-                case 3://manager
+                case 0://admin
+                case 1://sklad
+                case 2://manager
                 default://error
-                l
+
 
                 }
             }
