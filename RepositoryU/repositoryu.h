@@ -23,10 +23,11 @@ class RepositoryU : public QObject
 public:
     explicit RepositoryU(QObject *parent = nullptr);
 
-    static QStringList GetRequest(QString request);
+    static QSqlRecord GetRequest(QString request);
     static int SetRequest(QString request);
     static bool isConnected;
     static QSqlDatabase db;
+    static QSqlQuery lastQuery;
 
 signals:
 

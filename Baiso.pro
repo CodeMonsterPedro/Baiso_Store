@@ -40,10 +40,14 @@ SUBDIRS += \
     Baiso.pro \
     Headers \
     Sources \
-   RepositoryU
+   RepositoryU \
+   UIs/rolesUIs \
+   UIs/MyUIs
 
 DISTFILES += \
     README.md \
     UIs/main.qml\
-    UIs/MyButton.qml\
-    UIs/logInPage.qml
+    UIs/MyUIs/MyButton.qml\
+    UIs/logInPage.qml \
+    UIs/MyUIs/InformationPage.qml \
+    UIs/rolesUIs/Manager.qml \

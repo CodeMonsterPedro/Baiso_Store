@@ -3,10 +3,16 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import backend.login 1.0
+import "MyUIs"
 
 
 Item {
     id:rootLogInPage
+
+    signal becomeSaleMan();
+    signal becomeStorageMan();
+    signal becomeAdmin();
+
     Rectangle{
         id:rootLogInCanvas
         anchors.fill: parent
@@ -54,9 +60,9 @@ Item {
             button_text: qsTr("Log in");
             onButton_clicked: {
                 switch(backend_id.sendRequest(loginfield.text,passwordfield.text)){
-                case 0://admin
-                case 1://sklad
-                case 2://manager
+                case 0:rootLogInPage.becomeAdmin();break;
+                case 1:rootLogInPage.becomeSaleMan();break;
+                case 2:rootLogInPage.becomeStorageMan();break;
                 default://error
 
 

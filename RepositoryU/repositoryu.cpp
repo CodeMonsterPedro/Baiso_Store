@@ -2,42 +2,28 @@
 
 QSqlDatabase RepositoryU::db = QSqlDatabase::addDatabase("QPSQL");
 bool RepositoryU::isConnected = false;
+QSqlQuery RepositoryU::lastQuery;
 
-RepositoryU::RepositoryU(QObject *parent) : QObject(parent)
+RepositoryU::RepositoryU(QObject *parent) : QObject(parent){}
+
+
+QSqlRecord RepositoryU::GetRequest(QString request)
 {
-    db.setDatabaseName("HUI");
-    db.setUserName("HUI");
-    db.setHostName("HUI");
-    db.setPassword("123");
-
-    if(!db.open()){
-        isConnected=false;
-        qDebug()<<db.lastError();
-        //messege about no database conntection
-    }else{
-        isConnected=true;
-        QStringList tables = db.tables();
-        foreach (QString str,tables){
-            qDebug()<<"Table: "<<str;
-        }
-    }
-}
-
-
-QStringList RepositoryU::GetRequest(QString request)
-{
-    QStringList requestResult;
-
+    QSqlQuery query;
     if(isConnected){
-        qDebug()<<request;
-        return requestResult;
+        qDebug()<<request;//need to handle a unexecutable request error
+        if(!query.exec(request))qDebug()<<"cant execute request";
+        else{
+            lastQuery=query;
+            return query.record();
+        }
     }
     else {
         if(CreateConnection())return GetRequest(request);
         qDebug()<<request;
          // else error messege
     }
-    return requestResult;
+    return query.record();
 }
 
 int RepositoryU::SetRequest(QString request)
@@ -48,9 +34,10 @@ int RepositoryU::SetRequest(QString request)
 
 bool RepositoryU::CreateConnection()
 {
-    db.setUserName("HUI");
-    db.setHostName("HUI");
-    db.setPassword("123");
+    db.setDatabaseName("Baiso_main");
+    db.setUserName("postgres");
+    db.setHostName("127.0.0.1");
+    db.setPassword("qwerty123");
 
     if(!db.open()){
         isConnected=false;
