@@ -16,15 +16,17 @@ Window {
     Rectangle{
         id:rootCanvas
         width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
-        x:0;y:0;
+        height: Screen.desktopAvailableHeight-20
+        x:0;y:20;
         state:"LogIn"
+        onStateChanged: {
+
+        }
 
 
         Loader{
             id:logInPart
             anchors.fill: rootCanvas
-            x:0;y:0;
             visible: false
             source: "logInPage.qml"
 
@@ -45,10 +47,24 @@ Window {
         Loader{
             id:saleManPart;
             anchors.fill: rootCanvas;
-            x:0;y:0
             visible: false;
-            source: "rolesUIs/Manager.qml"
+            source: "rolesUIs/ManagerPage.qml"
         }
+
+        Loader{
+            id:adminPart;
+            anchors.fill: rootCanvas;
+            visible: false;
+            source: "rolesUIs/AdminPage.qml"
+        }
+
+        Loader{
+            id:storageManPart;
+            anchors.fill: rootCanvas;
+            visible: false;
+            source: "rolesUIs/StorageManPage.qml"
+        }
+
 
         states:[
             State {

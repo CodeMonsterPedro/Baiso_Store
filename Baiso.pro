@@ -50,4 +50,6 @@ DISTFILES += \
     UIs/MyUIs/MyButton.qml\
     UIs/logInPage.qml \
     UIs/MyUIs/InformationPage.qml \
-    UIs/rolesUIs/Manager.qml \
+    UIs/rolesUIs/AdminPage.qml \
+    UIs/rolesUIs/StorageManPage.qml \
+    UIs/rolesUIs/ManagerPage.qml
