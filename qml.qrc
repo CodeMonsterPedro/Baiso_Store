@@ -4,6 +4,9 @@
         <file>UIs/logInPage.qml</file>
         <file>UIs/MyUIs/MyButton.qml</file>
         <file>UIs/MyUIs/InformationPage.qml</file>
-        <file>UIs/rolesUIs/Manager.qml</file>
+        <file>UIs/rolesUIs/StorageManPage.qml</file>
+        <file>UIs/rolesUIs/ManagerPage.qml</file>
+        <file>UIs/rolesUIs/AdminPage.qml</file>
+        <file>UIs/MyUIs/MyHub.qml</file>
     </qresource>
 </RCC>

@@ -52,4 +52,5 @@ DISTFILES += \
     UIs/MyUIs/InformationPage.qml \
     UIs/rolesUIs/AdminPage.qml \
     UIs/rolesUIs/StorageManPage.qml \
-    UIs/rolesUIs/ManagerPage.qml
+    UIs/rolesUIs/ManagerPage.qml \
+    UIs/MyUIs/MyHub.qml
