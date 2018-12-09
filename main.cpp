@@ -3,6 +3,7 @@
 
 #include"Headers/loginpageu.h"
 #include"RepositoryU/repositoryu.h"
+#include"Headers/signaltransferer.h"
 
 
 int main(int argc, char *argv[])
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
 
 
     qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
+    qmlRegisterType<SignalTransferer>("backend.transfer",1,0,"Backend_transfer");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/UIs/UIs/main.qml")));

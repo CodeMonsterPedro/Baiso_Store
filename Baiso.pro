@@ -16,7 +16,8 @@ SOURCES += \
         main.cpp \
     Sources/mainwindow.cpp \
     Sources/loginpageu.cpp \
-    RepositoryU/repositoryu.cpp
+    RepositoryU/repositoryu.cpp \
+    Sources/signaltransferer.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,7 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Headers/mainwindow.h \
     Headers/loginpageu.h \
-    RepositoryU/repositoryu.h
+    RepositoryU/repositoryu.h \
+    Headers/signaltransferer.h
 
 SUBDIRS += \
     Baiso.pro \

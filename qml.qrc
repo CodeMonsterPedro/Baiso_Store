@@ -8,5 +8,8 @@
         <file>UIs/rolesUIs/ManagerPage.qml</file>
         <file>UIs/rolesUIs/AdminPage.qml</file>
         <file>UIs/MyUIs/MyHub.qml</file>
+        <file>UIs/MyUIs/dbicon.png</file>
+        <file>UIs/MyUIs/graph.png</file>
+        <file>UIs/MyUIs/brain.png</file>
     </qresource>
 </RCC>
