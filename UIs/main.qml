@@ -25,7 +25,6 @@ Window {
         state:"LogIn"
         onStateChanged: {
             console.log( "current rootCanvas state - " + rootCanvas.state);
-            if(rootCanvas.state!=="LogIn")hub.visible=true;
         }
 
         Loader{
@@ -68,17 +67,6 @@ Window {
             anchors.fill: rootCanvas;
             visible: false;
             source: "rolesUIs/StorageManPage.qml"
-        }
-
-        MyHub{
-            id:hub
-            visible: false
-            x: ((rootCanvas.width/2)-(hub.hub_main_width/2));
-            y:0
-            hub_main_width:360
-            hub_main_height: 100
-            hub_label_width: 120
-            hub_label_height: 52
         }
 
 

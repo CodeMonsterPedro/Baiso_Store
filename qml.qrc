@@ -11,5 +11,7 @@
         <file>UIs/MyUIs/dbicon.png</file>
         <file>UIs/MyUIs/graph.png</file>
         <file>UIs/MyUIs/brain.png</file>
+        <file>UIs/rolesUIs/ManagerSubUIs/dataBasePart.qml</file>
+        <file>UIs/rolesUIs/ManagerSubUIs/analyzePart.qml</file>
     </qresource>
 </RCC>

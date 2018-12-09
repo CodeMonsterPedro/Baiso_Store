@@ -17,6 +17,7 @@ Item {
     property color hub_main_color: "white"
     property color hub_label_color: "white"
     property string hub_label_text: "Hover me_"
+    property int current_page: 0
 
     Rectangle{
         id:label
@@ -79,7 +80,7 @@ Item {
                 MouseArea{
                     id:first
                     anchors.fill: informationPart
-                    onClicked: hub_transfer.goToPage(0);
+                    onClicked: current_page=0;
                 }
             }
 
@@ -91,7 +92,7 @@ Item {
                 MouseArea{
                     id:second
                     anchors.fill: dataBasePart
-                    onClicked: hub_transfer.goToPage(1);
+                    onClicked: current_page=1;
                 }
             }
 
@@ -103,7 +104,7 @@ Item {
                 MouseArea{
                     id:third
                      anchors.fill: analyzePart
-                     onClicked: hub_transfer.goToPage(2);
+                     onClicked: current_page=2;
                 }
             }
         }
@@ -114,6 +115,7 @@ Item {
     Backend_transfer{
          id:hub_transfer
     }
+
 
 /*
 

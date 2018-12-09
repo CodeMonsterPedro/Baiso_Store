@@ -11,8 +11,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
-
     qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
     qmlRegisterType<SignalTransferer>("backend.transfer",1,0,"Backend_transfer");
 

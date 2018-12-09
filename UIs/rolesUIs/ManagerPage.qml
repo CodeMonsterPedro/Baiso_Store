@@ -16,18 +16,40 @@ Item{
         x:30;y:40
         radius: 15
         color:"white"
-    }
 
-    Backend_transfer{
-        id:transferManager
-        onChangePage:{
-            console.log(number);
-            switch(number)
-            {
-                case 0:break;
-                case 1:break;
-                case 2:break;
+
+        Loader{
+            id:managerPartsPage
+            visible: true;
+            width: rootManagerCanvas.width-16;
+            height: rootManagerCanvas.height-16;
+            y:8;x:8;
+            source: "../MyUIs/InformationPage.qml"
+        }
+
+        MyHub{
+            id:hub
+            visible: true
+            x: ((rootCanvas.width/2)-(hub.hub_main_width/2));
+            y:-40
+            hub_main_width:360
+            hub_main_height: 100
+            hub_label_width: 120
+            hub_label_height: 52
+            onCurrent_pageChanged: {
+                console.log(current_page);
+                switch(current_page)
+                {
+                    case 0:managerPartsPage.source="../MyUIs/InformationPage.qml";break;
+                    case 1:managerPartsPage.source="ManagerSubUIs/dataBasePart.qml";break;
+                    case 2:managerPartsPage.source="ManagerSubUIs/analyzePart.qml";break;
+
+
+                }
             }
         }
+
+
     }
+
 }

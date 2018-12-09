@@ -44,7 +44,10 @@ SUBDIRS += \
     Sources \
    RepositoryU \
    UIs/rolesUIs \
-   UIs/MyUIs
+   UIs/MyUIs    \
+  UIs/roleUIs/ManagerSubUIs \
+  UIs/roleUIs/StorageManSubUIs \
+  UIs/roleUIs/AdminSubUIs
 
 DISTFILES += \
     README.md \
