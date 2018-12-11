@@ -13,5 +13,9 @@
         <file>UIs/MyUIs/brain.png</file>
         <file>UIs/rolesUIs/ManagerSubUIs/dataBasePart.qml</file>
         <file>UIs/rolesUIs/ManagerSubUIs/analyzePart.qml</file>
+        <file>UIs/rolesUIs/AdminSubUIs/usersPage.qml</file>
+        <file>UIs/rolesUIs/AdminSubUIs/networkSettings.qml</file>
+        <file>UIs/rolesUIs/StorageManSubUIs/Products_and_supplys.qml</file>
+        <file>UIs/rolesUIs/StorageManSubUIs/markets_and_suplySends.qml</file>
     </qresource>
 </RCC>

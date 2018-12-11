@@ -26,6 +26,16 @@ Item{
             y:8;x:8;
             source: "../MyUIs/InformationPage.qml"
         }
+        ScrollBar {
+                id: vbar
+                hoverEnabled: true
+                active: hovered || pressed
+                orientation: Qt.Vertical
+                size: rootManagerCanvas.height / managerPartsPage.height
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+            }
 
         MyHub{
             id:hub

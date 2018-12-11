@@ -3,6 +3,7 @@
 QSqlDatabase RepositoryU::db = QSqlDatabase::addDatabase("QPSQL");
 bool RepositoryU::isConnected = false;
 QSqlQuery RepositoryU::lastQuery;
+QStringList RepositoryU::tables;
 
 RepositoryU::RepositoryU(QObject *parent) : QObject(parent){}
 
@@ -45,7 +46,7 @@ bool RepositoryU::CreateConnection()
         //messege about no database conntection
     }else{
         isConnected=true;
-        QStringList tables = db.tables();
+        tables = db.tables();
         foreach (QString str,tables){
             qDebug()<<"Table: "<<str;
         }

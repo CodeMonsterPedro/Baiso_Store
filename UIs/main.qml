@@ -25,12 +25,14 @@ Window {
         state:"LogIn"
         onStateChanged: {
             console.log( "current rootCanvas state - " + rootCanvas.state);
+            if(rootCanvas.state!="LogIn")currentTimeBackground.visible=true;
+            else currentTimeBackground.visible=false;
         }
 
         Loader{
             id:logInPart
             anchors.fill: rootCanvas
-            visible: false
+            visible: rootCanvas.state=="LogIn"
             source: "logInPage.qml"
 
         }
@@ -54,22 +56,6 @@ Window {
             source: "rolesUIs/ManagerPage.qml"
         }
 
-        Loader{
-            id:adminPart;
-            anchors.fill: rootCanvas;
-            visible: false;
-            source: "rolesUIs/AdminPage.qml"
-
-        }
-
-        Loader{
-            id:storageManPart;
-            anchors.fill: rootCanvas;
-            visible: false;
-            source: "rolesUIs/StorageManPage.qml"
-        }
-
-
         states:[
             State {
                 name: "LogIn"
@@ -84,7 +70,7 @@ Window {
                 }
                 PropertyChanges {
                     target: currentTime
-                    x:270;y:15
+                    x:-7;y:46
                 }
                 PropertyChanges {
                     target: logInPart
@@ -95,15 +81,6 @@ Window {
                     target: saleManPart
                     visible:false;
                 }
-                PropertyChanges {
-                    target: storageManPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: adminPart
-                    visible:false;
-                }
-
             },
             State {
                 name: "BecomeSaleMan"
@@ -125,19 +102,10 @@ Window {
                 PropertyChanges {
                     target: saleManPart
                     visible:true;
+                    source: "rolesUIs/ManagerPage.qml"
                 }
-                PropertyChanges {
-                    target: storageManPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: adminPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: logInPart
-                    visible:false;
-                }
+
+
             },
             State {
                 name: "BecomeStorageMan"
@@ -158,19 +126,8 @@ Window {
 
                 PropertyChanges {
                     target: saleManPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: storageManPart
                     visible:true;
-                }
-                PropertyChanges {
-                    target: adminPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: logInPart
-                    visible:false;
+                    source:"rolesUIs/StorageManPage.qml"
                 }
 
             },
@@ -192,40 +149,14 @@ Window {
                 }
                 PropertyChanges {
                     target: saleManPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: storageManPart
-                    visible:false;
-                }
-                PropertyChanges {
-                    target: adminPart
                     visible:true;
-                }
-                PropertyChanges {
-                    target: logInPart
-                    visible:false;
+                    source:"rolesUIs/AdminPage.qml"
                 }
             }
         ]
-
-       transitions: [
-           Transition {
-               from: "LogIn"
-               PropertyAnimation{
-                    target: rootCanvas
-                    properties:"width"
-                    duration: 30
-               }
-               PropertyAnimation{
-                    target: rootCanvas
-                    properties:"height"
-                    duration: 30
-               }
-           }
-       ]
        Rectangle{
             id:currentTimeBackground;
+            visible: false;
             x:currentTime.x-10;y:currentTime.y-22;
             width: 100;height: 46
             radius: 15;

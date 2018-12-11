@@ -28,6 +28,7 @@ public:
     static bool isConnected;
     static QSqlDatabase db;
     static QSqlQuery lastQuery;
+    static QStringList tables;
 
 signals:
 

@@ -17,7 +17,8 @@ SOURCES += \
     Sources/mainwindow.cpp \
     Sources/loginpageu.cpp \
     RepositoryU/repositoryu.cpp \
-    Sources/signaltransferer.cpp
+    Sources/signaltransferer.cpp \
+    Sources/ModelsCpp/informationlistmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,7 +37,8 @@ HEADERS += \
     Headers/mainwindow.h \
     Headers/loginpageu.h \
     RepositoryU/repositoryu.h \
-    Headers/signaltransferer.h
+    Headers/signaltransferer.h \
+    Headers/Models/informationlistmodel.h
 
 SUBDIRS += \
     Baiso.pro \
