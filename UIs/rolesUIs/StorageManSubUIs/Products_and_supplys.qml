@@ -7,6 +7,7 @@ Item{
     id:addItemsPage
     width: addItemsPageCanvas.width
     height: addItemsPageCanvas.height
+    property alias supplyerName: supplyerName
     Rectangle{
         id:addItemsPageCanvas
         width: Screen.desktopAvailableWidth-76;
@@ -14,40 +15,87 @@ Item{
 
         Item{
             id:addProduct
-            x:30;y:30
-            Column{
-                spacing: 30;
-                TextField{
-                    id:productName
-                    width: 200
-                    height: 60
+            x:36;y:103
+            width: 1131
+            height: 676
 
-                }
-                TextField{
-                    id:companytName
-                    width: 200
-                    height: 60
+            TextField{
+                id:productPrice
+                x: 24
+                y: 404
+                width: 340
+                height: 60
+                placeholderText: "Price"
 
-                }
-                TextField{
-                    id:inBoxCount
-                    width: 200
-                    height: 60
-
-                }
-                TextField{
-                    id:supplyerName
-                    width: 200
-                    height: 60
-
-                }
-                TextField{
-                    id:productPrice
-                    width: 200
-                    height: 60
-
-                }
             }
+
+
+            TextField{
+                id:companytName
+                x: 24
+                y: 208
+                width: 858
+                height: 60
+                placeholderText: "Company name"
+
+            }
+
+            TextField{
+                id:supplyerName
+                x: 24
+                y: 515
+                width: 340
+                height: 60
+                placeholderText: "Supplyer id"
+
+            }
+
+            TextField{
+                id:productName
+                x: 24
+                y: 118
+                width: 858
+                height: 60
+                placeholderText: "Product name"
+
+            }
+
+            SpinBox {
+                id: countInBox
+                x: 22
+                y: 319
+            }
+
+            ComboBox {
+                id: comboBox
+                x: 192
+                y: 319
+                width: 170
+                height: 40
+            }
+
+            TextField {
+                id: productPrice1
+                x: 396
+                y: 309
+                width: 486
+                height: 60
+                placeholderText: "Bar-code"
+            }
+
+            Text {
+                id: text1
+                x: 24
+                y: 34
+                width: 401
+                height: 48
+                text: qsTr("New product")
+                font.pixelSize: 32
+            }
+
+
+
+
         }
 
 
