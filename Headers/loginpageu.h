@@ -15,8 +15,6 @@ public:
     explicit logInPageU(QObject *parent = nullptr);
 
     Q_INVOKABLE int sendRequest(QString login, QString password);
-
-
 signals:
 
 public slots:

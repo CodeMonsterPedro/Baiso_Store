@@ -2,6 +2,7 @@
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import "../../MyUIs"
 
 Item{
     id:addItemsPage
@@ -18,6 +19,7 @@ Item{
             x:36;y:103
             width: 1131
             height: 676
+            property int indexx: 10
 
             TextField{
                 id:productPrice
@@ -72,6 +74,7 @@ Item{
                 y: 319
                 width: 170
                 height: 40
+                model:["kgs","item"]
             }
 
             TextField {
@@ -93,6 +96,23 @@ Item{
                 font.pixelSize: 32
             }
 
+            MyButton{
+                id: ok_obutton
+                x: 772
+                y: 493
+                width: 116
+                height: 82
+                button_width: 90
+                button_height: 40;
+                button_text: "Add"
+                button_round: 15
+                button_border_color: "green"
+//                onButton_clicked: {
+//                    repos.setRequest("INSERT into public.\"ProductList\" (id,product_name,in_box_count,supplyer,company,price,count_sys,bar_code)
+// VALUES("+ addProduct.indexx + "," + productName.text + "," + countInBox.value + "," + supplyerName.text + "," + companytName.text
+//                                     + "," + productPrice.text + "," + comboBox.currentText + "," + productPrice1.text+")");
+//                }
+            }
 
 
 

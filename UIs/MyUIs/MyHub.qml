@@ -2,7 +2,7 @@
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import backend.transfer 1.0
+
 
 Item {
     id:root
@@ -112,9 +112,7 @@ Item {
 
     }
 
-    Backend_transfer{
-         id:hub_transfer
-    }
+
 
 
 /*

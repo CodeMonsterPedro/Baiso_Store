@@ -3,7 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import "../../MyUIs"
-import backend.transfer 1.0
+
 
 Item{
     id:rootDataBase
@@ -13,6 +13,16 @@ Item{
         id:rootDataBaseCanvas
         width: Screen.desktopAvailableWidth-76;
         height: Screen.desktopAvailableHeight-84;
+        Text {
+            id: text1
+            x: 50
+            y: 40
+            width: 480
+            height: 50
+            text: qsTr("Data Base")
+            font.pixelSize: 43
+            color:"green"
+        }
 
         Item {
             id: dbTableItem
@@ -26,35 +36,25 @@ Item{
                 x: 15
                 y: 18
                 model:["All sales","Products"]
-                onCurrentIndexChanged: {simpleModelController.showFrom(comboBox1.currentIndex);}
-
             }
 
-            ListView {
-                id: listView
-                y: 93
-                height: 708
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 8
-                anchors.left: parent.left
-                anchors.leftMargin: 15
-                anchors.right: parent.right
-                anchors.rightMargin: 28
-                model: simpleModelController.myModel;
+//            ListView {
+//                id: listView
+//                y: 97
+//                height: 615
+//                anchors.right: parent.right
+//                anchors.rightMargin: -174
+//                anchors.left: parent.left
+//                anchors.leftMargin: 8
+//               }
 
-                delegate: Text {
-                        id: titleLabel
-                        text: mText
-                        anchors.fill: parent
-                        anchors.leftMargin: 10;
-                        font.pixelSize: 20
-                    }
-            }
         }
     }
+
 }
 
+
 /*##^## Designer {
-    D{i:5;anchors_width:1216;anchors_x:24}
+    D{i:5;anchors_width:1216;anchors_x:24}D{i:4;anchors_width:1414;anchors_x:15}
 }
  ##^##*/

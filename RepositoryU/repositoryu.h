@@ -24,7 +24,7 @@ public:
     explicit RepositoryU(QObject *parent = nullptr);
 
     static QSqlRecord GetRequest(QString request);
-    static int SetRequest(QString request);
+    Q_INVOKABLE  static int SetRequest(QString request);
     static bool isConnected;
     static QSqlDatabase db;
     static QSqlQuery lastQuery;

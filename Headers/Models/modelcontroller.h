@@ -17,19 +17,21 @@ public:
 
     Q_PROPERTY(InformationListModel* myModel READ myModel WRITE setMyModel NOTIFY myModelChanged)
 
-ModelController(QObject *parent = Q_NULLPTR);
-~ModelController();
+    ModelController(QObject *parent = Q_NULLPTR);
+    ~ModelController();
 
-InformationListModel* myModel() const{return m_myModel;}
-QStringList list() const{return m_list;}
-Q_INVOKABLE void showFrom(int source);
+    InformationListModel* myModel() const{return m_myModel;}
+    QStringList list() const{return m_list;}
+    Q_INVOKABLE void showFrom(int source);
+
 public slots:
-void setMyModel(InformationListModel* myModel);
-void setList(QStringList list);
+    void setMyModel(InformationListModel* myModel);
+    void setList(QStringList list);
 
 signals:
-void myModelChanged(InformationListModel* myModel);
-void listChanged(QStringList list);
+    void myModelChanged(InformationListModel* myModel);
+    void listChanged(QStringList list);
+
 };
 
 #endif // MODELCONTROLLER_H

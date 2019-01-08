@@ -14,10 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    Sources/mainwindow.cpp \
     Sources/loginpageu.cpp \
     RepositoryU/repositoryu.cpp \
-    Sources/signaltransferer.cpp \
     Sources/ModelsCpp/informationlistmodel.cpp \
     Sources/ModelsCpp/modelcontroller.cpp
 
@@ -35,10 +33,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    Headers/mainwindow.h \
     Headers/loginpageu.h \
     RepositoryU/repositoryu.h \
-    Headers/signaltransferer.h \
     Headers/Models/informationlistmodel.h \
     Headers/Models/modelcontroller.h
 

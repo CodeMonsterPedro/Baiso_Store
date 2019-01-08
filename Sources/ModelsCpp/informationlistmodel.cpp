@@ -4,6 +4,64 @@ InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel
 {
     sourceList.append("ProductSaleFull");
     sourceList.append("ProductList");
+
+    QStringList temp;
+    QSqlRecord record = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductSaleFull\" "));
+    QSqlQuery query = RepositoryU::lastQuery;
+    while(query.next()){
+        QString str =QString("|%7|(%1)-(%2)-(%4). %3 - %5 : %6$")
+                .arg(query.value(record.indexOf("id")).toString())
+                .arg(query.value(record.indexOf("market_id")).toString())
+                .arg(query.value(record.indexOf("product_name")).toString())
+                .arg(query.value(record.indexOf("purchase_id")).toString())
+                .arg(query.value(record.indexOf("product_count")).toString())
+                .arg(query.value(record.indexOf("price")).toString())
+                .arg(query.value(record.indexOf("date")).toString());
+        temp.append(str);
+    }
+    listData=temp;
+}
+
+QHash<int, QByteArray> InformationListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
+    roles[IconRole] = "mIcon";
+    roles[TextRole] = "mText";
+
+    return roles;
+}
+
+int InformationListModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return listData.size();
+}
+
+QVariant InformationListModel::data(const QModelIndex &index, int role) const
+{
+    switch (role) {
+    case TextRole:
+        qDebug()<<"----"+QString::number(index.row());
+        return listData.at(index.row());
+    case IconRole:
+        break;
+    default:
+        break;
+    }
+
+    return QVariant();
+}
+
+QModelIndex InformationListModel::index(int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return createIndex(row, column);
+}
+
+int InformationListModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return 1;
 }
 
 void InformationListModel::GetTopTen()
@@ -43,32 +101,23 @@ QString InformationListModel::GetCountSystem(int val)
 {
     QString str = "";
     switch(val){
-    case 0:str = "kgs";break;
-    case 1:str = "item";break;
-    case 2:break;
+        case 0:str = "kgs";break;
+        case 1:str = "item";break;
+        case 2:break;
     }
     return str;
 }
 
 
-QHash<int, QByteArray> InformationListModel::roleNames() const
-{
-    QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-    roles[IconRole] = "mIcon";
-    roles[TextRole] = "mText";
 
-    return roles;
-}
 
-void InformationListModel::Showfrom(int source)
+void InformationListModel::showfrom(int source)
 {
-    qDebug()<<"=="+QString::number(source);
     QString table=sourceList[source];
     QStringList temp;
     QSqlRecord record = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
     QSqlQuery query = RepositoryU::lastQuery;
     if(source==0){
-        int i=0;
         while(query.next()){
             QString str =QString("|%7|(%1)-(%2)-(%4). %3 - %5 : %6$")
                     .arg(query.value(record.indexOf("id")).toString())
@@ -78,24 +127,21 @@ void InformationListModel::Showfrom(int source)
                     .arg(query.value(record.indexOf("product_count")).toString())
                     .arg(query.value(record.indexOf("price")).toString())
                     .arg(query.value(record.indexOf("date")).toString());
-            temp[i++] =str;
-            qDebug()<<"str - " + str;
+            temp.append(str);
         }
     }
     if(source==1){
-        int i=0;
         QString count;
         while(query.next()){
             count=GetCountSystem(query.value(record.indexOf("count_sys")).toInt());
-            QString str =QString("(%1). %5.%2 - %3 items/box : %4$/%6 \nSupplyed by: %7")
+            QString str =QString("(%1). %5.%2 - %3 items/box : %4$/%6 \\nSupplyed by: %7")
                     .arg(query.value(record.indexOf("id")).toString())
                     .arg(query.value(record.indexOf("product_name")).toString())
                     .arg(query.value(record.indexOf("in_box_count")).toString())
                     .arg(query.value(record.indexOf("price")).toString())
                     .arg(query.value(record.indexOf("company")).toString())
                     .arg(count).arg(query.value(record.indexOf("supplyer")).toString());
-            temp[i++] =str;
-            qDebug()<<"str - " + str;
+            temp.append(str);
         }
     }
     Refresh(temp);
@@ -110,43 +156,13 @@ void InformationListModel::Refresh(QStringList temp)
     listData=temp;
     endInsertRows();
     endRemoveRows();
-
 }
 
-int InformationListModel::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return listData.size();
-}
 
-QVariant InformationListModel::data(const QModelIndex &index, int role) const
-{
-    switch (role) {
-    case TextRole:
-        if(listData.isEmpty()) return QVariant();
-        qDebug()<<"----"+QString::number(index.row());
-        return listData.at(index.row());
-    case IconRole:
 
-        break;
-    default:
-        break;
-    }
 
-    return QVariant();
-}
 
-QModelIndex InformationListModel::index(int row, int column, const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return createIndex(row, column);
-}
 
-int InformationListModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return 1;
-}
 
 
 

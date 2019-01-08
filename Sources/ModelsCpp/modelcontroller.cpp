@@ -1,9 +1,7 @@
 ﻿#include "../../Headers/Models/modelcontroller.h"
 
-ModelController::ModelController(QObject *parent) : QObject(parent)
+ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(new InformationListModel())
 {
-    m_myModel = new InformationListModel();
-    showFrom(0);
 }
 
 ModelController::~ModelController()
@@ -13,7 +11,10 @@ ModelController::~ModelController()
 
 void ModelController::showFrom(int source)
 {
-    m_myModel->Showfrom(source);
+    m_myModel->showfrom(source);
+    qDebug()<<"I say - "<<m_myModel->data(QModelIndex(),Qt::UserRole) ;
+    setMyModel(m_myModel);
+    emit myModelChanged(m_myModel);
 }
 
 void ModelController::setMyModel(InformationListModel* myModel)

@@ -29,7 +29,9 @@ QSqlRecord RepositoryU::GetRequest(QString request)
 
 int RepositoryU::SetRequest(QString request)
 {
+    QSqlQuery query;
     qDebug()<<request;
+    if(!query.exec(request))qDebug()<<"cant execute request";
     return 0;
 }
 

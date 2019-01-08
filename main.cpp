@@ -4,8 +4,9 @@
 
 #include"Headers/loginpageu.h"
 #include"RepositoryU/repositoryu.h"
-#include"Headers/signaltransferer.h"
 #include"Headers/Models/modelcontroller.h"
+
+#include"Headers/Models/informationlistmodel.h"
 
 
 int main(int argc, char *argv[])
@@ -13,13 +14,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-    qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
-    qmlRegisterType<SignalTransferer>("backend.transfer",1,0,"Backend_transfer");
-    QScopedPointer<ModelController> ptr(new ModelController());
-
     QQmlApplicationEngine engine;
+    qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
+    QScopedPointer<ModelController> ptr(new ModelController());
     engine.rootContext()->setContextProperty("simpleModelController",ptr.data());
-
+    qDebug()<<"main loaded"<<endl;
     engine.load(QUrl(QStringLiteral("qrc:/UIs/UIs/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

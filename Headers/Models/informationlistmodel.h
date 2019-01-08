@@ -19,19 +19,18 @@ public:
     };
 
 
-    InformationListModel(QObject *parent = nullptr);
+    InformationListModel(QObject *parent = Q_NULLPTR);
 
-    Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual QModelIndex index(int row, int column,
-                              const QModelIndex &parent) const;
+    virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
     virtual int columnCount(const QModelIndex &parent) const;
 
     QHash<int, QByteArray> roleNames() const;
 
-    QStringList listData;
+    QList<QString> listData;
     QStringList sourceList;
-    void Showfrom(int source=0);
+    void showfrom(int source=0);
     void Refresh(QStringList temp);
     void GetTopTen();
 
