@@ -2,32 +2,29 @@
 
 InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel(parent)
 {
-    sourceList.append("ProductSaleFull");
-    sourceList.append("ProductList");
-
+   sourceList = RepositoryU::tables;
     QStringList temp;
-    QSqlRecord record = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductSaleFull\" "));
-    QSqlQuery query = RepositoryU::lastQuery;
-    while(query.next()){
-        QString str =QString("|%7|(%1)-(%2)-(%4). %3 - %5 : %6$")
-                .arg(query.value(record.indexOf("id")).toString())
-                .arg(query.value(record.indexOf("market_id")).toString())
-                .arg(query.value(record.indexOf("product_name")).toString())
-                .arg(query.value(record.indexOf("purchase_id")).toString())
-                .arg(query.value(record.indexOf("product_count")).toString())
-                .arg(query.value(record.indexOf("price")).toString())
-                .arg(query.value(record.indexOf("date")).toString());
-        temp.append(str);
+    lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(sourceList[0]));
+    QSqlRecord record= lastQuery.record();
+    for(int i=0;i<1000;i++){
+        listData.append(lastQuery.record());
+        lastQuery.next();
     }
-    listData=temp;
+    lastQuery.seek(0);
 }
 
 QHash<int, QByteArray> InformationListModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-    roles[IconRole] = "mIcon";
-    roles[TextRole] = "mText";
-
+    roles[NameRole] = "m_Name";
+    roles[MainIdRole] = "m_MainId";
+    roles[MarketIdRole] = "m_MarketId";
+    roles[PurchaseIdRole] = "m_PurchId";
+    roles[InBoxCountRole] = "m_InBoxCount";
+    roles[CountSystemRole] = "m_CountSys";
+    roles[BarCodeRole] = "m_BarCode";
+    roles[PriceRole] = "m_Price";
+    roles[DateRole] = "m_Date";
     return roles;
 }
 
@@ -39,16 +36,20 @@ int InformationListModel::rowCount(const QModelIndex &parent) const
 
 QVariant InformationListModel::data(const QModelIndex &index, int role) const
 {
-    switch (role) {
-    case TextRole:
-        qDebug()<<"----"+QString::number(index.row());
-        return listData.at(index.row());
-    case IconRole:
+    switch (currentTable) {
+    case 0:
+        return getLikeProduct(index,role);
+    case 1:
+        return getLikePurchase(index,role);
+    case 2:
+        return getLikeAccounts(index,role);
+    case 3:
+        break;
+    case 4:
         break;
     default:
         break;
     }
-
     return QVariant();
 }
 
@@ -113,49 +114,119 @@ QString InformationListModel::GetCountSystem(int val)
 
 void InformationListModel::showfrom(int source)
 {
+    currentTable = source;
     QString table=sourceList[source];
-    QStringList temp;
-    QSqlRecord record = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
-    QSqlQuery query = RepositoryU::lastQuery;
-    if(source==0){
-        while(query.next()){
-            QString str =QString("|%7|(%1)-(%2)-(%4). %3 - %5 : %6$")
-                    .arg(query.value(record.indexOf("id")).toString())
-                    .arg(query.value(record.indexOf("market_id")).toString())
-                    .arg(query.value(record.indexOf("product_name")).toString())
-                    .arg(query.value(record.indexOf("purchase_id")).toString())
-                    .arg(query.value(record.indexOf("product_count")).toString())
-                    .arg(query.value(record.indexOf("price")).toString())
-                    .arg(query.value(record.indexOf("date")).toString());
-            temp.append(str);
-        }
-    }
-    if(source==1){
-        QString count;
-        while(query.next()){
-            count=GetCountSystem(query.value(record.indexOf("count_sys")).toInt());
-            QString str =QString("(%1). %5.%2 - %3 items/box : %4$/%6 \\nSupplyed by: %7")
-                    .arg(query.value(record.indexOf("id")).toString())
-                    .arg(query.value(record.indexOf("product_name")).toString())
-                    .arg(query.value(record.indexOf("in_box_count")).toString())
-                    .arg(query.value(record.indexOf("price")).toString())
-                    .arg(query.value(record.indexOf("company")).toString())
-                    .arg(count).arg(query.value(record.indexOf("supplyer")).toString());
-            temp.append(str);
-        }
-    }
-    Refresh(temp);
+    lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
+    QSqlRecord record= lastQuery.record();
 
+    beginInsertRows(QModelIndex(),0,999);
+    for(int i=0;i<1000;i++){
+        listData.append(lastQuery.record());
+        lastQuery.next();
+    }
+    endInsertRows();
+
+    lastQuery.seek(0);
+}
+
+QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role) const
+{
+    switch (currentTable) {
+    case 0:
+        return getLikeProduct(index,role);
+    case 1:
+        return getLikePurchase(index,role);
+    case 2:
+        return getLikeAccounts(index,role);
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+    return QVariant();
+}
+
+QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int role) const
+{
+    switch (currentTable) {
+    case 0:
+        return getLikeProduct(index,role);
+    case 1:
+        return getLikePurchase(index,role);
+    case 2:
+        return getLikeAccounts(index,role);
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+    return QVariant();
+}
+
+QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int role) const
+{
+    switch (currentTable) {
+    case 0:
+        return getLikeProduct(index,role);
+    case 1:
+        return getLikePurchase(index,role);
+    case 2:
+        return getLikeAccounts(index,role);
+    case 3:
+        break;
+    case 4:
+        break;
+    default:
+        break;
+    }
+    return QVariant();
+}
+
+void InformationListModel::goNext()
+{
+
+}
+
+void InformationListModel::goPrev()
+{
+
+}
+
+void InformationListModel::addElement(QString value)
+{
+    beginInsertRows(QModelIndex(), listData.size(), listData.size());
+    endInsertRows();
+}
+
+void InformationListModel::delElementLast()
+{
+    if(listData.isEmpty())
+    {
+        return;
+    }
+    beginRemoveRows(QModelIndex(),listData.indexOf(listData.last()),listData.indexOf(listData.last()));
+    listData.removeLast();
+    endRemoveRows();
 }
 
 void InformationListModel::Refresh(QStringList temp)
 {
+    Q_UNUSED(temp);
     beginRemoveRows(QModelIndex(),0, listData.size());
     listData.clear();
-    beginInsertRows(QModelIndex(),0,listData.size());
-    listData=temp;
-    endInsertRows();
     endRemoveRows();
+
+    beginInsertRows(QModelIndex(),0,999);
+    for(int i=0;i<1000;i++){
+        listData.append(lastQuery.record());
+        lastQuery.next();
+    }
+    endInsertRows();
+
 }
 
 

@@ -23,7 +23,7 @@ class RepositoryU : public QObject
 public:
     explicit RepositoryU(QObject *parent = nullptr);
 
-    static QSqlRecord GetRequest(QString request);
+    static QSqlQuery GetRequest(QString request);
     Q_INVOKABLE  static int SetRequest(QString request);
     static bool isConnected;
     static QSqlDatabase db;

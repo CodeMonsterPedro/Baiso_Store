@@ -38,15 +38,17 @@ Item{
                 model:["All sales","Products"]
             }
 
-//            ListView {
-//                id: listView
-//                y: 97
-//                height: 615
-//                anchors.right: parent.right
-//                anchors.rightMargin: -174
-//                anchors.left: parent.left
-//                anchors.leftMargin: 8
-//               }
+            ListView {
+                id: listView
+                y: 97
+                height: 615
+                anchors.right: parent.right
+                anchors.rightMargin: -174
+                anchors.left: parent.left
+                anchors.leftMargin: 8
+                model:simpleModelController.myModel;
+                delegate: ;
+               }
 
         }
     }

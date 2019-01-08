@@ -8,8 +8,8 @@ logInPageU::logInPageU(QObject *parent) : QObject(parent)
 
 int logInPageU::sendRequest(QString login, QString password)
 {
-    QSqlRecord record = RepositoryU::GetRequest("SELECT id FROM public.\"Accounts\" WHERE login=\'" + login + "\' AND password=\'"+password+"\'");
-    QSqlQuery query = RepositoryU::lastQuery;
+    QSqlQuery query = RepositoryU::GetRequest("SELECT id FROM public.\"Accounts\" WHERE login=\'" + login + "\' AND password=\'"+password+"\'");
+    QSqlRecord record = query.record();
     query.next();
     int role = query.value(record.indexOf("id")).toInt();
     qDebug()<<"Role - " + QString::number(role);

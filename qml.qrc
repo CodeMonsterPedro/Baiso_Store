@@ -17,5 +17,6 @@
         <file>UIs/rolesUIs/AdminSubUIs/networkSettings.qml</file>
         <file>UIs/rolesUIs/StorageManSubUIs/Products_and_supplys.qml</file>
         <file>UIs/rolesUIs/StorageManSubUIs/markets_and_suplySends.qml</file>
+        <file>UIs/MyUIs/MyDelegate.qml</file>
     </qresource>
 </RCC>

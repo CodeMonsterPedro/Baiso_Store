@@ -14,8 +14,15 @@ class InformationListModel : public QAbstractListModel
     Q_OBJECT
 public:
     enum Roles{
-    TextRole = Qt::UserRole + 1,
-    IconRole
+        NameRole = Qt::UserRole + 1,
+        MainIdRole = Qt::UserRole + 2,
+        MarketIdRole = Qt::UserRole + 3,
+        PurchaseIdRole = Qt::UserRole + 4,
+        InBoxCountRole = Qt::UserRole + 5,
+        CountSystemRole = Qt::UserRole + 6,
+        BarCodeRole = Qt::UserRole + 7,
+        PriceRole = Qt::UserRole + 8,
+        DateRole = Qt::UserRole + 9
     };
 
 
@@ -28,9 +35,22 @@ public:
 
     QHash<int, QByteArray> roleNames() const;
 
-    QList<QString> listData;
+    QList<QSqlRecord> listData;
     QStringList sourceList;
+    int currentTable=0;
+    QSqlQuery lastQuery;
+
     void showfrom(int source=0);
+
+    QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikePurchase(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    void goNext();
+    void goPrev();
+
+    void addElement(QString value);
+    void delElementLast();
+    void delElementAt(int index);
     void Refresh(QStringList temp);
     void GetTopTen();
 

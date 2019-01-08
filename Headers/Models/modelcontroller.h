@@ -23,6 +23,8 @@ public:
     InformationListModel* myModel() const{return m_myModel;}
     QStringList list() const{return m_list;}
     Q_INVOKABLE void showFrom(int source);
+    Q_INVOKABLE void goNext();
+    Q_INVOKABLE void goPrev();
 
 public slots:
     void setMyModel(InformationListModel* myModel);

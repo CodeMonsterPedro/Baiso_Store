@@ -12,9 +12,18 @@ ModelController::~ModelController()
 void ModelController::showFrom(int source)
 {
     m_myModel->showfrom(source);
-    qDebug()<<"I say - "<<m_myModel->data(QModelIndex(),Qt::UserRole) ;
     setMyModel(m_myModel);
     emit myModelChanged(m_myModel);
+}
+
+void ModelController::goNext()
+{
+    m_myModel->goNext();
+}
+
+void ModelController::goPrev()
+{
+    m_myModel->goPrev();
 }
 
 void ModelController::setMyModel(InformationListModel* myModel)

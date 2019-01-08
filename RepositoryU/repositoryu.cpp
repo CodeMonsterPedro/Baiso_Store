@@ -8,7 +8,7 @@ QStringList RepositoryU::tables;
 RepositoryU::RepositoryU(QObject *parent) : QObject(parent){}
 
 
-QSqlRecord RepositoryU::GetRequest(QString request)
+QSqlQuery RepositoryU::GetRequest(QString request)
 {
     QSqlQuery query;
     if(isConnected){
@@ -16,7 +16,7 @@ QSqlRecord RepositoryU::GetRequest(QString request)
         if(!query.exec(request))qDebug()<<"cant execute request";
         else{
             lastQuery=query;
-            return query.record();
+            return query;
         }
     }
     else {
@@ -24,7 +24,7 @@ QSqlRecord RepositoryU::GetRequest(QString request)
         qDebug()<<request;
          // else error messege
     }
-    return query.record();
+    return query;
 }
 
 int RepositoryU::SetRequest(QString request)
