@@ -25,6 +25,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[BarCodeRole] = "m_BarCode";
     roles[PriceRole] = "m_Price";
     roles[DateRole] = "m_Date";
+    roles[SupplyerRole] = "m_Supplyer";
     return roles;
 }
 
@@ -98,20 +99,6 @@ void InformationListModel::GetTopTen()
     std::max_element(totalCountList.begin(),totalCountList.end());*/
 }
 
-QString InformationListModel::GetCountSystem(int val)
-{
-    QString str = "";
-    switch(val){
-        case 0:str = "kgs";break;
-        case 1:str = "item";break;
-        case 2:break;
-    }
-    return str;
-}
-
-
-
-
 void InformationListModel::showfrom(int source)
 {
     currentTable = source;
@@ -131,17 +118,24 @@ void InformationListModel::showfrom(int source)
 
 QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role) const
 {
-    switch (currentTable) {
-    case 0:
-        return getLikeProduct(index,role);
-    case 1:
-        return getLikePurchase(index,role);
-    case 2:
-        return getLikeAccounts(index,role);
-    case 3:
-        break;
-    case 4:
-        break;
+    QSqlRecord temp = listData.at(index.row());
+    switch (role) {
+    case NameRole:
+        return temp.value(temp.indexOf("product_name"));
+    case MainIdRole:
+        return temp.value(temp.indexOf("id"));
+    case InBoxCountRole:
+        return temp.value(temp.indexOf("in_box_count"));
+    case CountSystemRole:
+        return temp.value(temp.indexOf("count_sys")).toInt()? "kgs" : "item";
+    case BarCodeRole:
+        return temp.value(temp.indexOf("bar_code"));
+    case PriceRole:
+        return temp.value(temp.indexOf("price"));
+    case DateRole:
+        return temp.value(temp.indexOf("last_suplyed"));
+    case SupplyerRole:
+        return temp.value(temp.indexOf("supplyer"));
     default:
         break;
     }
@@ -150,17 +144,20 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
 
 QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int role) const
 {
-    switch (currentTable) {
-    case 0:
-        return getLikeProduct(index,role);
-    case 1:
-        return getLikePurchase(index,role);
-    case 2:
-        return getLikeAccounts(index,role);
-    case 3:
-        break;
-    case 4:
-        break;
+    QSqlRecord temp = listData.at(index.row());
+    switch (role) {
+    case NameRole:
+        return temp.value(temp.indexOf("product_name"));
+    case MainIdRole:
+        return temp.value(temp.indexOf("purchase_id"));
+    case MarketIdRole:
+        return temp.value(temp.indexOf("market_id"));
+    case ProductCountRole:
+        return temp.value(temp.indexOf("product_count"));
+    case PriceRole:
+        return temp.value(temp.indexOf("price"));
+    case DateRole:
+        return temp.value(temp.indexOf("date"));
     default:
         break;
     }
@@ -188,12 +185,20 @@ QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int rol
 
 void InformationListModel::goNext()
 {
-
+    listData.clear();
+    for(int i=0;i<1000;i++){
+        listData.append(lastQuery.record());
+        lastQuery.next();
+    }
 }
 
 void InformationListModel::goPrev()
 {
-
+    listData.clear();
+    for(int i=0;i<1000;i++){
+        listData.push_front(lastQuery.record());
+        lastQuery.previous();
+    }
 }
 
 void InformationListModel::addElement(QString value)
