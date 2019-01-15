@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include"Headers/loginpageu.h"
+#include"Headers/analiticitem.h"
 #include"RepositoryU/repositoryu.h"
 #include"Headers/Models/modelcontroller.h"
 
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
     RepositoryU::GetRequest("Select * from public.\"Accounts\"");
 
     qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
+    qmlRegisterType<AnaliticItem>("analitic_item",1,0,"Analitic");
     QScopedPointer<ModelController> ptr(new ModelController());
     engine.rootContext()->setContextProperty("simpleModelController",ptr.data());
     qDebug()<<"main loaded"<<endl;

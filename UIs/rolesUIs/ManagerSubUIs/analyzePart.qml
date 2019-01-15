@@ -2,6 +2,7 @@
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import analitic_item 1.0;
 import "../../MyUIs"
 
 
@@ -24,24 +25,6 @@ Item{
             anchors.left: parent.left
             anchors.leftMargin: 8
 
-            Rectangle{
-                color:"green"
-                x: 44
-                y: 44
-                width: 610
-                height: 42
-
-                TextField {
-                    id: textField
-                     x:1;y:1;
-                     width: 214
-                     height: 42
-                     text: qsTr("")
-                     placeholderText: "Start date"
-                }
-
-            }
-
 
             MyButton{
                 x: 700
@@ -53,38 +36,7 @@ Item{
                 button_text: "Get value";
                 button_border_color: "green"
                 button_round: 15;
-            }
-
-            Rectangle {
-                x: 247
-                y: 44
-                width: 256
-                height: 20
-                color: "#008000"
-                TextField {
-                    id: textField1
-                    x:1;y:1;
-                    width: 154
-                    height: 18
-                    text: qsTr("")
-                    placeholderText: "End date"
-                }
-            }
-
-            Rectangle {
-                x: 450
-                y: 44
-                width: 20
-                height: 20
-                color: "#008000"
-                TextField {
-                    id: textField2
-                    x:1;y:1;
-                    width: 154
-                    height: 18
-                    text: qsTr("")
-                    placeholderText: "Product Id"
-                }
+                onButton_clicked: mainAlgoItem.startAnalize(textField.text,textField1.text);
             }
 
             Text {
@@ -95,7 +47,27 @@ Item{
                 height: 37
                 text: "The calculated coefficient is:"
                 font.pixelSize: 22
-                color:"green"
+                color:"blue"
+            }
+
+            TextField {
+                id: textField
+                x: 44
+                y: 46
+                width: 291
+                height: 40
+                text: qsTr("")
+                placeholderText: "Product ID \\ Name \\ Bar Code "
+            }
+
+            TextField {
+                id: textField1
+                x: 371
+                y: 46
+                width: 291
+                height: 40
+                text: qsTr("")
+                placeholderText: "Chouse a month"
             }
 
 
@@ -108,13 +80,31 @@ Item{
             y: 200
             width: 1485
             height: 1
-            color: "green"
+            color: "grey"
         }
 
+        Analitic{
+            id:mainAlgoItem;
+        }
+
+        Connections{
+            target: mainAlgoItem;
+            onAlgorithmEnded:{
+                console.log("lol it works!!");
+            }
+        }
 
 
     }
 }
+
+
+
+
+
+
+
+
 
 /*##^## Designer {
     D{i:5;anchors_width:850;anchors_x:10;anchors_y:16}

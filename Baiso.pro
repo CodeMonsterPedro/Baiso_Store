@@ -17,7 +17,8 @@ SOURCES += \
     Sources/loginpageu.cpp \
     RepositoryU/repositoryu.cpp \
     Sources/ModelsCpp/informationlistmodel.cpp \
-    Sources/ModelsCpp/modelcontroller.cpp
+    Sources/ModelsCpp/modelcontroller.cpp \
+    Sources/analiticitem.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,7 +37,8 @@ HEADERS += \
     Headers/loginpageu.h \
     RepositoryU/repositoryu.h \
     Headers/Models/informationlistmodel.h \
-    Headers/Models/modelcontroller.h
+    Headers/Models/modelcontroller.h \
+    Headers/analiticitem.h
 
 SUBDIRS += \
     Baiso.pro \
