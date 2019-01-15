@@ -2,15 +2,8 @@
 
 InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel(parent)
 {
-   sourceList = RepositoryU::tables;
-    QStringList temp;
-    lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(sourceList[0]));
-    QSqlRecord record= lastQuery.record();
-    for(int i=0;i<1000;i++){
-        listData.append(lastQuery.record());
-        lastQuery.next();
-    }
-    lastQuery.seek(0);
+   if(RepositoryU::isConnected)sourceList = RepositoryU::tables;
+   this->showfrom(2);
 }
 
 QHash<int, QByteArray> InformationListModel::roleNames() const
@@ -26,6 +19,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[PriceRole] = "m_Price";
     roles[DateRole] = "m_Date";
     roles[SupplyerRole] = "m_Supplyer";
+    qDebug()<<"roleNames\n";
     return roles;
 }
 
@@ -37,13 +31,14 @@ int InformationListModel::rowCount(const QModelIndex &parent) const
 
 QVariant InformationListModel::data(const QModelIndex &index, int role) const
 {
+    qDebug()<<"getData\n";
     switch (currentTable) {
     case 0:
-        return getLikeProduct(index,role);
+        return getLikeAccounts(index,role);
     case 1:
         return getLikePurchase(index,role);
     case 2:
-        return getLikeAccounts(index,role);
+        return getLikeProduct(index,role);
     case 3:
         break;
     case 4:
@@ -101,16 +96,19 @@ void InformationListModel::GetTopTen()
 
 void InformationListModel::showfrom(int source)
 {
+    qDebug()<<"showFrom function"<<source;
+    if(RepositoryU::isConnected)sourceList = RepositoryU::tables;
     currentTable = source;
     QString table=sourceList[source];
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
     QSqlRecord record= lastQuery.record();
 
     beginInsertRows(QModelIndex(),0,999);
-    for(int i=0;i<1000;i++){
+    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size()+1);i++){
         listData.append(lastQuery.record());
         lastQuery.next();
-    }
+    }//work aroung
+listData.pop_front();
     endInsertRows();
 
     lastQuery.seek(0);
@@ -118,6 +116,7 @@ void InformationListModel::showfrom(int source)
 
 QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role) const
 {
+    qDebug()<<"getLikeProduct role - " + QString::number(role) + " index - " + QString::number(index.row());
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -127,7 +126,7 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
     case InBoxCountRole:
         return temp.value(temp.indexOf("in_box_count"));
     case CountSystemRole:
-        return temp.value(temp.indexOf("count_sys")).toInt()? "kgs" : "item";
+        return temp.value(temp.indexOf("count_sys")).toInt()? "item" : "kgs";
     case BarCodeRole:
         return temp.value(temp.indexOf("bar_code"));
     case PriceRole:
@@ -144,6 +143,7 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
 
 QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int role) const
 {
+    qDebug()<<"getLikePurchase role - " + QString::number(role) + " index - " + QString::number(index.row());
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -166,6 +166,7 @@ QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int rol
 
 QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int role) const
 {
+    qDebug()<<"getLikeAccount role - " + QString::number(role) + " index - " + QString::number(index.row());
     switch (currentTable) {
     case 0:
         return getLikeProduct(index,role);

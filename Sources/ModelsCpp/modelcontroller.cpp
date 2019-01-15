@@ -16,6 +16,13 @@ void ModelController::showFrom(int source)
     emit myModelChanged(m_myModel);
 }
 
+int ModelController::addNewElementToRep(QString str)
+{
+    qDebug()<<str;
+    QStringList strl = str.split('|');
+    return 0;
+}
+
 void ModelController::goNext()
 {
     m_myModel->goNext();
@@ -28,6 +35,7 @@ void ModelController::goPrev()
 
 void ModelController::setMyModel(InformationListModel* myModel)
 {
+    qDebug()<<"setMyModel\n";
     if (m_myModel == myModel)
         return;
 
@@ -36,9 +44,13 @@ void ModelController::setMyModel(InformationListModel* myModel)
 }
 void ModelController::setList(QStringList list)
 {
+    qDebug()<<"setList\n";
+    m_list = RepositoryU::tables;
     if (m_list == list)
         return;
 
     m_list = list;
     emit listChanged(m_list);
 }
+
+

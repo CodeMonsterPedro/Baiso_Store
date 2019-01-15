@@ -19,7 +19,7 @@ Item {
         color:"white";
 
         Text{
-            color:"green"
+            color:"blue"
             width:100;height:40;
             x:15;y:15;
             text:qsTr("Welcome ;)");
@@ -30,23 +30,25 @@ Item {
             id:loginfield
             width: rootLogInPage.width-30;height: 30;
             x:15;y:(rootLogInCanvas.height/2)-60;
+            font.pixelSize: 20;
         }
         Rectangle{
             width: loginfield.width;height: 1;
             x:loginfield.x;y:loginfield.y+31;
-            color:"green"
+            color:"blue"
         }
 
         TextInput{
             id:passwordfield
             width: rootLogInPage.width-30;height: 30;
             x:15;y:(rootLogInCanvas.height/2)+60;
+            font.pixelSize: 20;
             echoMode: TextInput.Password;
         }
         Rectangle{
             width: passwordfield.width;height: 1;
             x:passwordfield.x;y:passwordfield.y+31;
-            color:"green"
+            color:"blue"
         }
 
         MyButton{
@@ -54,8 +56,8 @@ Item {
             width:160;height: 60;
             x: (rootLogInCanvas.width/2)-loginSubmit.width/2;
             y: (rootLogInCanvas.height/4)*3;
-            button_text_color: "green"
-            button_border_color: "green"
+            button_text_color: "blue"
+            button_border_color: "blue"
             button_round: 25;
             button_text: qsTr("Log in");
             onButton_clicked: {

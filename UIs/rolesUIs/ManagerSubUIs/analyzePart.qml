@@ -98,69 +98,9 @@ Item{
                 color:"green"
             }
 
-            Text {
-                id: text2
-                x: 44
-                y: 182
-                width: 408
-                height: 37
-                color: "#008000"
-                text: "Shot data base info"
-                font.pixelSize: 22
-            }
-        }
-        ListView {
-            id: listView
-            visible: true;
-            y: 288
-            height: 406
-            anchors.right: parent.right
-            anchors.rightMargin: 21
-            anchors.left: parent.left
-            anchors.leftMargin: 52
-            model: ListModel {
-                ListElement {
-                    name: "|13.12.2018|(0)-(2)-(0). Apples - 4 : 16.8$"
-                }
 
-                ListElement {
-                    name: "|13.12.2018|(1)-(2)-(1). Apples - 2 : 8.4$"
-                }
-                ListElement {
-                    name: "|13.12.2018|(2)-(2)-(2). Apples - 10 : 42$"
-                }
-                ListElement {
-                    name: "|14.12.2018|(3)-(3)-(3). Coca-Cola soda can 0.3 - 8 : 16$"
-                }ListElement {
-                    name: "|14.12.2018|(4)-(3)-(4). Coca-Cola soda can 0.3 - 2 : 4$"
-                }ListElement {
-                    name: "|15.12.2018|(5)-(3)-(5). Coca-Cola soda can 0.3 - 7 : 14$"
-                }ListElement {
-                    name: "|15.12.2018|(6)-(3)-(5). Apples - 2 : 8.4$"
-                }ListElement {
-                    name: "|16.12.2018|(7)-(3)-(6). Coca-Cola soda can 0.3 - 3 : 6$"
-                }
-            }
-            delegate: Item {
-                x: 5
-                width: 80
-                height: 40
-                Row {
-                    id: row1
-                    spacing: 10
-                    Rectangle {
-                        width: 540
-                        height: 40
-                        border.color: "black"
-                        Text {
-                            text: name
-                            font.bold: true
-                            anchors.verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-            }
         }
+
 
         Rectangle {
             id: rectangle

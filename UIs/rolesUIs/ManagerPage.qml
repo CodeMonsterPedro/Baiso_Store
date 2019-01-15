@@ -6,16 +6,69 @@ import "../MyUIs"
 
 Item{
     id:rootManagerPage
-    width:rootManagerCanvas.width
-    height: rootManagerCanvas.height
+    anchors.fill: parent
+
+    Rectangle{
+        id:localHub
+        width: 80
+        anchors.left: parent.left
+        color:"blue"
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+
+        Column{
+            width: 80
+            anchors.topMargin: 40
+            spacing: 15;
+            anchors.fill: localHub;
+            Image {
+                id: informationPart
+                width: 64;height: 64;
+                source: "../MyUIs/graph.png"
+                MouseArea{
+                    id:first
+                    anchors.fill: informationPart
+                    onClicked: managerPartsPage.source="../MyUIs/InformationPage.qml";
+                }
+            }
+
+            Image {
+                id: dataBasePart
+                width: 64;height: 64;
+                source: "../MyUIs/dbicon.png"
+                MouseArea{
+                    id:second
+                    anchors.fill: dataBasePart
+                    onClicked: managerPartsPage.source="ManagerSubUIs/dataBasePart.qml";
+                }
+            }
+
+            Image {
+                id: analyzePart
+                width: 64;height: 64;
+                source: "../MyUIs/brain.png"
+                MouseArea{
+                    id:third
+                    anchors.fill: analyzePart
+                    onClicked: managerPartsPage.source="ManagerSubUIs/analyzePart.qml";
+
+                }
+            }
+        }
+
+    }
 
     Rectangle{
         id:rootManagerCanvas;
-        width: Screen.desktopAvailableWidth-60
-        height: Screen.desktopAvailableHeight-68
-        x:30;y:40
-        radius: 15
         color:"white"
+        anchors.left: localHub.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+        anchors.leftMargin: 0
 
 
         Loader{
@@ -24,19 +77,20 @@ Item{
             width: rootManagerCanvas.width-16;
             height: rootManagerCanvas.height-16;
             y:8;x:8;
-            source: "../MyUIs/InformationPage.qml"
+            source: "ManagerSubUIs/dataBasePart.qml"
         }
         ScrollBar {
-                id: vbar
-                hoverEnabled: true
-                active: hovered || pressed
-                orientation: Qt.Vertical
-                size: rootManagerCanvas.height / managerPartsPage.height
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-            }
+            id: vbar
+            hoverEnabled: true
+            active: hovered || pressed
+            orientation: Qt.Vertical
+            size: rootManagerCanvas.height / managerPartsPage.height
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
 
+        /*
         MyHub{
             id:hub
             visible: true
@@ -58,8 +112,25 @@ Item{
                 }
             }
         }
-
+*/
 
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:480;anchors_width:80;anchors_x:0;anchors_y:0}
+D{i:1;anchors_height:832;anchors_width:1540}
+}
+ ##^##*/

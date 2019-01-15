@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+
+    RepositoryU::GetRequest("Select * from public.\"Accounts\"");
+
     qmlRegisterType<logInPageU>("backend.login",1,0,"Backend_logIn");
     QScopedPointer<ModelController> ptr(new ModelController());
     engine.rootContext()->setContextProperty("simpleModelController",ptr.data());

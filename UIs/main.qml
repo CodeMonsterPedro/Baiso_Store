@@ -85,7 +85,7 @@ Window {
                         name: "BecomeSaleMan"
                         PropertyChanges {
                             target: rootCanvas
-                            color:"green"
+                            color:"blue"
                             width: Screen.desktopAvailableWidth
                             height: Screen.desktopAvailableHeight-28
                         }
@@ -93,10 +93,7 @@ Window {
                             target: rootWindow
                             x:0;y:0
                         }
-                        PropertyChanges {
-                            target: currentTime
-                            x:40;y:5
-                        }
+
 
                         PropertyChanges {
                             target: saleManPart
@@ -118,10 +115,7 @@ Window {
                             target: rootWindow
                             x:0;y:0
                         }
-                        PropertyChanges {
-                            target: currentTime
-                            x:40;y:5
-                        }
+
 
                         PropertyChanges {
                             target: saleManPart
@@ -142,10 +136,7 @@ Window {
                             target: rootWindow
                             x:0;y:0
                         }
-                        PropertyChanges {
-                            target: currentTime
-                            x:40;y:5
-                        }
+
                         PropertyChanges {
                             target: saleManPart
                             visible:true;
@@ -157,22 +148,23 @@ Window {
                Rectangle{
                     id:currentTimeBackground;
                     visible: false;
-                    x:currentTime.x-10;y:currentTime.y-22;
-                    width: 100;height: 46
-                    radius: 15;
+                    anchors.left: rootCanvas.left;
+                    anchors.bottom: rootCanvas.bottom;
+                    width: 80;height: 40;
                     color:"white"
                }
                Text{
                    id:currentTime;
                    visible: true;
-                   x:0;y:0
-                   width: 80
-                   height: 26
                    font.pixelSize: 16
                    text: qsTr("UI_sklad_prot")
-                   horizontalAlignment: Text.AlignHCenter
-                   verticalAlignment: Text.AlignVCenter
+                   anchors.centerIn: currentTimeBackground
                }
 
         }
 }
+
+/*##^## Designer {
+    D{i:24;anchors_height:26;anchors_width:80}
+}
+ ##^##*/
