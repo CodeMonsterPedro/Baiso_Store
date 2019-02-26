@@ -18,5 +18,6 @@
         <file>UIs/rolesUIs/StorageManSubUIs/Products_and_supplys.qml</file>
         <file>UIs/rolesUIs/StorageManSubUIs/markets_and_suplySends.qml</file>
         <file>UIs/MyUIs/MyDelegate.qml</file>
+        <file>UIs/MyUIs/barcode.jpg</file>
     </qresource>
 </RCC>
