@@ -38,27 +38,35 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     QList<QSqlRecord> listData;
+
     QStringList sourceList;
     int currentTable=0;
     QSqlQuery lastQuery;
 
-    void showfrom(int source=0);
+    int maxPage, currentPage;
 
-    QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    QVariant getLikePurchase(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
+//main functional methods
+    void showfrom(int source=0);
     void goNext();
     void goPrev();
 
+
+private:
+//universality methods
+    QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikePurchase(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+//support methods
     void addElement(QString value);
     void delElementLast();
     void delElementAt(int index);
     void Refresh(QStringList temp);
     void GetTopTen();
-
-private:
-
+    void cleanUp();
+    void fillUpPage();
     QString GetCountSystem(int val);
+    void UpdateMaxPage();
 };
 
 #endif // INFORMATIONLISTMODEL_H
