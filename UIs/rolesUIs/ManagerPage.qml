@@ -73,10 +73,8 @@ Item{
 
         Loader{
             id:managerPartsPage
+            anchors.fill: parent
             visible: true;
-            width: rootManagerCanvas.width-16;
-            height: rootManagerCanvas.height-16;
-            y:8;x:8;
             source: "ManagerSubUIs/dataBasePart.qml"
         }
         ScrollBar {
@@ -129,8 +127,10 @@ Item{
 
 
 
+
+
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:480;anchors_width:80;anchors_x:0;anchors_y:0}
-D{i:1;anchors_height:832;anchors_width:1540}
+D{i:1;anchors_height:832;anchors_width:1540}D{i:10;anchors_height:464;anchors_width:544;anchors_x:8;anchors_y:8}
 }
  ##^##*/

@@ -23,7 +23,6 @@ Window {
             x:0;y:0;
             state:"LogIn"
             onStateChanged: {
-                console.log( "current rootCanvas state - " + rootCanvas.state);
                 if(rootCanvas.state!="LogIn")currentTimeBackground.visible=true;
                 else currentTimeBackground.visible=false;
             }
