@@ -5,6 +5,7 @@
 #include <QQuickItem>
 #include <math.h>
 #include"../RepositoryU/repositoryu.h"
+#include "mymath.h"
 
 class AnaliticItem : public QQuickItem
 {
@@ -44,10 +45,8 @@ public slots:
     void setRList(QStringList strl);
 
 private:
-    double getCorrelationCoef(QVector<double> curList, QVector<double> prevList);
-    QVector<double> getLineRegression(QVector<double> curList, QVector<double> prevList);
-    QVector<double> getRectRegression(QVector<double> curList, QVector<double> prevList);
-
+    void setCurrentProductInfo(QString prodInfo);
+    QVector<int> setCurrentDate(QString date);
     QVector<double> getProductValues(QVector<int> date);
 
 };
