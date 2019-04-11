@@ -1,4 +1,4 @@
-QT += quick widgets sql
+QT += qml quick sql charts
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -18,7 +18,8 @@ SOURCES += \
     RepositoryU/repositoryu.cpp \
     Sources/ModelsCpp/informationlistmodel.cpp \
     Sources/ModelsCpp/modelcontroller.cpp \
-    Sources/analiticitem.cpp
+    Sources/analiticitem.cpp \
+    Sources/mymath.cpp
 
 RESOURCES += qml.qrc
 
@@ -38,7 +39,8 @@ HEADERS += \
     RepositoryU/repositoryu.h \
     Headers/Models/informationlistmodel.h \
     Headers/Models/modelcontroller.h \
-    Headers/analiticitem.h
+    Headers/analiticitem.h \
+    Headers/mymath.h
 
 SUBDIRS += \
     Baiso.pro \

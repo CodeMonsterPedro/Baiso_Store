@@ -15,20 +15,24 @@ public:
     QString productName;
     QVector<int> selectedDate;
     QVector<double> result;
-
+    QVector<double> current;
+    QVector<double> previos;
 
     QString tempResult;
-    QStringList resultList;
+    QVector<double> resultList;
 
     //Q_PROPERTY(QStringList list READ list WRITE setList NOTIFY listChanged)
     Q_PROPERTY(QString strResult READ strResult WRITE setStrResult NOTIFY strResultChanged)
-    Q_PROPERTY(QStringList rList READ rList WRITE setRList NOTIFY rListChanged)
-
+    Q_PROPERTY(QVector<double> rList READ rList WRITE setRList NOTIFY rListChanged)
+    Q_PROPERTY(QVector<double> cList READ cList WRITE setCList NOTIFY cListChanged)
+    Q_PROPERTY(QVector<double> pList READ pList WRITE setPList NOTIFY pListChanged)
     AnaliticItem();
     ~AnaliticItem();
 
     QString strResult(){return tempResult;}
-    QStringList rList(){return resultList;}
+    QVector<double> rList(){return resultList;}
+    QVector<double> cList(){return current;}
+    QVector<double> pList(){return previos;}
 
     //Q_PROPERTY
     //Q_INVOKABLE
@@ -40,9 +44,14 @@ signals:
     void algorithmEnded();
     void strResultChanged();
     void rListChanged();
+    void cListChanged();
+    void pListChanged();
+
 public slots:
     void setStrResult(QString str);
-    void setRList(QStringList strl);
+    void setRList(QVector<double> strl);
+    void setCList(QVector<double> strl);
+    void setPList(QVector<double> strl);
 
 private:
     void setCurrentProductInfo(QString prodInfo);

@@ -16,10 +16,22 @@ void AnaliticItem::setStrResult(QString str)
     emit strResultChanged();
 }
 
-void AnaliticItem::setRList(QStringList strl)
+void AnaliticItem::setRList(QVector<double> strl)
 {
     resultList = strl;
     emit rListChanged();
+}
+
+void AnaliticItem::setCList(QVector<double> strl)
+{
+    current = strl;
+    emit cListChanged();
+}
+
+void AnaliticItem::setPList(QVector<double> strl)
+{
+    previos = strl;
+    emit pListChanged();
 }
 
 void AnaliticItem::setCurrentProductInfo(QString prodInfo)
@@ -57,27 +69,25 @@ QVector<int> AnaliticItem::setCurrentDate(QString date)
 
 void AnaliticItem::startAnalize(QString prodInfo, QString date)
 {
-    qDebug()<<"info - " + prodInfo<<" date - " + date<<endl;
     prodInfo = "Apples";
     date = "2.2019";
     setCurrentProductInfo(prodInfo);
-
-
     QVector<int> prevDate = setCurrentDate(date);
     QVector<double> curValues = getProductValues(selectedDate);
     QVector<double> prevValues = getProductValues(prevDate);
-
-    double coef = MyMath::getCorrelationCoef(curValues,prevValues);
+    double coef = MyMath::getCorrelationCoef(prevValues, curValues);
     // if coef equals or more then 0.8 use Line regressing, if it less use Rect Resression
-    if(coef>=0.8)result = MyMath::getLineRegression(curValues,prevValues);
-    else result = MyMath::getRectRegression(curValues,prevValues);
-
-    //result = MyMath::getLineRegression(curValues,prevValues);
-
-    setStrResult("coef - " + QString::number(coef) + " a - " + QString::number(result[0]));
-
+    MyMath::Regression R;
+    if(coef >= 0.8) R = MyMath::getLineRegression(prevValues,curValues);
+    else R = MyMath::getLineRegression(prevValues,curValues);
+    //else R = MyMath::getRectRegression(curValues,prevValues);
+    for(int i=0;i<curValues.size();i++){
+        result.append(floor((R.a*curValues[i])+R.b));
+    }
+    setRList(result);
+    setCList(curValues);
+    setPList(prevValues);
     emit algorithmEnded();
-
 }
 
 QVector<double> AnaliticItem::getProductValues(QVector<int> date)
