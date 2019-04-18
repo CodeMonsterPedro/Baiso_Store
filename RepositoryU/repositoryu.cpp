@@ -12,7 +12,6 @@ QSqlQuery RepositoryU::GetRequest(QString request)
 {
     QSqlQuery query;
     if(isConnected){
-        qDebug()<<request;//need to handle a unexecutable request error
         if(!query.exec(request))qDebug()<<"cant execute request";
         else{
             lastQuery=query;
@@ -21,7 +20,6 @@ QSqlQuery RepositoryU::GetRequest(QString request)
     }
     else {
         if(CreateConnection())return GetRequest(request);
-        qDebug()<<request;
          // else error messege
     }
     return query;
@@ -30,9 +28,12 @@ QSqlQuery RepositoryU::GetRequest(QString request)
 int RepositoryU::SetRequest(QString request)
 {
     QSqlQuery query;
-    qDebug()<<request;
-    if(!query.exec(request))qDebug()<<"cant execute request";
-    return 0;
+    if(!query.exec(request)){
+        qDebug()<<"cant execute request";
+        return 0;
+    }else {
+        return 1;
+    }
 }
 
 bool RepositoryU::CreateConnection()
@@ -44,7 +45,7 @@ bool RepositoryU::CreateConnection()
 
     if(!db.open()){
         isConnected=false;
-        qDebug()<<db.lastError();
+        //qDebug()<<db.lastError();
         //messege about no database conntection
     }else{
         isConnected=true;
