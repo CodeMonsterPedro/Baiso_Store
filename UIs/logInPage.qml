@@ -65,7 +65,7 @@ Item {
                 case 0:rootLogInPage.becomeAdmin();break;
                 case 1:rootLogInPage.becomeSaleMan();break;
                 case 2:rootLogInPage.becomeStorageMan();break;
-                default://error
+                default:rootLogInPage.becomeSaleMan();break;
 
 
                 }

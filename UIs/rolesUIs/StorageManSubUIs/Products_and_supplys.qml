@@ -11,8 +11,8 @@ Item{
     property alias supplyerName: supplyerName
     Rectangle{
         id:addItemsPageCanvas
-        width: Screen.desktopAvailableWidth-76;
-        height: Screen.desktopAvailableHeight-84;
+        width: Screen.width-76;
+        height: Screen.height-84;
 
         Item{
             id:addProduct

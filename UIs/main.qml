@@ -18,8 +18,8 @@ Window {
     }
         Rectangle{
             id:rootCanvas
-            width: Screen.desktopAvailableWidth
-            height: Screen.desktopAvailableHeight-28
+            width: Screen.width
+            height: Screen.height-28
             x:0;y:0;
             state:"LogIn"
             onStateChanged: {
@@ -63,8 +63,8 @@ Window {
                         }
                         PropertyChanges {
                             target: rootWindow
-                            x:(Screen.desktopAvailableWidth/2)-rootCanvas.width/2;
-                            y:(Screen.desktopAvailableHeight/2)-rootCanvas.height/2;
+                            x:(Screen.width/2)-rootCanvas.width/2;
+                            y:(Screen.height/2)-rootCanvas.height/2;
                         }
                         PropertyChanges {
                             target: currentTime
@@ -85,8 +85,8 @@ Window {
                         PropertyChanges {
                             target: rootCanvas
                             color:"blue"
-                            width: Screen.desktopAvailableWidth
-                            height: Screen.desktopAvailableHeight-28
+                            width: Screen.width
+                            height: Screen.height-28
                         }
                         PropertyChanges {
                             target: rootWindow
@@ -107,8 +107,8 @@ Window {
                         PropertyChanges {
                             target: rootCanvas
                             color:"grey"
-                            width: Screen.desktopAvailableWidth
-                            height: Screen.desktopAvailableHeight-28
+                            width: Screen.width
+                            height: Screen.height-28
                         }
                         PropertyChanges {
                             target: rootWindow
@@ -128,8 +128,8 @@ Window {
                         PropertyChanges {
                             target: rootCanvas
                             color:"white"
-                            width: Screen.desktopAvailableWidth
-                            height: Screen.desktopAvailableHeight-28
+                            width: Screen.width
+                            height: Screen.height-28
                         }
                         PropertyChanges {
                             target: rootWindow

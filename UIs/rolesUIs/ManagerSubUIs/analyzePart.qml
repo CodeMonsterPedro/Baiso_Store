@@ -17,7 +17,7 @@ Item{
     Rectangle {
         id: analyzePageCanvas
         width: Screen.desktopAvailableWidth-76
-        height: Screen.desktopAvailableHeight-28
+        height: Screen.height-28
 
         Text {
             id: text1

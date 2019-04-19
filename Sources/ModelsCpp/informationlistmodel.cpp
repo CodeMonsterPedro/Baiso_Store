@@ -54,7 +54,6 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
 QModelIndex InformationListModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-  //  qDebug()<<"index func\n row - " + QString::number(row) + "\n column - " + QString::number(column);
     return createIndex(row, column);
 }
 
@@ -100,16 +99,12 @@ void InformationListModel::GetTopTen()
 void InformationListModel::showfrom(int source)
 {
     this->cleanUp();
-
-    qDebug()<<"showFrom function"<<source;
     currentTable = source;
     QString table=sourceList[source-1];
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
-
-
-
+   // lastQuery.
+   // columnsNames;
     this->fillUpPage();
-
     this->UpdateMaxPage();
 
 }
@@ -117,26 +112,18 @@ void InformationListModel::showfrom(int source)
 void InformationListModel::cleanUp()
 {
     beginRemoveRows(QModelIndex(),0,0);
-      qDebug()<<"LIST DATA SIZE - " + QString::number(listData.size());
     listData.clear();
-      qDebug()<<"LIST DATA SIZE - " + QString::number(listData.size());
     endRemoveRows();
 }
 
 void InformationListModel::fillUpPage()
 {
-    QString debugstr = QString("DBG - fillUpPage\n lastQuery size - %1\n ").arg(lastQuery.size());
-    qDebug()<<debugstr;
-
     beginInsertRows(QModelIndex(),0,(lastQuery.size()>1000? 999 : lastQuery.size()));
-
     for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size()+1);i++){
         listData.append(lastQuery.record());
         lastQuery.next();
     }//work aroung
-      //  qDebug()<<"first \n" << listData;
     listData.pop_front();
-      //  qDebug()<<"second \n" << listData;
     endInsertRows();
 }
 
@@ -148,7 +135,6 @@ void InformationListModel::UpdateMaxPage()
 
 QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role) const
 {
-//    qDebug()<<"getLikeProduct role - " + QString::number(role) + " index - " + QString::number(index.row());
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -175,7 +161,6 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
 
 QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int role) const
 {
-//    qDebug()<<"getLikePurchase role - " + QString::number(role) + " index - " + QString::number(index.row());
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -198,7 +183,6 @@ QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int rol
 
 QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int role) const
 {
-    qDebug()<<"getLikeAccount role - " + QString::number(role) + " index - " + QString::number(index.row());
    /* switch (currentTable) {
     case 0:
         return getLikeProduct(index,role);
@@ -254,7 +238,6 @@ void InformationListModel::Refresh(QStringList temp)
 {
     Q_UNUSED(temp);
     this->cleanUp();
-
     beginInsertRows(QModelIndex(),0,999);
     for(int i=0;i<1000;i++){
         listData.append(lastQuery.record());

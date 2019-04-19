@@ -2,55 +2,105 @@
 
 ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(new InformationListModel())
 {
+    maxPageCount=currentPageCount=0;
+    m_list = new QStringList;
+    *m_list = RepositoryU::tables;
+    m_list->pop_front();
+    emit listChanged();
 }
 
-ModelController::~ModelController()
-{
+ModelController::~ModelController(){
     delete m_myModel;
 }
+//data getters
+InformationListModel* ModelController::myModel(){
+    return m_myModel;
+}
+QStringList ModelController::list(){
+    return *m_list;
+}
 
+int ModelController::maxPage(){
+    return maxPageCount;
+}
+
+int ModelController::currentPage(){
+    return currentPageCount;
+}
+//main functions
 void ModelController::showFrom(int source)
 {
     m_myModel->showfrom(source);
     setMyModel(m_myModel);
-    emit myModelChanged(m_myModel);
+    setMaxPage(m_myModel->maxPage);
+    setCurrentPage(1);
+    //setcCnt();
+    //setcolName();
 }
 
-int ModelController::addNewElementToRep(QString str)
-{
-    qDebug()<<str;
-    QStringList strl = str.split('|');
-    return 0;
+int ModelController::addNewElementToRep(QString str){
+    return RepositoryU::SetRequest(str);
 }
 
 void ModelController::goNext()
 {
-    m_myModel->goNext();
+    if(currentPageCount<maxPageCount){
+        m_myModel->goNext();
+        currentPageCount++;
+        emit currentPageChanged();
+        emit myModelChanged();
+    }
 }
 
 void ModelController::goPrev()
 {
-    m_myModel->goPrev();
+    if(currentPageCount>0){
+        m_myModel->goPrev();
+        currentPageCount--;
+        emit currentPageChanged();
+        emit myModelChanged();
+    }
 }
 
+void ModelController::toggleListType(){}
+//data setters
 void ModelController::setMyModel(InformationListModel* myModel)
 {
-    qDebug()<<"setMyModel\n";
     if (m_myModel == myModel)
         return;
-
     m_myModel = myModel;
-    emit myModelChanged(m_myModel);
+    emit myModelChanged();
 }
 void ModelController::setList(QStringList list)
 {
-    qDebug()<<"setList\n";
-    m_list = RepositoryU::tables;
-    if (m_list == list)
-        return;
+    Q_UNUSED(list);
+    *m_list = RepositoryU::tables;
+    m_list->removeAt(m_list->indexOf("Accounts"));
+    emit listChanged();
+}
 
-    m_list = list;
-    emit listChanged(m_list);
+void ModelController::setMaxPage(int max)
+{
+    maxPageCount = max;
+    emit maxPageChanged();
+}
+
+void ModelController::setCurrentPage(int current)
+{
+    currentPageCount = current;
+    emit currentPageChanged();
+}
+
+void ModelController::setcCnt(int x)
+{
+    currentTableColumnsCount = x;
+    emit cCntChanged();
+}
+
+void ModelController::setcolName(QStringList strl)
+{
+    columnsNameL = strl;
+    emit colNameChanged();
 }
 
 

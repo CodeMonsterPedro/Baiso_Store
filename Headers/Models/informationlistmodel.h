@@ -44,6 +44,8 @@ public:
     QSqlQuery lastQuery;
 
     int maxPage, currentPage;
+    int columnsCount;
+    QStringList columnsNames;
 
 //main functional methods
     void showfrom(int source=0);

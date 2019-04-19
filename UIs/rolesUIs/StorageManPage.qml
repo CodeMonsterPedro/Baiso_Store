@@ -11,8 +11,8 @@ Item{
 
     Rectangle{
         id:rootStorageManCanvas;
-        width: Screen.desktopAvailableWidth-60
-        height: Screen.desktopAvailableHeight-68
+        width: Screen.width-60
+        height: Screen.height-68
         x:30;y:40
         radius: 15
         color:"white"
