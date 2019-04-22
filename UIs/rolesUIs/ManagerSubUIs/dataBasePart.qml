@@ -75,7 +75,7 @@ Item{
                     id:btn_ToggleListType
                     property bool listType: false;
                     x: 220
-                    width: 360
+                    width: btn_ToggleListType.listType? 260 : 360
                     height: 40
                     anchors.right: listType? parent.right : funcItems.left;
                     anchors.rightMargin: 10;
@@ -87,7 +87,7 @@ Item{
                     Rectangle{
                         id:btn_listType
                         visible: btn_ToggleListType.listType
-                        width: 360;
+                        width: 260;
                         height: 40
                         border.color:"blue"
                         border.width: 2
@@ -291,7 +291,8 @@ Item{
             Component{
                 id:listHeader
                 Item {
-                    property real tableItemWidth: listView.width/6;
+                    property real tableItemWidth: listView.width/7;
+                    property real tableItemWidth2: listView.width/6;
                     visible: !btn_ToggleListType.listType
                     id: listHeaderItem;
                     z:2;
@@ -304,7 +305,7 @@ Item{
                             anchors.fill: parent
                             Rectangle{
                                 opacity: 0.0
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40;
                                 CheckBox{
                                     anchors.centerIn:parent;
@@ -312,7 +313,7 @@ Item{
                             }
 
                             Rectangle{
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40
                                 border.color: "black"
                                 border.width: 2;
@@ -323,7 +324,7 @@ Item{
                                 }
                             }
                             Rectangle{
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40
                                 border.color: "black"
                                 border.width: 2;
@@ -334,7 +335,7 @@ Item{
                                 }
                             }
                             Rectangle{
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40
                                 border.color: "black"
                                 border.width: 2;
@@ -345,24 +346,24 @@ Item{
                                 }
                             }
                             Rectangle{
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
                                     anchors.centerIn: parent
-                                    text: "цена за еденицу";
+                                    text: "Цена за еденицу";
                                     font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
                             Rectangle{
-                                width: listHeaderItem.tableItemWidth;
+                                width: listHeaderItem.tableItemWidth2;
                                 height: 40
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
                                     anchors.centerIn: parent;
-                                    text: "кол-во в одном ящике"
+                                    text: "Кол-во в одном ящике"
                                     font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
@@ -392,6 +393,17 @@ Item{
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
+                                    text: "Номер чека";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
                                     text: "Название продукта"
                                     anchors.centerIn: parent;
                                     font.pointSize: rootDataBase.tableFontSize
@@ -409,7 +421,17 @@ Item{
                                     font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
-
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Купленное кол-во";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
 
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
@@ -417,7 +439,7 @@ Item{
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
-                                    text: "Цена за еденицуы";
+                                    text: "Цена за еденицу";
                                     anchors.centerIn: parent;
                                     font.pointSize: rootDataBase.tableFontSize
                                 }
@@ -446,17 +468,7 @@ Item{
                                 }
                             }
 
-                            Rectangle{
-                                width: listHeaderItem.tableItemWidth;
-                                height: 40;
-                                border.color: "black"
-                                border.width: 2;
-                                Text {
-                                    text: "Номер чека";
-                                    anchors.centerIn: parent;
-                                    font.pointSize: rootDataBase.tableFontSize
-                                }
-                            }
+
                         }
 
                     }
@@ -1060,7 +1072,7 @@ Item{
                 id:saleDelegate
                 Item{
                     id:saleDelegateItem
-                    property real tableItemWidth2: listView.width/6;
+                    property real tableItemWidth2: listView.width/7;
                     width: listView.width
                     height: btn_ToggleListType.listType? 100 : 40;
                     anchors.leftMargin: 10
@@ -1084,45 +1096,30 @@ Item{
                             height: 40;
                             border.color: "black"
                             border.width: 2;
+                            Text{
+                                text: "" +  m_MainId;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
                             Text {
                                 text: "" +  m_Name
                                 anchors.centerIn: parent;
                                 font.pointSize: rootDataBase.tableFontSize
                             }
                         }
-
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
                             height: 40;
                             border.color: "black"
                             border.width: 2;
                             Text {
-                                text: "Market #" + m_BarCode;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-
-
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "$" + m_Price + " x" + m_CountSys;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "" + m_Date.getDate() + "." + m_Date.getMonth()+ "." + m_Date.getFullYear();
+                                text: "" + m_MarketId;
                                 anchors.centerIn: parent;
                                 font.pointSize: rootDataBase.tableFontSize
                             }
@@ -1133,7 +1130,18 @@ Item{
                             border.color: "black"
                             border.width: 2;
                             Text{
-                                text: "id:" +  m_MainId;
+                                text: "" +  m_ProductCount;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text {
+                                text: "$" + m_Price;
                                 anchors.centerIn: parent;
                                 font.pointSize: rootDataBase.tableFontSize
                             }
@@ -1145,11 +1153,13 @@ Item{
                             border.color: "black"
                             border.width: 2;
                             Text {
-                                text: " Purchase #" + m_PurchId;
+                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
                                 anchors.centerIn: parent;
                                 font.pointSize: rootDataBase.tableFontSize
                             }
                         }
+
+
                     }
 
                     Rectangle{
@@ -1173,7 +1183,7 @@ Item{
                             anchors.fill: parent
                             Text {
                                 x: 15
-                                y: 8
+                                y: 4
                                 width: 360
                                 height: 31
                                 text: "" +  m_Name
@@ -1182,30 +1192,32 @@ Item{
                                 anchors.left: parent.left
                             }
                             Text {
-                                x: 15
-                                y: 63
+                                x: 18
+                                y: 50
                                 width: 95
                                 height: 17
-                                text: "Market #" + m_BarCode;
+                                text: "Магазин #" + m_MarketId;
+                                font.pointSize: 14
                                 anchors.leftMargin: 3
                                 anchors.left: parent.left
                             }
                             Text {
                                 x: 15
-                                y: 17
+                                y: 13
                                 width: 94
                                 height: 27
-                                text: "$" + m_Price + " x" + m_CountSys;
-                                font.pointSize: rootDataBase.tableFontSize
+                                text: "$" + m_Price + " x " + m_ProductCount;
+                                font.pointSize: 16
                                 anchors.leftMargin: 488
                                 anchors.left: parent.left
                             }
                             Text {
-                                x: 5
-                                y: 63
+                                x: 15
+                                y: 50
                                 width: 95
                                 height: 17
-                                text: "" + m_Date;
+                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
+                                font.pointSize: 14
                                 anchors.left: parent.left
                                 anchors.leftMargin: 450
                             }
@@ -1218,13 +1230,6 @@ Item{
                             anchors.leftMargin: 2
                             anchors.left: parent.left;
                         }
-
-                        Text {
-                            x: 123
-                            y: 0
-                            text: " Purchase #" + m_PurchId;
-                        }
-
                     }
                 }
 

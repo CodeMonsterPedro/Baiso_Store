@@ -16,7 +16,7 @@ Item{
     property var curL: [];
     Rectangle {
         id: analyzePageCanvas
-        width: Screen.desktopAvailableWidth-76
+        width: Screen.width-76
         height: Screen.height-28
 
         Text {
@@ -48,8 +48,10 @@ Item{
 
                 ChartView {
                     id: area1;
-                    anchors.topMargin: 120
-                    anchors.bottomMargin: 0
+                    anchors.rightMargin: 20
+                    anchors.leftMargin: 20
+                    anchors.topMargin: 90
+                    anchors.bottomMargin: 20
                     anchors.fill: parent
                     title:"Статистика продаж"
                     antialiasing: true
@@ -128,10 +130,10 @@ Item{
 
                 ComboBox {
                     id: comboBox
-                    x: 675
+                    x: 533
                     y: 29
-                    width: 186
-                    height: 54
+                    width: 143
+                    height: 38
                     font.pointSize: 18
                     model:["Месяц","Три месяца","Год"]
                     onCurrentIndexChanged: {
@@ -145,8 +147,8 @@ Item{
                     id: textField
                     x: 39
                     y: 29
-                    width: 254
-                    height: 54
+                    width: 256
+                    height: 38
                     text: qsTr("")
                     placeholderText: "Продукт \\ Штрихкод"
                     font.pointSize: 18
@@ -154,10 +156,10 @@ Item{
 
                 MyButton{
                     id:btn_AnalyzeStart
-                    x: 920
+                    x: 709
                     y: 29
-                    width: 291
-                    height: 54
+                    width: 218
+                    height: 38
                     button_border_color: "blue"
                     button_text_color: "blue"
                     button_text: "Проанализировать"
@@ -168,10 +170,10 @@ Item{
 
                 TextField {
                     id: textField1
-                    x: 368
+                    x: 310
                     y: 29
-                    width: 254
-                    height: 54
+                    width: 188
+                    height: 38
                     text: qsTr("")
                     placeholderText: "Дата начала"
                     font.pointSize: 18
@@ -383,9 +385,19 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:5;anchors_height:300;anchors_width:300;anchors_x:42;anchors_y:20}D{i:4;anchors_height:200;anchors_width:200}
-D{i:18;anchors_height:200;anchors_width:200}D{i:20;anchors_x:71}D{i:21;anchors_width:120;anchors_x:318}
-D{i:22;anchors_width:651;anchors_x:90;anchors_y:110}D{i:19;anchors_height:200;anchors_width:200}
+    D{i:19;anchors_height:200;anchors_width:200}D{i:18;anchors_height:200;anchors_width:200}
+D{i:21;anchors_width:120;anchors_x:318}D{i:20;anchors_x:71}D{i:5;anchors_height:300;anchors_width:300;anchors_x:42;anchors_y:20}
+D{i:22;anchors_width:651;anchors_x:90;anchors_y:110}D{i:4;anchors_height:200;anchors_width:200}
 }
  ##^##*/

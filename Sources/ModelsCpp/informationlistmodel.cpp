@@ -13,6 +13,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[MainIdRole] = "m_MainId";
     roles[MarketIdRole] = "m_MarketId";
     roles[PurchaseIdRole] = "m_PurchId";
+    roles[ProductCountRole] = "m_ProductCount";
     roles[InBoxCountRole] = "m_InBoxCount";
     roles[CountSystemRole] = "m_CountSys";
     roles[BarCodeRole] = "m_BarCode";
@@ -158,6 +159,8 @@ QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int rol
         return temp.value(temp.indexOf("price"));
     case DateRole:
         return temp.value(temp.indexOf("date"));
+    case CountSystemRole:
+        return temp.value(temp.indexOf("count_sys")).toInt()? "item" : "kgs";
     default:
         break;
     }
