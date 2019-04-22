@@ -637,6 +637,174 @@ Item{
                 }
             }
 
+            Component{
+                id:saleDelegate
+                Item{
+                    id:saleDelegateItem
+                    property real tableItemWidth2: listView.width/7;
+                    width: listView.width
+                    height: btn_ToggleListType.listType? 100 : 40;
+                    anchors.leftMargin: 10
+                    anchors.rightMargin: 10
+
+                    Row{
+                        visible: !btn_ToggleListType.listType;
+                        anchors.fill: parent;
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            CheckBox{
+                                anchors.centerIn:parent;
+                                onCheckedChanged: {deleteList.push(m_MainId);}
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text{
+                                text: "" +  m_MainId;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text {
+                                text: "" +  m_Name
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text {
+                                text: "" + m_MarketId;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text{
+                                text: "" +  m_ProductCount;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text {
+                                text: "$" + m_Price;
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+
+                        Rectangle{
+                            width: saleDelegateItem.tableItemWidth2;
+                            height: 40;
+                            border.color: "black"
+                            border.width: 2;
+                            Text {
+                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
+                                anchors.centerIn: parent;
+                                font.pointSize: rootDataBase.tableFontSize
+                            }
+                        }
+
+
+                    }
+
+                    Rectangle{
+                        visible: btn_ToggleListType.listType
+                        anchors.fill: parent
+                        anchors.leftMargin: 10
+                        anchors.rightMargin: 15;
+                        height: 100;
+                        color:"#e7e2e2"
+                        border.width: 2
+                        border.color: "blue"
+
+                        Rectangle {
+                            id: rectangle
+                            x: 0
+                            color: "lightgray"
+                            anchors.rightMargin: 2
+                            anchors.leftMargin: 2
+                            anchors.bottomMargin: 2
+                            anchors.topMargin: 20
+                            anchors.fill: parent
+                            Text {
+                                x: 15
+                                y: 4
+                                width: 360
+                                height: 31
+                                text: "" +  m_Name
+                                font.pointSize: 18
+                                anchors.leftMargin: 10
+                                anchors.left: parent.left
+                            }
+                            Text {
+                                x: 18
+                                y: 50
+                                width: 95
+                                height: 17
+                                text: "Магазин #" + m_MarketId;
+                                font.pointSize: 14
+                                anchors.leftMargin: 3
+                                anchors.left: parent.left
+                            }
+                            Text {
+                                x: 15
+                                y: 13
+                                width: 94
+                                height: 27
+                                text: "$" + m_Price + " x " + m_ProductCount;
+                                font.pointSize: 16
+                                anchors.leftMargin: 488
+                                anchors.left: parent.left
+                            }
+                            Text {
+                                x: 15
+                                y: 50
+                                width: 95
+                                height: 17
+                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
+                                font.pointSize: 14
+                                anchors.left: parent.left
+                                anchors.leftMargin: 450
+                            }
+                        }
+
+                        Text{
+                            x:15;
+                            y: 0
+                            text: "id:" +  m_MainId;
+                            anchors.leftMargin: 2
+                            anchors.left: parent.left;
+                        }
+                    }
+                }
+
+
+            }
+
             Rectangle {
                 visible: btn_ToggleListType.listType
                 id: rectangle4
@@ -1068,173 +1236,6 @@ Item{
                 }
             }
 
-            Component{
-                id:saleDelegate
-                Item{
-                    id:saleDelegateItem
-                    property real tableItemWidth2: listView.width/7;
-                    width: listView.width
-                    height: btn_ToggleListType.listType? 100 : 40;
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
-
-                    Row{
-                        visible: !btn_ToggleListType.listType;
-                        anchors.fill: parent;
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            CheckBox{
-                                anchors.centerIn:parent;
-                                onCheckedChanged: {deleteList.push(m_MainId);}
-                            }
-                        }
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text{
-                                text: "" +  m_MainId;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "" +  m_Name
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "" + m_MarketId;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text{
-                                text: "" +  m_ProductCount;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "$" + m_Price;
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-
-                        Rectangle{
-                            width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            border.color: "black"
-                            border.width: 2;
-                            Text {
-                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
-                                anchors.centerIn: parent;
-                                font.pointSize: rootDataBase.tableFontSize
-                            }
-                        }
-
-
-                    }
-
-                    Rectangle{
-                        visible: btn_ToggleListType.listType
-                        anchors.fill: parent
-                        anchors.leftMargin: 10
-                        anchors.rightMargin: 15;
-                        height: 100;
-                        color:"#e7e2e2"
-                        border.width: 2
-                        border.color: "blue"
-
-                        Rectangle {
-                            id: rectangle
-                            x: 0
-                            color: "lightgray"
-                            anchors.rightMargin: 2
-                            anchors.leftMargin: 2
-                            anchors.bottomMargin: 2
-                            anchors.topMargin: 20
-                            anchors.fill: parent
-                            Text {
-                                x: 15
-                                y: 4
-                                width: 360
-                                height: 31
-                                text: "" +  m_Name
-                                font.pointSize: 18
-                                anchors.leftMargin: 10
-                                anchors.left: parent.left
-                            }
-                            Text {
-                                x: 18
-                                y: 50
-                                width: 95
-                                height: 17
-                                text: "Магазин #" + m_MarketId;
-                                font.pointSize: 14
-                                anchors.leftMargin: 3
-                                anchors.left: parent.left
-                            }
-                            Text {
-                                x: 15
-                                y: 13
-                                width: 94
-                                height: 27
-                                text: "$" + m_Price + " x " + m_ProductCount;
-                                font.pointSize: 16
-                                anchors.leftMargin: 488
-                                anchors.left: parent.left
-                            }
-                            Text {
-                                x: 15
-                                y: 50
-                                width: 95
-                                height: 17
-                                text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
-                                font.pointSize: 14
-                                anchors.left: parent.left
-                                anchors.leftMargin: 450
-                            }
-                        }
-
-                        Text{
-                            x:15;
-                            y: 0
-                            text: "id:" +  m_MainId;
-                            anchors.leftMargin: 2
-                            anchors.left: parent.left;
-                        }
-                    }
-                }
-
-
-            }
 
             /////////////////////////////////////////////////////////////////////
         }

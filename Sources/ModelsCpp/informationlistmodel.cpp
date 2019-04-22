@@ -210,7 +210,7 @@ void InformationListModel::deleteItems(QString str)
 
 void InformationListModel::addElement(QSqlRecord value)
 {
-    beginInsertRows(QModelIndex(), listData.size(), listData.size()+1);
+    beginInsertRows(QModelIndex(), listData.size(), listData.size());
     listData.append(value);
     endInsertRows();
     emit dataChanged();

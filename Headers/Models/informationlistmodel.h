@@ -30,7 +30,7 @@ public:
 
     InformationListModel(QObject *parent = Q_NULLPTR);
 
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    Q_INVOKABLE virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QHash<int, QByteArray> roleNames() const;
 
@@ -50,6 +50,9 @@ public:
     void deleteItems(QString);
     void Refresh();
 
+    void addElement(QSqlRecord value);
+    void delElementLast();
+    void delElementAt(int index);
 private:
 //universality methods
     QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -57,9 +60,7 @@ private:
     QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 //support methods
-    void addElement(QSqlRecord value);
-    void delElementLast();
-    void delElementAt(int index);
+
     void GetTopTen();
     void cleanUp();
     void fillUpPage();
