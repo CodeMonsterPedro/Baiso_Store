@@ -55,79 +55,55 @@ Item{
                     anchors.fill: parent
                     title:"Статистика продаж"
                     antialiasing: true
-                    ValueAxis{
-                        id:axisY
-                        min: 0;
-                        max: analyzePageItem.days;
-                    }
                     LineSeries {
                         id:cc;
                         name: "Текущая статистика"
-                        axisX: CategoryAxis {
-                            visible: false;
-                            min: 1
-                            max: analyzePageItem.days;
-                            CategoryRange {
-                                label: "Анализируемые дни"
-                                endValue: analyzePageItem.days; id: sel1
-                            }
+                        axisY: ValueAxis{
+                            id:x1
+                            visible: false
+                            min: 0;
+                            max: analitic_part.topValueMargin+40
                         }
-                        axisY:CategoryAxis {
-                            visible: false;
-                            min: 1
-                            max: analitic_part.topValueMargin;
-                            CategoryRange {
-                                label: "Кол-во продаж"
-                                endValue: analitic_part.topValueMargin; id: sel4
-                            }
+                        axisX: ValueAxis{
+                            id:x2
+                            visible: false
+                            min: 0;
+                            max: analyzePageItem.days;
                         }
                     }
                     LineSeries {
                         id:cc1;
                         name: "Предшествующая статистика"
-                        axisX: CategoryAxis {
-                            visible: false;
-                            min: 1
-                            max: analyzePageItem.days;
-                            CategoryRange {
-                                label: "Анализируемые дни"
-                                endValue: analyzePageItem.days; id: sel2
-                            }
+                        axisY: ValueAxis{
+                            id:x3
+                            visible: false
+                            min: 0;
+                            max: analitic_part.topValueMargin+40
                         }
-                        axisY:CategoryAxis {
-                            visible: false;
-                            min: 1
-                            max: analitic_part.topValueMargin;
-                            CategoryRange {
-                                label: "Кол-во продаж"
-                                endValue: analitic_part.topValueMargin; id: sel3
-                            }
+                        axisX: ValueAxis{
+                            id:x4
+                            visible: false
+                            min: 0;
+                            max: analyzePageItem.days;
                         }
                     }
                     LineSeries {
                         id:cc2;
                         name: "Прогноз"
-                        axisX: CategoryAxis {
-                            visible: true;
-                            min: 1
-                            max: analyzePageItem.days;
-                            CategoryRange {
-                                label: "Анализируемые дни"
-                                endValue: analyzePageItem.days; id: sel5
-                            }
+                        axisY: ValueAxis{
+                            id:x5
+                            visible: true
+                            min: 0;
+                            max: analitic_part.topValueMargin+40
                         }
-                        axisY:CategoryAxis {
-                            visible: true;
-                            min: 1
-                            max: analitic_part.topValueMargin;
-                            CategoryRange {
-                                label: "Кол-во продаж"
-                                endValue: analitic_part.topValueMargin; id: sel6
-                            }
+                        axisX: ValueAxis{
+                            id:x6
+                            visible: true
+                            min: 0;
+                            max: analyzePageItem.days;
                         }
                     }
                 }
-
                 ComboBox {
                     id: comboBox
                     x: 533
@@ -177,6 +153,28 @@ Item{
                     text: qsTr("")
                     placeholderText: "Дата начала"
                     font.pointSize: 18
+                }
+
+                Text {
+                    id: element2
+                    x: 31
+                    y: 149
+                    width: 139
+                    height: 24
+                    text: qsTr("Кол-во продаж")
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    font.pixelSize: 16
+                }
+
+                Text {
+                    id: element3
+                    y: 718
+                    width: 113
+                    height: 23
+                    text: qsTr("Кол-во дней")
+                    anchors.left: parent.horizontalCenter
+                    anchors.leftMargin: 0
+                    font.pixelSize: 16
                 }
             }
 
@@ -395,9 +393,22 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:19;anchors_height:200;anchors_width:200}D{i:18;anchors_height:200;anchors_width:200}
-D{i:21;anchors_width:120;anchors_x:318}D{i:20;anchors_x:71}D{i:5;anchors_height:300;anchors_width:300;anchors_x:42;anchors_y:20}
-D{i:22;anchors_width:651;anchors_x:90;anchors_y:110}D{i:4;anchors_height:200;anchors_width:200}
+    D{i:5;anchors_height:300;anchors_width:300;anchors_x:42;anchors_y:20}D{i:15;anchors_width:651;anchors_x:90;anchors_y:110}
+D{i:18;anchors_height:200;anchors_width:200}D{i:20;anchors_x:681}D{i:4;anchors_height:200;anchors_width:200}
+D{i:22;anchors_x:71}D{i:24;anchors_width:651;anchors_x:90;anchors_y:110}D{i:23;anchors_width:120;anchors_x:318}
+D{i:21;anchors_height:200;anchors_width:200}
 }
  ##^##*/
