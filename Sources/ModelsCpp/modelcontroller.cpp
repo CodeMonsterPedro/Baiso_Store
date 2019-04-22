@@ -2,6 +2,9 @@
 
 ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(new InformationListModel())
 {
+    PlanCheck();
+    m_myModel = new InformationListModel();
+    m_myPlan = new InformationListModel();
     maxPageCount=currentPageCount=0;
     m_list = new QStringList;
     *m_list = RepositoryU::tables;
@@ -12,21 +15,41 @@ ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(ne
 
 ModelController::~ModelController(){
     delete m_myModel;
+    delete m_myPlan;
 }
 //data getters
 InformationListModel* ModelController::myModel(){
     return m_myModel;
 }
+InformationListModel* ModelController::myPlan(){
+    return m_myPlan;
+}
 QStringList ModelController::list(){
     return *m_list;
 }
-
 int ModelController::maxPage(){
     return maxPageCount;
 }
-
 int ModelController::currentPage(){
     return currentPageCount;
+}
+
+void ModelController::PlanCheck()
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT bar_code, product_name FROM public.\"ProductList\""));
+    QSqlQuery tempq2 = RepositoryU::GetRequest(QString("SELECT \"bar-code\" FROM public.\"ProductPlan\""));
+    QStringList strl;
+    while (tempq2.next()) {
+        strl.append(tempq2.record().value(tempq2.record().indexOf("bar-code")).toString());
+    }
+    while (tempq.next()) {
+        if(strl.contains(tempq.record().value(tempq.record().indexOf("bar_code")).toString()))continue;
+        else {
+            RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)")
+                                    .arg(tempq.record().value(tempq.record().indexOf("product_name")).toString())
+                                    .arg(tempq.record().value(tempq.record().indexOf("bar_code")).toString()));
+        }
+    }
 }
 //main functions
 void ModelController::showFrom(int source)
@@ -39,6 +62,14 @@ void ModelController::showFrom(int source)
     //setcolName();
 }
 
+void ModelController::showFromPlan(int source)
+{
+    m_myPlan->showfrom(source);
+    setMyPlan(m_myPlan);
+    setMaxPage(m_myPlan->maxPage);
+    setCurrentPage(1);
+}
+
 int ModelController::addNewElementToRep(QString str){
 
     //return RepositoryU::SetRequest(str);
@@ -49,7 +80,7 @@ int ModelController::addNewElementToRep(QString str){
         RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductList\"(\"product_name\",\"In_box_count\",\"supplyer\",\"company\",\"price\",\"count_sys\",\"bar_code\",\"last_suplyed\")") +
                                               QString(" VALUES('%1',%2,'%3','%4',%5,%6,'%7',8)")
                                               .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(strl[6]).arg(strl[7]));
-        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductList\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)").arg(strl[0]).arg(strl[6]));
+        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)").arg(strl[0]).arg(strl[6]));
     }
     else if(strl.size()==6)RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
                                                     QString(" VALUES('%1',%2,%3,%4,%5,%6)")
@@ -110,6 +141,12 @@ void ModelController::deleteItems(QString str,int isArhive)
     m_myModel->Refresh();
 }
 
+void ModelController::updatePlan(QString str, int x)
+{
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2'").arg(x).arg(str));
+    showFromPlan(3);
+}
+
 void ModelController::onDataChanged()
 {
     emit myModelChanged();
@@ -122,6 +159,13 @@ void ModelController::setMyModel(InformationListModel* myModel)
     m_myModel = myModel;
     emit myModelChanged();
 }
+void ModelController::setMyPlan(InformationListModel* myModel)
+{
+    if (m_myPlan == myModel)
+        return;
+    m_myPlan = myModel;
+    emit myPlanChanged();
+}
 void ModelController::setList(QStringList list)
 {
     Q_UNUSED(list);
@@ -129,20 +173,16 @@ void ModelController::setList(QStringList list)
     m_list->removeAt(m_list->indexOf("Accounts"));
     emit listChanged();
 }
-
 void ModelController::setMaxPage(int max)
 {
     maxPageCount = max;
     emit maxPageChanged();
 }
-
 void ModelController::setCurrentPage(int current)
 {
     currentPageCount = current;
     emit currentPageChanged();
 }
-
-
 void ModelController::setcolName(QStringList strl)
 {
     columnsNameL = strl;

@@ -42,7 +42,7 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
     case 2:
         return getLikeProduct(index,role);
     case 3:
-        break;
+        return getLikePlan(index,role);
     case 4:
         break;
     default:
@@ -50,7 +50,6 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
-
 
 void InformationListModel::GetTopTen()
 {
@@ -183,6 +182,22 @@ QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int rol
     default:
         break;
     }*/
+    return QVariant();
+}
+
+QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) const
+{
+    QSqlRecord temp = listData.at(index.row());
+    switch (role) {
+    case NameRole:
+        return temp.value(temp.indexOf("product"));
+    case BarCodeRole:
+        return temp.value(temp.indexOf("bar-code"));
+    case ProductCountRole:
+        return temp.value(temp.indexOf("count"));
+    default:
+        break;
+    }
     return QVariant();
 }
 

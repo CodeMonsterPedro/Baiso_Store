@@ -58,6 +58,7 @@ private:
     QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant getLikePurchase(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikePlan(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 //support methods
 

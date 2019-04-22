@@ -286,7 +286,8 @@ Item{
 
 
                 }
-            }/////////////////////////////////////////////////////////////////////
+            }
+            /////////////////////////////////////////////////////////////////////
 
             Component{
                 id:listHeader
@@ -867,7 +868,7 @@ Item{
             Item{
                 id: element_add
                 anchors.fill: parent
-                visible: false
+                visible: true
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -967,7 +968,7 @@ Item{
                         TextField {
                             id: textField10
                             x: 69
-                            y: 70
+                            y: 29
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -977,7 +978,7 @@ Item{
                         TextField {
                             id: textField11
                             x: 69
-                            y: 153
+                            y: 104
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -987,7 +988,7 @@ Item{
                         TextField {
                             id: textField12
                             x: 69
-                            y: 229
+                            y: 180
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -997,7 +998,7 @@ Item{
                         TextField {
                             id: textField13
                             x: 69
-                            y: 306
+                            y: 257
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -1007,7 +1008,7 @@ Item{
                         TextField {
                             id: textField14
                             x: 413
-                            y: 70
+                            y: 29
                             text: qsTr("")
                             placeholderText: "Кол-во в одной коробке"
                         }
@@ -1015,28 +1016,28 @@ Item{
                         TextField {
                             id: textField15
                             x: 413
-                            y: 153
+                            y: 320
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
                         TextField {
                             id: textField16
                             x: 413
-                            y: 153
+                            y: 257
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
                         TextField {
                             id: textField17
                             x: 413
-                            y: 153
+                            y: 180
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
                         TextField {
                             id: textField18
                             x: 413
-                            y: 153
+                            y: 104
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
@@ -1242,6 +1243,10 @@ Item{
     }
 
 }
+
+
+
+
 
 
 
