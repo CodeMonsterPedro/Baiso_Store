@@ -22,7 +22,6 @@ public:
     Q_PROPERTY(int currentPage READ currentPage WRITE setCurrentPage NOTIFY currentPageChanged)
     Q_PROPERTY(QStringList list READ list WRITE setList NOTIFY listChanged)
     Q_PROPERTY(InformationListModel* myModel READ myModel WRITE setMyModel NOTIFY myModelChanged)
-    Q_PROPERTY(int cCount READ cCnt WRITE setcCnt NOTIFY cCntChanged)
     Q_PROPERTY(QStringList columnsNames READ colName WRITE setcolName NOTIFY colNameChanged)
 
     ModelController(QObject *parent = Q_NULLPTR);
@@ -32,7 +31,6 @@ public:
     QStringList list();
     int maxPage();
     int currentPage();
-    int cCnt(){return currentTableColumnsCount;}
     QStringList colName(){return columnsNameL;}
 
     Q_INVOKABLE void showFrom(int source);
@@ -40,13 +38,13 @@ public:
     Q_INVOKABLE void goNext();
     Q_INVOKABLE void goPrev();
     Q_INVOKABLE void toggleListType();
-
+    Q_INVOKABLE void deleteItems(QString,int);
 public slots:
+    void onDataChanged();
     void setMyModel(InformationListModel* myModel);
     void setList(QStringList list);
     void setMaxPage(int max);
     void setCurrentPage(int current);
-    void setcCnt(int x);
     void setcolName(QStringList strl);
 
 signals:
@@ -54,7 +52,6 @@ signals:
     void listChanged();
     void maxPageChanged();
     void currentPageChanged();
-    void cCntChanged();
     void colNameChanged();
 
 };

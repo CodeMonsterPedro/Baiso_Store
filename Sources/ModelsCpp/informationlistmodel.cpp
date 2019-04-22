@@ -3,9 +3,7 @@
 InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel(parent)
 {
    if(RepositoryU::isConnected)sourceList = RepositoryU::tables;
-   sourceList.pop_front();//delete accounts from the list
-
-
+   sourceList.removeAt(sourceList.indexOf("Accounts"));
 }
 
 QHash<int, QByteArray> InformationListModel::roleNames() const
@@ -28,12 +26,13 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
 int InformationListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-            qDebug()<<"LIST DATA SIZE - " + QString::number(listData.size());
-    return listData.size();
+//            qDebug()<<"LIST DATA SIZE - " + QString::number(listData.size()) + " xx " + QString::number(parent.row()) + " yy " + QString::number(parent.column());
+    return listData.count();
 }
 
 QVariant InformationListModel::data(const QModelIndex &index, int role) const
 {
+    if(index.row()>=rowCount())return QVariant();
     switch (currentTable) {
     case 0:
         return getLikeAccounts(index,role);
@@ -51,17 +50,6 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QModelIndex InformationListModel::index(int row, int column, const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return createIndex(row, column);
-}
-
-int InformationListModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return 1;
-}
 
 void InformationListModel::GetTopTen()
 {
@@ -102,29 +90,24 @@ void InformationListModel::showfrom(int source)
     currentTable = source;
     QString table=sourceList[source-1];
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
-   // lastQuery.
-   // columnsNames;
+    // lastQuery.
+    // columnsNames;
     this->fillUpPage();
     this->UpdateMaxPage();
-
 }
 
 void InformationListModel::cleanUp()
 {
-    beginRemoveRows(QModelIndex(),0,0);
-    listData.clear();
-    endRemoveRows();
+   while(!listData.isEmpty())delElementLast();
 }
 
 void InformationListModel::fillUpPage()
 {
-    beginInsertRows(QModelIndex(),0,(lastQuery.size()>1000? 999 : lastQuery.size()));
-    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size()+1);i++){
-        listData.append(lastQuery.record());
+    lastQuery.seek(0);
+    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++){
+        addElement(lastQuery.record());
         lastQuery.next();
-    }//work aroung
-    listData.pop_front();
-    endInsertRows();
+    }
 }
 
 void InformationListModel::UpdateMaxPage()
@@ -217,10 +200,17 @@ void InformationListModel::goPrev()
     currentPage--;
 }
 
-void InformationListModel::addElement(QString value)
+void InformationListModel::deleteItems(QString str)
 {
-    beginInsertRows(QModelIndex(), listData.size(), listData.size());
+
+}
+
+void InformationListModel::addElement(QSqlRecord value)
+{
+    beginInsertRows(QModelIndex(), listData.size(), listData.size()+1);
+    listData.append(value);
     endInsertRows();
+    emit dataChanged();
 }
 
 void InformationListModel::delElementLast()
@@ -232,18 +222,17 @@ void InformationListModel::delElementLast()
     beginRemoveRows(QModelIndex(),listData.indexOf(listData.last()),listData.indexOf(listData.last()));
     listData.removeLast();
     endRemoveRows();
+    emit dataChanged();
 }
 
-void InformationListModel::Refresh(QStringList temp)
+void InformationListModel::Refresh()
 {
-    Q_UNUSED(temp);
     this->cleanUp();
-    beginInsertRows(QModelIndex(),0,999);
-    for(int i=0;i<1000;i++){
-        listData.append(lastQuery.record());
+    lastQuery.seek(0);
+    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++){
+        addElement(lastQuery.record());
         lastQuery.next();
     }
-    endInsertRows();
 
 }
 

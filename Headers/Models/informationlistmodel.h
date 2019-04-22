@@ -32,9 +32,6 @@ public:
 
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    virtual int columnCount(const QModelIndex &parent) const;
-
     QHash<int, QByteArray> roleNames() const;
 
     QList<QSqlRecord> listData;
@@ -44,14 +41,14 @@ public:
     QSqlQuery lastQuery;
 
     int maxPage, currentPage;
-    int columnsCount;
     QStringList columnsNames;
 
 //main functional methods
-    void showfrom(int source=0);
+    void showfrom(int source=1);
     void goNext();
     void goPrev();
-
+    void deleteItems(QString);
+    void Refresh();
 
 private:
 //universality methods
@@ -60,15 +57,17 @@ private:
     QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 //support methods
-    void addElement(QString value);
+    void addElement(QSqlRecord value);
     void delElementLast();
     void delElementAt(int index);
-    void Refresh(QStringList temp);
     void GetTopTen();
     void cleanUp();
     void fillUpPage();
     QString GetCountSystem(int val);
     void UpdateMaxPage();
+
+signals:
+    void dataChanged();
 };
 
 #endif // INFORMATIONLISTMODEL_H

@@ -75,8 +75,7 @@ Item{
                     id:btn_ToggleListType
                     property bool listType: false;
                     x: 220
-
-                    width: 200
+                    width: 360
                     height: 40
                     anchors.right: listType? parent.right : funcItems.left;
                     anchors.rightMargin: 10;
@@ -88,13 +87,13 @@ Item{
                     Rectangle{
                         id:btn_listType
                         visible: btn_ToggleListType.listType
-                        width: 200;
+                        width: 360;
                         height: 40
                         border.color:"blue"
                         border.width: 2
                         Text{
                             anchors.centerIn: parent
-                            text:qsTr("List view")
+                            text:qsTr("Отображение списком")
                             color: "blue"
                             font.pixelSize: 20;
                         }
@@ -104,13 +103,13 @@ Item{
                     Rectangle{
                         id:btn_TableType
                         visible: !btn_ToggleListType.listType
-                        width: 200;
+                        width: 360;
                         height: 40;
                         border.color:"blue"
                         border.width: 2
                         Text{
                             anchors.centerIn: parent
-                            text:qsTr("Table view")
+                            text:qsTr("Отображение таблицей")
                             color: "blue"
                             font.pixelSize: 20;
                         }
@@ -262,6 +261,7 @@ Item{
                 anchors.rightMargin: btn_ToggleListType.listType? 400 : 20;
 
                 ListView {
+                    property int counter: 0;
                     id: listView
                     contentHeight: 10
                     contentWidth: 10
@@ -273,23 +273,192 @@ Item{
                     spacing: 25
                     cacheBuffer: 500000;
                     clip: true;
-                    model:simpleModelController.myModel;
+                    model: counter, simpleModelController.myModel;
                     delegate:saleDelegate;
+                    headerPositioning: ListView.OverlayHeader
                     header: listHeader;
+                    Connections {
+                        target: simpleModelController
+                        onMyModelChanged:{
+                            listView.counter++
+                        }
+                    }
+
+
                 }
             }/////////////////////////////////////////////////////////////////////
 
             Component{
                 id:listHeader
                 Item {
+                    property real tableItemWidth: listView.width/6;
+                    visible: !btn_ToggleListType.listType
                     id: listHeaderItem;
+                    z:2;
+                    height: 45;
                     Rectangle{
+
                         id:productHead
                         visible: comboBox1.currentText=="ProductList";
+                        Row{
+                            anchors.fill: parent
+                            Rectangle{
+                                opacity: 0.0
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                CheckBox{
+                                    anchors.centerIn:parent;
+                                }
+                            }
+
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40
+                                border.color: "black"
+                                border.width: 2;
+                                Text{
+                                    anchors.centerIn: parent;
+                                    text: "Id";
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    anchors.centerIn: parent;
+                                    text: "Название продукта"
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    anchors.centerIn: parent;
+                                    text: "Штрих-код"
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "цена за еденицу";
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    anchors.centerIn: parent;
+                                    text: "кол-во в одном ящике"
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                        }
+
+
                     }
                     Rectangle{
                         id:saleHead;
                         visible: comboBox1.currentText=="ProductSaleFull";
+                        Row{
+                            visible: !btn_ToggleListType.listType;
+                            anchors.fill: parent;
+                            Rectangle{
+                                opacity: 0.0
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                CheckBox{
+                                    anchors.centerIn:parent;
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Название продукта"
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Номер магазина";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+
+
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Цена за еденицуы";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Дата продажи";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text{
+                                    text: "id";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+
+                            Rectangle{
+                                width: listHeaderItem.tableItemWidth;
+                                height: 40;
+                                border.color: "black"
+                                border.width: 2;
+                                Text {
+                                    text: "Номер чека";
+                                    anchors.centerIn: parent;
+                                    font.pointSize: rootDataBase.tableFontSize
+                                }
+                            }
+                        }
+
                     }
                 }
             }
@@ -557,12 +726,17 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             element_add.visible = false;
+                            var str = "" + textField10.text + "|" + textField14.text + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.text + "|" + textField17.text + "|" + textField18.text
+                            simpleModelController.addNewElementToRep(str);
                             textField10.text="";
                             textField11.text="";
                             textField12.text="";
                             textField13.text="";
                             textField14.text="";
                             textField15.text="";
+                            textField16.text="";
+                            textField17.text="";
+                            textField18.text="";
                         }
                     }
 
@@ -588,6 +762,9 @@ Item{
                             textField13.text="";
                             textField14.text="";
                             textField15.text="";
+                            textField16.text="";
+                            textField17.text="";
+                            textField18.text="";
 
                         }
                     }
@@ -662,6 +839,27 @@ Item{
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
+                        TextField {
+                            id: textField16
+                            x: 413
+                            y: 153
+                            text: qsTr("")
+                            placeholderText: "Цена за еденицу"
+                        }
+                        TextField {
+                            id: textField17
+                            x: 413
+                            y: 153
+                            text: qsTr("")
+                            placeholderText: "Цена за еденицу"
+                        }
+                        TextField {
+                            id: textField18
+                            x: 413
+                            y: 153
+                            text: qsTr("")
+                            placeholderText: "Цена за еденицу"
+                        }
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.topMargin: 91
@@ -684,18 +882,12 @@ Item{
 
                 Rectangle {
                     id: rectangle_element_del
-                    height: 702
+                    height: 300
+                    width: 700
                     color: "#ffffff"
                     border.color:"blue"
                     radius: 3
-                    anchors.rightMargin: 400
-                    anchors.leftMargin: 400
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottomMargin: 280
-                    anchors.topMargin: 220
+                    anchors.centerIn: rectangle_del;
 
                     MyButton{
                         id:accept_btn_del
@@ -703,7 +895,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.left: parent.left
-                        anchors.leftMargin: 190
+                        anchors.leftMargin: 100
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "blue"
@@ -712,7 +904,13 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             element_del.visible = false;
-                            textField16.text="";
+                            var str = "";
+                            for(var i=0;i<rootDataBase.deleteList.length;i++){
+                                str+= "" + rootDataBase.deleteList[i].toString() + "|";
+                            }
+                            simpleModelController.deleteItems(str,0);
+                            rootDataBase.deleteList = [];
+
                         }
                     }
 
@@ -723,7 +921,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.right: parent.right
-                        anchors.rightMargin: 190
+                        anchors.rightMargin: 100
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "red"
@@ -732,28 +930,43 @@ Item{
                         button_round: 15
                         onButton_clicked: {
                             element_del.visible = false;
-                            textField16.text="";
+
                         }
                     }
 
-                    Rectangle {
-                        height: 137
-                        anchors.right: parent.right
-                        anchors.leftMargin: 31
-                        TextField {
-                            id: textField16
-                            x: 158
-                            y: 58
-                            width: 251
-                            height: 40
-                            text: qsTr("")
-                            placeholderText: "Штрихкод \\ продукт"
+                    MyButton{
+                        id:arhive_btn_del
+                        y: 592
+                        height: 40
+                        anchors.left: accept_btn_del.right
+                        anchors.leftMargin: 60
+                        anchors.right: decline_btn_del.left
+                        anchors.rightMargin: 60
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "gray"
+                        button_text_color: "gray"
+                        button_text: "В архив"
+                        button_round: 15
+                        onButton_clicked: {
+                            element_del.visible = false;
+                            var str = "";
+                            for(var i=0;i<rootDataBase.deleteList.length;i++){
+                                str+= "" + rootDataBase.deleteList[i].toString() + "|";
+                            }
+                            simpleModelController.deketeItems(str,1);
+                            rootDataBase.deleteList = [];
                         }
-                        anchors.left: parent.left
-                        visible: true
-                        anchors.top: parent.top
-                        anchors.topMargin: 33
-                        anchors.rightMargin: 44
+                    }
+
+                    Text {
+                        id: element
+                        x: 115
+                        y: 86
+                        width: 389
+                        height: 81
+                        text: qsTr("Удалить выбранные элементы?")
+                        font.pixelSize: 28
                     }
                 }
             }
@@ -1025,31 +1238,15 @@ Item{
 }
 
 
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:2;anchors_height:50;anchors_width:480;anchors_x:18;anchors_y:0}D{i:5;anchors_width:1414;anchors_x:15}
-D{i:8;anchors_height:622;anchors_width:729;anchors_x:0;anchors_y:74}D{i:7;anchors_width:1216;anchors_x:24}
-D{i:10;anchors_width:715}D{i:9;anchors_height:704;anchors_width:200;anchors_x:730;anchors_y:8}
-D{i:11;anchors_height:622;anchors_width:729;anchors_x:0;anchors_y:74}D{i:6;anchors_height:40;anchors_x:220;anchors_y:5}
-D{i:17;anchors_height:704;anchors_width:200;anchors_x:730;anchors_y:8}D{i:13;anchors_height:200;anchors_width:200}
-D{i:12;anchors_height:37;anchors_width:263;anchors_x:212;anchors_y:5}D{i:18;anchors_width:300}
-D{i:4;anchors_width:709;anchors_x:20;anchors_y:30}D{i:23;anchors_height:704;anchors_width:715;anchors_x:730;anchors_y:8}
-D{i:22;anchors_height:704;anchors_width:715;anchors_x:730;anchors_y:8}D{i:27;anchors_height:678;anchors_width:200;anchors_x:730;anchors_y:18}
-D{i:26;anchors_width:715;anchors_x:0}D{i:41;anchors_y:99}D{i:42;anchors_height:704;anchors_width:715;anchors_x:8;anchors_y:8}
-D{i:43;anchors_height:704;anchors_width:715;anchors_x:8;anchors_y:8}D{i:45;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:46;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:47;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:40;anchors_height:678;anchors_width:715;anchors_x:0;anchors_y:18}D{i:25;anchors_width:715;anchors_x:0}
-D{i:24;anchors_width:715}D{i:49;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:50;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:48;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:53;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:55;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:56;anchors_width:1414;anchors_x:15}D{i:58;anchors_width:1414;anchors_x:15}D{i:59;anchors_width:1414;anchors_x:15}
-D{i:60;anchors_width:1414;anchors_x:15}D{i:61;anchors_width:1414;anchors_x:15}D{i:62;anchors_width:1414;anchors_x:15}
-D{i:57;anchors_width:1414;anchors_x:15}D{i:54;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:52;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:65;anchors_width:1414;anchors_x:15}
-D{i:67;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:68;anchors_height:704;anchors_width:1414;anchors_x:8;anchors_y:8}
-D{i:69;anchors_width:1414;anchors_x:15}D{i:66;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}
-D{i:64;anchors_width:1414;anchors_x:15}D{i:72;anchors_height:704;anchors_width:1414;anchors_x:8;anchors_y:8}
-D{i:74;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:75;anchors_height:704;anchors_width:1414;anchors_x:8;anchors_y:8}
-D{i:73;anchors_height:704;anchors_width:1414;anchors_x:15;anchors_y:8}D{i:71;anchors_width:1414;anchors_x:15}
-D{i:79;anchors_height:704;anchors_x:8;anchors_y:8}D{i:3;anchors_height:809;anchors_width:1516;anchors_x:0;anchors_y:116}
+    D{i:76;anchors_width:120;anchors_x:318}
 }
  ##^##*/
