@@ -12,9 +12,13 @@ QSqlQuery RepositoryU::GetRequest(QString request)
 {
     QSqlQuery query;
     if(isConnected){
-        if(!query.exec(request))qDebug()<<"cant execute request";
+        if(!query.exec(request)){
+            qDebug()<<request;
+            qDebug()<<"cant execute request";
+        }
         else{
             lastQuery=query;
+            qDebug()<<request;
             return query;
         }
     }
@@ -29,9 +33,11 @@ int RepositoryU::SetRequest(QString request)
 {
     QSqlQuery query;
     if(!query.exec(request)){
+        qDebug()<<request;
         qDebug()<<"cant execute request";
         return 0;
     }else {
+        qDebug()<<request;
         return 1;
     }
 }

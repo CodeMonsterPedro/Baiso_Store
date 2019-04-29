@@ -47,7 +47,6 @@ public:
     void showfrom(int source=1);
     void goNext();
     void goPrev();
-    void deleteItems(QString);
     void Refresh();
 
     void addElement(QSqlRecord value);

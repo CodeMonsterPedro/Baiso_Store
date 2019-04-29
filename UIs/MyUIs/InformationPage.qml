@@ -12,7 +12,7 @@ Item{
     width: rootInformationCanvas.width
     height: rootInformationCanvas.height;
     Component.onCompleted: {
-        simpleModelController.showFromPlan(3);
+        simpleModelController.showFromPlan(2);
     }
 
     Rectangle {

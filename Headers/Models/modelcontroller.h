@@ -40,11 +40,12 @@ public:
 
     Q_INVOKABLE void showFrom(int source);
     Q_INVOKABLE void showFromPlan(int source);
-    Q_INVOKABLE int addNewElementToRep(QString str);
+    Q_INVOKABLE int addNewProductToRep(QString str);
+    Q_INVOKABLE int addNewPurchaseToRep(QString str);
     Q_INVOKABLE void goNext();
     Q_INVOKABLE void goPrev();
     Q_INVOKABLE void toggleListType();
-    Q_INVOKABLE void deleteItems(QString,int);
+    Q_INVOKABLE void deleteItems(QString,int,QString teble);
     Q_INVOKABLE void updatePlan(QString, int);
 public slots:
     void onDataChanged();

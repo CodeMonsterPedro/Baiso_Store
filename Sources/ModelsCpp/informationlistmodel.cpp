@@ -2,8 +2,9 @@
 
 InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel(parent)
 {
-   if(RepositoryU::isConnected)sourceList = RepositoryU::tables;
-   sourceList.removeAt(sourceList.indexOf("Accounts"));
+    sourceList.append("ProductList");
+    sourceList.append("ProductSaleFull");
+    sourceList.append("ProductPlan");
 }
 
 QHash<int, QByteArray> InformationListModel::roleNames() const
@@ -36,15 +37,13 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
     if(index.row()>=rowCount())return QVariant();
     switch (currentTable) {
     case 0:
-        return getLikeAccounts(index,role);
+        return getLikeProduct(index,role);
     case 1:
         return getLikePurchase(index,role);
     case 2:
-        return getLikeProduct(index,role);
-    case 3:
         return getLikePlan(index,role);
+    case 3:
     case 4:
-        break;
     default:
         break;
     }
@@ -88,7 +87,7 @@ void InformationListModel::showfrom(int source)
 {
     this->cleanUp();
     currentTable = source;
-    QString table=sourceList[source-1];
+    QString table=sourceList[source];
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
     // lastQuery.
     // columnsNames;
@@ -118,6 +117,7 @@ void InformationListModel::UpdateMaxPage()
 
 QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role) const
 {
+    //qDebug()<<"getLikeProduct";
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -144,6 +144,7 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
 
 QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int role) const
 {
+    //qDebug()<<"getLikePurchase";
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -168,6 +169,7 @@ QVariant InformationListModel::getLikePurchase(const QModelIndex &index, int rol
 
 QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int role) const
 {
+    //qDebug()<<"getLikeAccount";
    /* switch (currentTable) {
     case 0:
         return getLikeProduct(index,role);
@@ -187,6 +189,7 @@ QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int rol
 
 QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) const
 {
+    //qDebug()<<"getLikePlan";
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -218,10 +221,6 @@ void InformationListModel::goPrev()
     currentPage--;
 }
 
-void InformationListModel::deleteItems(QString str)
-{
-
-}
 
 void InformationListModel::addElement(QSqlRecord value)
 {
@@ -246,12 +245,11 @@ void InformationListModel::delElementLast()
 void InformationListModel::Refresh()
 {
     this->cleanUp();
-    lastQuery.seek(0);
+    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++)lastQuery.previous();
     for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++){
         addElement(lastQuery.record());
         lastQuery.next();
     }
-
 }
 
 

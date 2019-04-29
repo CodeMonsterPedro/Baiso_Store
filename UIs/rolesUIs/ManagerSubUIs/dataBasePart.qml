@@ -62,12 +62,12 @@ Item{
                     anchors.bottomMargin: (parent.height-comboBox1.height)/2
                     anchors.left: parent.left
                     anchors.leftMargin: 20
-                    model:simpleModelController.list;
-                    onCurrentIndexChanged: simpleModelController.showFrom(comboBox1.currentIndex+1);
+                    model:["Продукты","Продажи"]
+                    onCurrentIndexChanged: simpleModelController.showFrom(comboBox1.currentIndex);
 
                     onCurrentTextChanged: {
-                        if(comboBox1.currentText=="ProductList")listView.delegate = productDelegate;
-                        if(comboBox1.currentText=="ProductSaleFull")listView.delegate = saleDelegate;
+                        if(comboBox1.currentText=="Продукты")listView.delegate = productDelegate;
+                        if(comboBox1.currentText=="Продажи")listView.delegate = saleDelegate;
                     }
                 }
 
@@ -119,13 +119,6 @@ Item{
                         anchors.fill: btn_ToggleListType
                         onClicked: {
                             btn_ToggleListType.listType=!btn_ToggleListType.listType;
-                            /*if(btn_ToggleListType.listType){
-                                if(comboBox1.currentText=="ProductList")listView.delegate = productDelegate;
-                                if(comboBox1.currentText=="ProductSaleFull")listView.delegate = saleDelegate;
-                            }else {
-                                listView.delegate = 0;
-                            }*/
-                            simpleModelController.toggleListType();
                         }
                     }
                 }
@@ -301,14 +294,15 @@ Item{
                     Rectangle{
 
                         id:productHead
-                        visible: comboBox1.currentText=="ProductList";
+                        visible: comboBox1.currentText=="Продажи";
+                        color:"lightgray"
                         Row{
                             anchors.fill: parent
                             Rectangle{
-                                opacity: 0.0
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40;
                                 CheckBox{
+                                    opacity: 0.0
                                     anchors.centerIn:parent;
                                 }
                             }
@@ -316,8 +310,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40
-                                border.color: "black"
-                                border.width: 2;
                                 Text{
                                     anchors.centerIn: parent;
                                     text: "Id";
@@ -327,8 +319,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Название продукта"
@@ -338,8 +328,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Штрих-код"
@@ -349,8 +337,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     anchors.centerIn: parent
                                     text: "Цена за еденицу";
@@ -360,8 +346,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Кол-во в одном ящике"
@@ -374,25 +358,22 @@ Item{
                     }
                     Rectangle{
                         id:saleHead;
-                        visible: comboBox1.currentText=="ProductSaleFull";
+                        visible: comboBox1.currentText=="Продажи";
+                        color:"lightgray"
                         Row{
                             visible: !btn_ToggleListType.listType;
                             anchors.fill: parent;
                             Rectangle{
-                                opacity: 0.0
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 CheckBox{
+                                    opacity: 0.0
                                     anchors.centerIn:parent;
                                 }
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Номер чека";
                                     anchors.centerIn: parent;
@@ -402,8 +383,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Название продукта"
                                     anchors.centerIn: parent;
@@ -414,8 +393,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Номер магазина";
                                     anchors.centerIn: parent;
@@ -425,8 +402,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Купленное кол-во";
                                     anchors.centerIn: parent;
@@ -437,8 +412,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Цена за еденицу";
                                     anchors.centerIn: parent;
@@ -449,8 +422,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text {
                                     text: "Дата продажи";
                                     anchors.centerIn: parent;
@@ -460,8 +431,6 @@ Item{
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
                                 height: 40;
-                                border.color: "black"
-                                border.width: 2;
                                 Text{
                                     text: "id";
                                     anchors.centerIn: parent;
@@ -868,7 +837,7 @@ Item{
             Item{
                 id: element_add
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -890,6 +859,12 @@ Item{
                     anchors.top: parent.top
                     anchors.bottomMargin: 60
                     anchors.topMargin: 110
+                    ComboBox{
+                        id:element_add_combobox
+                        x: 236
+                        y: 40
+                        model:["Продукт","Продажу"];
+                    }
 
 
                     MyButton{
@@ -907,17 +882,23 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             element_add.visible = false;
-                            var str = "" + textField10.text + "|" + textField14.text + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.text + "|" + textField17.text + "|" + textField18.text
-                            simpleModelController.addNewElementToRep(str);
-                            textField10.text="";
-                            textField11.text="";
-                            textField12.text="";
-                            textField13.text="";
-                            textField14.text="";
-                            textField15.text="";
-                            textField16.text="";
-                            textField17.text="";
-                            textField18.text="";
+                            if(element_add_combobox.currentIndex==0){
+                                //"product_name","In_box_count","supplyer","company","price","count_sys","bar_code")
+                                //"10","14","11","12","15","16","13"
+                                var str = "" + textField10.text + "|" + textField14.text + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.text + "|" + textField13.text
+                                simpleModelController.addNewProductToRep(str);
+                                textField10.text="";
+                                textField11.text="";
+                                textField12.text="";
+                                textField13.text="";
+                                textField14.text="";
+                                textField15.text="";
+                                textField16.text="";
+                            } else if(element_add_combobox.currentIndex==1){
+                                var str = "" + textField21.text + "|" + textField22.text + "|" + textField23.text + "|" + textField24.text + "|" + textField25.text + "|" + textField26.text;
+                                simpleModelController.addNewPurchaseToRep(str);
+
+                            }
                         }
                     }
 
@@ -944,27 +925,20 @@ Item{
                             textField14.text="";
                             textField15.text="";
                             textField16.text="";
-                            textField17.text="";
-                            textField18.text="";
-
+                            textField21.text="";
+                            textField22.text="";
+                            textField23.text="";
+                            textField24.text="";
+                            textField25.text="";
+                            textField26.text="";
                         }
                     }
-                    /*
-                    ComboBox {
-                        id: comboBox3
-                        y: 47
-                        width: 180
-                        anchors.leftMargin: 39
-                        anchors.left: parent.left
-                        model: simpleModelController.list
-                    }
-*/
                     Rectangle {
                         height: 387
-                        // visible: comboBox3.currentText=="ProductList" ? true : false;
-                        visible: true;
+                        visible: element_add_combobox.currentindex===0 ? true : false;
                         anchors.right: parent.right
                         anchors.leftMargin: 28
+
                         TextField {
                             id: textField10
                             x: 69
@@ -1016,35 +990,98 @@ Item{
                         TextField {
                             id: textField15
                             x: 413
-                            y: 320
+                            y: 104
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
                         TextField {
                             id: textField16
                             x: 413
-                            y: 257
-                            text: qsTr("")
-                            placeholderText: "Цена за еденицу"
-                        }
-                        TextField {
-                            id: textField17
-                            x: 413
                             y: 180
                             text: qsTr("")
-                            placeholderText: "Цена за еденицу"
-                        }
-                        TextField {
-                            id: textField18
-                            x: 413
-                            y: 104
-                            text: qsTr("")
-                            placeholderText: "Цена за еденицу"
+                            placeholderText: "Система исчисления"
                         }
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.topMargin: 91
                         anchors.rightMargin: 37
+                    }
+                    Rectangle {
+                        height: 387
+                        visible: element_add_combobox.currentindex===1 ? true : false;
+                        anchors.right: parent.right
+                        anchors.leftMargin: 28
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.topMargin: 91
+                        anchors.rightMargin: 37
+
+                        TextField {
+                            id: textField21
+                            x: 69
+                            y: 29
+                            width: 251
+                            height: 40
+                            text: qsTr("")
+                            placeholderText: "Название продукта"
+                        }
+
+                        TextField {
+                            id: textField22
+                            x: 69
+                            y: 104
+                            width: 251
+                            height: 40
+                            text: qsTr("")
+                            placeholderText: "Номер магазина"
+                        }
+
+                        TextField {
+                            id: textField23
+                            x: 69
+                            y: 180
+                            width: 251
+                            height: 40
+                            text: qsTr("")
+                            placeholderText: "Номер чека"
+                        }
+
+                        TextField {
+                            id: textField24
+                            x: 69
+                            y: 257
+                            width: 251
+                            height: 40
+                            text: qsTr("")
+                            placeholderText: "Кол-во продукта"
+                        }
+
+                        TextField {
+                            id: textField25
+                            x: 413
+                            y: 29
+                            text: qsTr("")
+                            placeholderText: "Цена за еденицу"
+                        }
+
+                        TextField {
+                            id: textField26
+                            x: 413
+                            y: 104
+                            text: qsTr("")
+                            placeholderText: "Дата продажи"
+                        }
+
+                    }
+
+                    Text {
+                        id: element1
+                        x: 99
+                        y: 40
+                        width: 129
+                        height: 40
+                        text: qsTr("Добавить")
+                        font.pixelSize: 26
                     }
                 }
             }
@@ -1089,7 +1126,8 @@ Item{
                             for(var i=0;i<rootDataBase.deleteList.length;i++){
                                 str+= "" + rootDataBase.deleteList[i].toString() + "|";
                             }
-                            simpleModelController.deleteItems(str,0);
+                            if(comboBox1.currentText=="Продукты")simpleModelController.deleteItems(str,0,"Product");
+                            else if(comboBox1.currentText=="Продажи")simpleModelController.deleteItems(str,0,"Sale");
                             rootDataBase.deleteList = [];
 
                         }
@@ -1135,7 +1173,8 @@ Item{
                             for(var i=0;i<rootDataBase.deleteList.length;i++){
                                 str+= "" + rootDataBase.deleteList[i].toString() + "|";
                             }
-                            simpleModelController.deketeItems(str,1);
+                            if(comboBox1.currentText=="Продукты")simpleModelController.deleteItems(str,1,"Product");
+                            else if(comboBox1.currentText=="Продажи")simpleModelController.deleteItems(str,1,"Sale");
                             rootDataBase.deleteList = [];
                         }
                     }
@@ -1156,7 +1195,7 @@ Item{
             Item{
                 id: element_sort
                 anchors.fill: parent
-                visible: false;
+                visible: true
                 Rectangle {
                     id: rectangle_sort
                     color: "#090808"
@@ -1176,8 +1215,8 @@ Item{
                     anchors.right: parent.right
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    anchors.bottomMargin: 230
-                    anchors.topMargin: 180
+                    anchors.bottomMargin: 150
+                    anchors.topMargin: 150
 
                     MyButton{
                         id:accept_btn_sort
@@ -1217,23 +1256,51 @@ Item{
                     }
 
                     Rectangle {
-                        y: 46
-                        height: 200
-                        anchors.right: parent.right
-                        anchors.leftMargin: 113
+                        border.width: 0
+                        anchors.rightMargin: 20
+                        anchors.leftMargin: 20
+                        anchors.bottomMargin: 120
+                        anchors.topMargin: 20
+                        anchors.fill: parent
+                        visible: true
+
+                        TextField {
+                            id: textField1
+                            x: 51
+                            y: 39
+                            text: qsTr("С даты")
+                        }
+
+                        TextField {
+                            id: textField2
+                            x: 299
+                            y: 39
+                            text: qsTr("по дату")
+                        }
+
+                        Switch {
+                            id: element2
+                            x: 51
+                            y: 105
+                            text: qsTr("Табличный вид")
+                        }
+
+                        Switch {
+                            id: element4
+                            x: 51
+                            y: 158
+                            text: qsTr("Switch")
+                        }
 
                         ComboBox {
-                            id: comboBox3
-                            x: 69
-                            y: 46
-                            width: 248
+                            id: comboBox
+                            x: 299
+                            y: 105
+                            width: 200
                             height: 40
-                            model:["По дате","По кол-ву продаж","По алфавиту"]
                         }
-                        anchors.left: parent.left
-                        visible: true
-                        anchors.rightMargin: 160
                     }
+
                 }
             }
 
@@ -1257,7 +1324,53 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:76;anchors_width:120;anchors_x:318}
+    D{i:76;anchors_width:120;anchors_x:318}D{i:145;anchors_height:200;anchors_y:46}
 }
  ##^##*/

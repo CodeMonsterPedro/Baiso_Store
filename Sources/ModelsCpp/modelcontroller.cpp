@@ -70,21 +70,27 @@ void ModelController::showFromPlan(int source)
     setCurrentPage(1);
 }
 
-int ModelController::addNewElementToRep(QString str){
-
-    //return RepositoryU::SetRequest(str);
+int ModelController::addNewProductToRep(QString str)
+{
     //INSERT INTO public."ProductList"("product_name","In_box_count","supplyer","company","price","count_sys","bar_code","last_suplyed") VALUES('Igor',1,'Igor1','irog3',2.5,(0/1),'',2.2019);
+    QStringList strl = str.split('|');
+    QDate date = QDate::currentDate();
+    QString dateStr = "" + QString::number(date.day()) + "." + QString::number(date.month()) + "." + QString::number(date.year());
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductList\"(\"product_name\",\"in_box_count\",\"supplyer\",\"company\",\"price\",\"count_sys\",\"bar_code\",\"last_suplyed\")") +
+                                              QString(" VALUES('%1',%2,'%3','%4',%5,%6,'%7','%8')")
+                                              .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(strl[6]).arg(dateStr));
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)").arg(strl[0]).arg(strl[6]));
+    m_myModel->Refresh();
+    return 1;
+}
+
+int ModelController::addNewPurchaseToRep(QString str)
+{
     //INSERT INTO public."ProductSaleFull"("product_name","market_Id","purchase_Id","product_count","price","date") VALUES('Igor',1,1,1,2.5,2.2019);
     QStringList strl = str.split('|');
-    if(strl.size()==8){
-        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductList\"(\"product_name\",\"In_box_count\",\"supplyer\",\"company\",\"price\",\"count_sys\",\"bar_code\",\"last_suplyed\")") +
-                                              QString(" VALUES('%1',%2,'%3','%4',%5,%6,'%7',8)")
-                                              .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(strl[6]).arg(strl[7]));
-        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)").arg(strl[0]).arg(strl[6]));
-    }
-    else if(strl.size()==6)RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
-                                                    QString(" VALUES('%1',%2,%3,%4,%5,%6)")
-                                                   .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2].toInt()).arg(strl[3].toInt()).arg(strl[4].toDouble()).arg(strl[5]));
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
+                                                        QString(" VALUES('%1',%2,%3,%4,%5,%6)")
+                                                       .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2].toInt()).arg(strl[3].toInt()).arg(strl[4].toDouble()).arg(strl[5]));
     m_myModel->Refresh();
     return 1;
 }
@@ -111,15 +117,18 @@ void ModelController::goPrev()
 
 void ModelController::toggleListType(){}
 
-void ModelController::deleteItems(QString str,int isArhive)
+void ModelController::deleteItems(QString str,int isArhive, QString table)
 {
     //INSERT INTO public."ProductList"("product_name","In_box_count","supplyer","company","price","count_sys","bar_code","last_suplyed") VALUES('Igor',1,'Igor1','irog3',2.5,(0/1),'',2.2019);
     //INSERT INTO public."ProductSaleFull"("product_name","market_Id","purchase_Id","product_count","price","date") VALUES('Igor',1,1,1,2.5,2.2019);
     QStringList strl = str.split('|');
+    strl.removeLast();
     QStringList temps;
     for(int i=0;i<strl.size();i++){
-        temps.append(strl[i]);
-        strl.removeAll(strl[i]);
+        if(temps.contains(strl[i]))continue;
+        else {
+           temps.append(strl[i]);
+        }
     }
     QString vars;
     for(int i=0;i<temps.size();i++){
@@ -128,12 +137,12 @@ void ModelController::deleteItems(QString str,int isArhive)
         tempq.next();
         QString name = tempq.record().value("product_name").toString();
         if(!isArhive){
-            if(temps.size()==8){
+            if(table=="Product"){
                 RepositoryU::SetRequest(QString("DELETE FROM public.\"ProductList\"") + QString(" WHERE id = %1").arg(vars.toInt()));
                 RepositoryU::SetRequest(QString("DELETE FROM public.\"ProductSaleFull\"") + QString(" WHERE product_name = '%1'").arg(name));
                 RepositoryU::SetRequest(QString("DELETE FROM public.\"ProductPlan\"") + QString(" WHERE product = '%1'").arg(name));
             }
-            else if(strl.size()==6)RepositoryU::SetRequest(QString("DELETE FROM public.\"ProductSaleFull\"") + QString(" WHERE id = %1").arg(vars.toInt()));
+            else if(table=="Sale")RepositoryU::SetRequest(QString("DELETE FROM public.\"ProductSaleFull\"") + QString(" WHERE id = %1").arg(vars.toInt()));
         }else{
             RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = 0 WHERE product='%1'").arg(vars.toInt()));
         }
@@ -144,7 +153,7 @@ void ModelController::deleteItems(QString str,int isArhive)
 void ModelController::updatePlan(QString str, int x)
 {
     RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2'").arg(x).arg(str));
-    showFromPlan(3);
+    showFromPlan(2);
 }
 
 void ModelController::onDataChanged()
