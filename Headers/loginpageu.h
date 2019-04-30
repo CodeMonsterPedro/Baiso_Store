@@ -15,6 +15,8 @@ public:
     explicit logInPageU(QObject *parent = nullptr);
 
     Q_INVOKABLE int sendRequest(QString login, QString password);
+    Q_INVOKABLE int getMarket(QString login, QString password);
+    Q_INVOKABLE void getDisconnect();
 signals:
 
 public slots:

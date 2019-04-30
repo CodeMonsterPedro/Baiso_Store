@@ -232,8 +232,7 @@ void InformationListModel::addElement(QSqlRecord value)
 
 void InformationListModel::delElementLast()
 {
-    if(listData.isEmpty())
-    {
+    if(listData.isEmpty()){
         return;
     }
     beginRemoveRows(QModelIndex(),listData.indexOf(listData.last()),listData.indexOf(listData.last()));
@@ -249,6 +248,27 @@ void InformationListModel::Refresh()
     for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++){
         addElement(lastQuery.record());
         lastQuery.next();
+    }
+}
+
+void InformationListModel::fillUpBigSale()
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT distinct purchase_id FROM public.\"ProductSaleFull\""));
+    QList<int> purchaseList;
+    while(tempq.next()){
+        purchaseList.append(tempq.record().value(tempq.record().indexOf("purchase_id")).toInt());
+    }
+    for(int i=0;i<purchaseList.size();i++){
+        BigSaleElement sbE;
+        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1").arg(purchaseList[i]));
+        while(tempq.next()){
+            sbE.productNames.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
+            sbE.productCount.append(tempq.record().value(tempq.record().indexOf("product_count")).toInt());
+            sbE.productPrice.append(tempq.record().value(tempq.record().indexOf("price")).toDouble());
+        }
+        sbE.date = tempq.record().value(tempq.record().indexOf("date")).toString();
+        sbE.purchaseId = purchaseList[i];
+        bigSaleList.append(sbE);
     }
 }
 

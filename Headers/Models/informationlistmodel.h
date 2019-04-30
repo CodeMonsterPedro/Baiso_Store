@@ -27,6 +27,15 @@ public:
         ProductCountRole = Qt::UserRole + 11
     };
 
+    struct BigSaleElement
+    {
+        int purchaseId;
+        QString date;
+        QStringList productNames;
+        QList<int> productCount;
+        QList<double> productPrice;
+    };
+
 
     InformationListModel(QObject *parent = Q_NULLPTR);
 
@@ -35,6 +44,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 
     QList<QSqlRecord> listData;
+    QList<BigSaleElement> bigSaleList;
 
     QStringList sourceList;
     int currentTable=0;
@@ -58,12 +68,14 @@ private:
     QVariant getLikePurchase(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant getLikeAccounts(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant getLikePlan(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant getLikeBigSale(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 //support methods
 
     void GetTopTen();
     void cleanUp();
     void fillUpPage();
+    void fillUpBigSale();
     QString GetCountSystem(int val);
     void UpdateMaxPage();
 

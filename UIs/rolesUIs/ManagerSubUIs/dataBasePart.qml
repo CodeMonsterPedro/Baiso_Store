@@ -771,8 +771,6 @@ Item{
                         }
                     }
                 }
-
-
             }
 
             Rectangle {
@@ -1314,63 +1312,8 @@ Item{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*##^## Designer {
     D{i:76;anchors_width:120;anchors_x:318}D{i:145;anchors_height:200;anchors_y:46}
 }
  ##^##*/
+

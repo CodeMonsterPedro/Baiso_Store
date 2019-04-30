@@ -9,6 +9,8 @@ import "MyUIs"
 Item {
     id:rootLogInPage
 
+    property int market_id: 0;
+    property int role: 0;
     signal becomeSaleMan();
     signal becomeStorageMan();
     signal becomeAdmin();
@@ -61,12 +63,16 @@ Item {
             button_round: 25;
             button_text: qsTr("Log in");
             onButton_clicked: {
-                switch(backend_id.sendRequest(loginfield.text,passwordfield.text)){
+                rootCanvas.my_market = rootLogInPage.market_id = backend_id.getMarket(loginfield.text,passwordfield.text);
+                rootCanvas.my_role = rootLogInPage.role = backend_id.sendRequest(loginfield.text,passwordfield.text);
+                loginfield.text = "";
+                passwordfield.text = "";
+                switch(rootLogInPage.role){
                 case 0:rootLogInPage.becomeAdmin();break;
                 case 1:rootLogInPage.becomeSaleMan();break;
                 case 2:rootLogInPage.becomeStorageMan();break;
+                case 3:break;//error
                 default:rootLogInPage.becomeSaleMan();break;
-
 
                 }
             }

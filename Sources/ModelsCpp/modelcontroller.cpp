@@ -5,11 +5,13 @@ ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(ne
     PlanCheck();
     m_myModel = new InformationListModel();
     m_myPlan = new InformationListModel();
+    bigSaleList = new InformationListModel();
     maxPageCount=currentPageCount=0;
     m_list = new QStringList;
     *m_list = RepositoryU::tables;
     m_list->pop_front();
     emit listChanged();
+    //productColumns.append("");
     QObject::connect(m_myModel,SIGNAL(dataChanged()),this,SLOT(onDataChanged()));
 }
 
@@ -33,7 +35,15 @@ int ModelController::maxPage(){
 int ModelController::currentPage(){
     return currentPageCount;
 }
-
+QStringList ModelController::colName(){
+    return columnsNameL;
+}
+QStringList ModelController::productColumnNames(){
+    return productColumns;
+}
+InformationListModel* ModelController::bsList(){
+    return bigSaleList;
+}
 void ModelController::PlanCheck()
 {
     QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT bar_code, product_name FROM public.\"ProductList\""));
@@ -150,52 +160,51 @@ void ModelController::deleteItems(QString str,int isArhive, QString table)
     m_myModel->Refresh();
 }
 
-void ModelController::updatePlan(QString str, int x)
-{
+void ModelController::updatePlan(QString str, int x){
     RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2'").arg(x).arg(str));
     showFromPlan(2);
 }
-
-void ModelController::onDataChanged()
-{
+void ModelController::onDataChanged(){
     emit myModelChanged();
 }
 //data setters
-void ModelController::setMyModel(InformationListModel* myModel)
-{
+void ModelController::setMyModel(InformationListModel* myModel){
     if (m_myModel == myModel)
         return;
     m_myModel = myModel;
     emit myModelChanged();
 }
-void ModelController::setMyPlan(InformationListModel* myModel)
-{
+void ModelController::setMyPlan(InformationListModel* myModel){
     if (m_myPlan == myModel)
         return;
     m_myPlan = myModel;
     emit myPlanChanged();
 }
-void ModelController::setList(QStringList list)
-{
+void ModelController::setList(QStringList list){
     Q_UNUSED(list);
     *m_list = RepositoryU::tables;
     m_list->removeAt(m_list->indexOf("Accounts"));
     emit listChanged();
 }
-void ModelController::setMaxPage(int max)
-{
+void ModelController::setMaxPage(int max){
     maxPageCount = max;
     emit maxPageChanged();
 }
-void ModelController::setCurrentPage(int current)
-{
+void ModelController::setCurrentPage(int current){
     currentPageCount = current;
     emit currentPageChanged();
 }
-void ModelController::setcolName(QStringList strl)
-{
+void ModelController::setcolName(QStringList strl){
     columnsNameL = strl;
     emit colNameChanged();
+}
+void ModelController::setProductColumnNames(QStringList strl){
+    productColumns = strl;
+    emit productColumnNamesChanged();
+}
+void ModelController::setbsList(InformationListModel* list){
+    bigSaleList = list;
+    emit bsListChanged();
 }
 
 

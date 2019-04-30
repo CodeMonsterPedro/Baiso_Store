@@ -18,6 +18,8 @@ Window {
     }
         Rectangle{
             id:rootCanvas
+            property int my_market: 0;
+            property int my_role: 0;
             width: Screen.width
             height: Screen.height-28
             x:0;y:0;
@@ -26,6 +28,7 @@ Window {
                 if(rootCanvas.state!="LogIn")currentTimeBackground.visible=true;
                 else currentTimeBackground.visible=false;
             }
+            onMy_roleChanged: console.log(my_role);
 
                 Loader{
                     id:logInPart
@@ -92,8 +95,6 @@ Window {
                             target: rootWindow
                             x:0;y:0
                         }
-
-
                         PropertyChanges {
                             target: saleManPart
                             visible:true;

@@ -10,9 +10,11 @@ class ModelController : public QObject
     Q_OBJECT
     InformationListModel* m_myModel;
     InformationListModel* m_myPlan;
+    InformationListModel* bigSaleList;
 
     QStringList* m_list;
     QStringList columnsNameL;
+	QStringList productColumns;
 
     int maxPageCount, currentPageCount;
     int currentTableColumnsCount;
@@ -24,7 +26,9 @@ public:
     Q_PROPERTY(QStringList list READ list WRITE setList NOTIFY listChanged)
     Q_PROPERTY(InformationListModel* myModel READ myModel WRITE setMyModel NOTIFY myModelChanged)
     Q_PROPERTY(InformationListModel* myPlan READ myPlan WRITE setMyPlan NOTIFY myPlanChanged)
+    Q_PROPERTY(InformationListModel* bsList READ bsList WRITE setbsList NOTIFY bsListChanged)
     Q_PROPERTY(QStringList columnsNames READ colName WRITE setcolName NOTIFY colNameChanged)
+    Q_PROPERTY(QStringList productColumnNames READ productColumnNames WRITE setProductColumnNames NOTIFY productColumnNamesChanged)
 
     ModelController(QObject *parent = Q_NULLPTR);
     ~ModelController();
@@ -34,7 +38,10 @@ public:
     QStringList list();
     int maxPage();
     int currentPage();
-    QStringList colName(){return columnsNameL;}
+    QStringList colName();
+	QStringList productColumnNames();
+    InformationListModel* bsList();
+    
 
     void PlanCheck();
 
@@ -47,6 +54,7 @@ public:
     Q_INVOKABLE void toggleListType();
     Q_INVOKABLE void deleteItems(QString,int,QString teble);
     Q_INVOKABLE void updatePlan(QString, int);
+
 public slots:
     void onDataChanged();
     void setMyModel(InformationListModel* myModel);
@@ -55,6 +63,8 @@ public slots:
     void setMaxPage(int max);
     void setCurrentPage(int current);
     void setcolName(QStringList strl);
+    void setProductColumnNames(QStringList strl);
+    void setbsList(InformationListModel* list);
 
 signals:
     void myModelChanged();
@@ -63,6 +73,8 @@ signals:
     void maxPageChanged();
     void currentPageChanged();
     void colNameChanged();
+    void productColumnNamesChanged();
+    void bsListChanged();
 
 };
 
