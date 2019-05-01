@@ -1,6 +1,7 @@
 ﻿import QtQuick 2.0
 import QtCharts 2.0
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import analitic_item 1.0;
@@ -153,6 +154,21 @@ Item{
                     text: qsTr("")
                     placeholderText: "Дата начала"
                     font.pointSize: 18
+                    onPressed: calendarF.visible = true;
+                }
+                Calendar{
+                    id:calendarF;
+                    z:1
+                    visible: false;
+                    anchors.left: textField1.left;
+                    anchors.right: textField1.right;
+                    anchors.top: textField1.top
+                    anchors.topMargin: textField1.height;
+                    onSelectedDateChanged:{
+                        var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
+                        textField1.text = date;
+                        calendarF.visible = false;
+                    }
                 }
 
                 Text {

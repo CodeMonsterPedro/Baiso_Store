@@ -21,6 +21,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[PriceRole] = "m_Price";
     roles[DateRole] = "m_Date";
     roles[SupplyerRole] = "m_Supplyer";
+    roles[CompanyRole] = "m_Company";
     qDebug()<<"roleNames\n";
     return roles;
 }
@@ -136,6 +137,8 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
         return temp.value(temp.indexOf("last_suplyed"));
     case SupplyerRole:
         return temp.value(temp.indexOf("supplyer"));
+    case CompanyRole:
+        return temp.value(temp.indexOf("company"));
     default:
         break;
     }
@@ -202,6 +205,11 @@ QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) c
         break;
     }
     return QVariant();
+}
+
+QVariant InformationListModel::getLikeBigSale(const QModelIndex &index, int role) const
+{
+
 }
 
 void InformationListModel::goNext()

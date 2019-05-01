@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.9
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import "../../MyUIs"
@@ -895,14 +896,18 @@ Item{
                             x: 51
                             y: 39
                             text: qsTr("С даты")
+                            onPressed: calendarF.visible = true;
                         }
+
 
                         TextField {
                             id: textField2
                             x: 299
                             y: 39
                             text: qsTr("по дату")
+                            onPressed: calendarS.visible = true;
                         }
+
 
                         Switch {
                             id: tableType;
@@ -926,6 +931,32 @@ Item{
                             y: 105
                             width: 200
                             height: 40
+                        }
+                        Calendar{
+                            id:calendarF;
+                            visible: false;
+                            anchors.left: textField1.left;
+                            anchors.right: textField1.right;
+                            anchors.top: textField1.top
+                            anchors.topMargin: textField1.height;
+                            onSelectedDateChanged:{
+                                var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
+                                textField1.text = date;
+                                calendarF.visible = false;
+                            }
+                        }
+                        Calendar{
+                            id:calendarS;
+                            visible: false;
+                            anchors.left: textField2.left;
+                            anchors.right: textField2.right;
+                            anchors.top: textField2.top
+                            anchors.topMargin: textField2.height;
+                            onSelectedDateChanged: {
+                                var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
+                                textField2.text = date;
+                                calendarS.visible = false;
+                            }
                         }
                     }
 

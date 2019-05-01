@@ -105,6 +105,11 @@ int ModelController::addNewPurchaseToRep(QString str)
     return 1;
 }
 
+int ModelController::addNewFullPurchaseToRep(QString str, QStringList strl)
+{
+
+}
+
 void ModelController::goNext()
 {
     if(currentPageCount<maxPageCount){
@@ -163,6 +168,19 @@ void ModelController::deleteItems(QString str,int isArhive, QString table)
 void ModelController::updatePlan(QString str, int x){
     RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2'").arg(x).arg(str));
     showFromPlan(2);
+}
+
+void ModelController::updateProduct(QString bcode, QString data)
+{
+    QStringList strl = data.split('|');
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductList\" SET product_name = '%1', in_box_count = %2 , supplyer = '%3' , company = '%4' , price = %5 , count_sys = %6 WHERE bar_code='%7'")
+                            .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(bcode));
+    showFrom(0);
+}
+
+void ModelController::updateFullPurchase(QString, QStringList)
+{
+
 }
 void ModelController::onDataChanged(){
     emit myModelChanged();

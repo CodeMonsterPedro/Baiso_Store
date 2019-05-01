@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.9
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import "../../MyUIs"
@@ -11,7 +12,13 @@ Item{
     height: rootDataBaseCanvas.height
     property var deleteList: []
     property int tableFontSize: 11
-
+    property string pName: ""
+    property string sup: ""
+    property string com: ""
+    property string sys: ""
+    property int inBox: 0;
+    property real price: 0.0;
+    property string bcode: ""
     Rectangle{
         id:rootDataBaseCanvas
         width: Screen.width-76;
@@ -468,6 +475,22 @@ Item{
                                 CheckBox{
                                     anchors.centerIn:parent;
                                     onCheckedChanged: {deleteList.push(m_MainId);}
+                                }
+
+                                Button {
+                                    id: button
+                                    text: qsTr("Button")
+                                    onClicked: {
+                                        product_element_chag.visible = true;
+                                        rootDataBase.pName = m_Name;
+                                        rootDataBase.sup = m_Supplyer;
+                                        rootDataBase.com = m_Company;
+                                        rootDataBase.sys = m_CountSys;
+                                        rootDataBase.price = m_Price;
+                                        rootDataBase.inBox = m_InBoxCount;
+                                        rootDataBase.bcode = m_BarCode;
+
+                                    }
                                 }
                             }
 
@@ -1193,7 +1216,7 @@ Item{
             Item{
                 id: element_sort
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle_sort
                     color: "#090808"
@@ -1267,6 +1290,7 @@ Item{
                             x: 51
                             y: 39
                             text: qsTr("С даты")
+                            onPressed: calendarF.visible = true;
                         }
 
                         TextField {
@@ -1274,6 +1298,7 @@ Item{
                             x: 299
                             y: 39
                             text: qsTr("по дату")
+                            onPressed: calendarS.visible = true;
                         }
 
                         Switch {
@@ -1297,11 +1322,140 @@ Item{
                             width: 200
                             height: 40
                         }
+                        Calendar{
+                            id:calendarF;
+                            visible: false;
+                            anchors.left: textField1.left;
+                            anchors.right: textField1.right;
+                            anchors.top: textField1.top
+                            anchors.topMargin: textField1.height;
+                            onSelectedDateChanged:{
+                                var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
+                                textField1.text = date;
+                                calendarF.visible = false;
+                            }
+                        }
+                        Calendar{
+                            id:calendarS;
+                            visible: false;
+                            anchors.left: textField2.left;
+                            anchors.right: textField2.right;
+                            anchors.top: textField2.top
+                            anchors.topMargin: textField2.height;
+                            onSelectedDateChanged: {
+                                var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
+                                textField2.text = date;
+                                calendarS.visible = false;
+                            }
+                        }
                     }
 
                 }
             }
 
+            Item{
+                id: product_element_chag
+                anchors.fill: parent
+                visible: false
+                Rectangle {
+                    id: rectangle_chag
+                    color: "#090808"
+                    opacity: 0.5
+                    anchors.fill: parent
+                }
+                Rectangle {
+                    id: product_rectangle_element_chag
+                    height: 500
+                    width: 700
+                    color: "#ffffff"
+                    border.color:"blue"
+                    radius: 3
+                    visible: true
+                    anchors.centerIn: rectangle_chag;
+                    TextField {
+                        id: textField_Name
+                        x: 69
+                        y: 29
+                        width: 251
+                        height: 40
+                        text: qsTr(rootDataBase.pName)
+                    }
+                    TextField {
+                        id: textField_Supllyer
+                        x: 69
+                        y: 104
+                        width: 251
+                        height: 40
+                        text: qsTr(rootDataBase.sup)
+                    }
+                    TextField {
+                        id: textField_Company
+                        x: 69
+                        y: 180
+                        width: 251
+                        height: 40
+                        text: qsTr(rootDataBase.com)
+                    }
+                    TextField {
+                        id: textField_InBoxCount
+                        x: 413
+                        y: 29
+                        text: qsTr("" + rootDataBase.inBox)
+                    }
+                    TextField {
+                        id: textField_Price
+                        x: 413
+                        y: 104
+                        text: qsTr("" + rootDataBase.price)
+                    }
+                    TextField {
+                        id: textField_SysCount
+                        x: 413
+                        y: 180
+                        text: qsTr(rootDataBase.sys)
+                    }
+                    MyButton{
+                        id:accept_btn_chag
+                        y: 598
+                        width: 120
+                        height: 40
+                        visible: true
+                        anchors.left: parent.left
+                        anchors.leftMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "blue"
+                        button_text_color: "blue"
+                        button_text: "Изменить"
+                        button_round: 15
+                        onButton_clicked:{
+                            var str = "" + textField_Name.text + "|" + textField_InBoxCount.text + "|" + textField_Supllyer.text + "|" + textField_Company.text + "|" + textField_Price.text + "|" + textField_SysCount.text;
+                            simpleModelController.updateProduct(rootDataBase.bcode,str);
+                            product_element_chag.visible = false;
+                        }
+                    }
+
+                    MyButton{
+                        id:decline_btn_chag
+                        x: 318
+                        y: 592
+                        width: 120
+                        height: 40
+                        visible: true
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "red"
+                        button_text_color: "red"
+                        button_text: "Отмена"
+                        button_round: 15
+                        onButton_clicked: {
+                            product_element_chag.visible = false;
+                        }
+                    }
+                }
+            }
 
             /////////////////////////////////////////////////////////////////////
         }

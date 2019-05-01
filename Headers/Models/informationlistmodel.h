@@ -24,7 +24,8 @@ public:
         PriceRole = Qt::UserRole + 8,
         DateRole = Qt::UserRole + 9,
         SupplyerRole = Qt::UserRole + 10,
-        ProductCountRole = Qt::UserRole + 11
+        ProductCountRole = Qt::UserRole + 11,
+        CompanyRole = Qt::UserRole + 12
     };
 
     struct BigSaleElement
