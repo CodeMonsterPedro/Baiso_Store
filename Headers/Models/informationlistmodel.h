@@ -25,7 +25,8 @@ public:
         DateRole = Qt::UserRole + 9,
         SupplyerRole = Qt::UserRole + 10,
         ProductCountRole = Qt::UserRole + 11,
-        CompanyRole = Qt::UserRole + 12
+        CompanyRole = Qt::UserRole + 12,
+        DifferenceRole = Qt::UserRole + 13
     };
 
     struct BigSaleElement
@@ -50,12 +51,14 @@ public:
     QStringList sourceList;
     int currentTable=0;
     QSqlQuery lastQuery;
+    int market_id;
 
     int maxPage, currentPage;
     QStringList columnsNames;
 
 //main functional methods
     void showfrom(int source=1);
+    void showfromPlan(int x);
     void goNext();
     void goPrev();
     void Refresh();

@@ -46,19 +46,29 @@ InformationListModel* ModelController::bsList(){
 }
 void ModelController::PlanCheck()
 {
-    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT bar_code, product_name FROM public.\"ProductList\""));
-    QSqlQuery tempq2 = RepositoryU::GetRequest(QString("SELECT \"bar-code\" FROM public.\"ProductPlan\""));
-    QStringList strl;
-    while (tempq2.next()) {
-        strl.append(tempq2.record().value(tempq2.record().indexOf("bar-code")).toString());
+    QSqlQuery tempq3 = RepositoryU::GetRequest(QString("SELECT DISTINCT \"market_Id\" FROM public.\"ProductSaleFull\""));
+    QVector<int> marketArray;
+    while(tempq3.next()){
+        marketArray.append(tempq3.record().value(tempq3.record().indexOf("market_Id")).toInt());
     }
-    while (tempq.next()) {
-        if(strl.contains(tempq.record().value(tempq.record().indexOf("bar_code")).toString()))continue;
-        else {
-            RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)")
-                                    .arg(tempq.record().value(tempq.record().indexOf("product_name")).toString())
-                                    .arg(tempq.record().value(tempq.record().indexOf("bar_code")).toString()));
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT bar_code, product_name FROM public.\"ProductList\""));
+    QStringList strl;
+    for(int i=0;i<marketArray.size();i++){
+        QSqlQuery tempq2 = RepositoryU::GetRequest(QString("SELECT \"bar-code\" FROM public.\"ProductPlan\" WHERE market_id = %1").arg(marketArray[i]));
+        strl.clear();
+        while (tempq2.next()) {
+            strl.append(tempq2.record().value(tempq2.record().indexOf("bar-code")).toString());
         }
+        while (tempq.next()) {
+            if(strl.contains(tempq.record().value(tempq.record().indexOf("bar_code")).toString()))continue;
+            else {
+                RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\",\"difference\",\"market_id\") VALUES('%1','%2',0,0,%3)")
+                                        .arg(tempq.record().value(tempq.record().indexOf("product_name")).toString())
+                                        .arg(tempq.record().value(tempq.record().indexOf("bar_code")).toString())
+                                        .arg(marketArray[i]));
+            }
+        }
+        tempq.seek(-1);
     }
 }
 //main functions
@@ -72,9 +82,10 @@ void ModelController::showFrom(int source)
     //setcolName();
 }
 
-void ModelController::showFromPlan(int source)
+void ModelController::showFromPlan(int source, QString str)
 {
-    m_myPlan->showfrom(source);
+    m_myPlan->market_id = str.toInt();
+    m_myPlan->showfromPlan(str.toInt());
     setMyPlan(m_myPlan);
     setMaxPage(m_myPlan->maxPage);
     setCurrentPage(1);
@@ -105,9 +116,33 @@ int ModelController::addNewPurchaseToRep(QString str)
     return 1;
 }
 
-int ModelController::addNewFullPurchaseToRep(QString str, QStringList strl)
+int ModelController::addNewFullPurchaseToRep(QString str2, QStringList strl)
 {
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("Select max(purchase_id) from public.\"ProductSaleFull\""));
+    tempq.next();
+    int newPurchaseN = tempq.record().value(tempq.record().indexOf("purchase_id")).toInt();
+    QDate date = QDate::currentDate();
+    QString dateStr = "" +QString::number(date.year()) + "-" + QString::number(date.month()) + "-" + QString::number(date.day());
+    for(int i=0;i<strl.size();i++){
+        QStringList strl2 = strl[i].split(' ');
+        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
+                                                            QString(" VALUES('%1',%2,%3,%4,%5,%6)")
+                                                            .arg(strl2[0]).arg(myStore).arg(newPurchaseN)
+                                                            .arg(strl2[1].toInt()).arg(strl2[2].toDouble()).arg(dateStr));
+    }
+    return 0;
+}
 
+int ModelController::addNewAccountToRep(QString str)
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT max(id) from "));
+    tempq.next();
+    QStringList strl = str.split('|');
+    int newId = tempq.record().value(tempq.record().indexOf("id")).toInt();
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"Accounts\"(\"id\",\"name\",\"role\",\"password\",\"login\",\"store\")") +
+                            QString(" VALUES(%1,'%2','%3','%4','%5',%6)")
+                            .arg(newId).arg(strl[0]).arg(strl[1]).arg(strl[2]).arg(strl[3]).arg(strl[4]).arg(strl[5].toInt()));
+    return 0;
 }
 
 void ModelController::goNext()
@@ -131,6 +166,10 @@ void ModelController::goPrev()
 }
 
 void ModelController::toggleListType(){}
+
+void ModelController::setMyStore(int x){
+    myStore = x;
+}
 
 void ModelController::deleteItems(QString str,int isArhive, QString table)
 {
@@ -165,21 +204,44 @@ void ModelController::deleteItems(QString str,int isArhive, QString table)
     m_myModel->Refresh();
 }
 
-void ModelController::updatePlan(QString str, int x){
-    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2'").arg(x).arg(str));
-    showFromPlan(2);
+void ModelController::updatePlan(QString str, int x, QString y){
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT count, difference FROM public.\"ProductPlan\" WHERE \"bar-code\"='%1' AND market_id = %2").arg(str).arg(y.toInt()));
+    tempq.next();
+    int oldCount = tempq.record().value(tempq.record().indexOf("count")).toInt();
+    int oldDifference = tempq.record().value(tempq.record().indexOf("difference")).toInt();
+    int newDifference = (oldCount + oldDifference) - x;
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1, difference = %4 WHERE \"bar-code\"='%2' AND market_id = %3").arg(x).arg(str).arg(y.toInt()).arg(newDifference));
+    showFromPlan(2, "" + QString::number(m_myPlan->market_id));
 }
 
 void ModelController::updateProduct(QString bcode, QString data)
 {
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT product_name FROM public.\"ProductList\" WHERE bar_code='%1'").arg(bcode));
+    tempq.next();
+    QString oldName = tempq.record().value(tempq.record().indexOf("product_name")).toString();
     QStringList strl = data.split('|');
     RepositoryU::SetRequest(QString("UPDATE public.\"ProductList\" SET product_name = '%1', in_box_count = %2 , supplyer = '%3' , company = '%4' , price = %5 , count_sys = %6 WHERE bar_code='%7'")
                             .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(bcode));
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductSaleFull\" SET product_name = '%1' WHERE product_name = '%2'").arg(strl[0]).arg(oldName));
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET product = '%1' WHERE product = '%2'").arg(strl[0]).arg(oldName));
     showFrom(0);
 }
 
-void ModelController::updateFullPurchase(QString, QStringList)
+void ModelController::updateFullPurchase(QString ss, QStringList strl)
 {
+//    QSqlQuery tempq = RepositoryU::GetRequest(QString("Select max(purchase_id) from public.\"ProductSaleFull\""));
+//    tempq.next();
+//    int newPurchaseN = tempq.record().value(tempq.record().indexOf("purchase_id")).toInt();
+//    QDate date = QDate::currentDate();
+//    QString dateStr = "" +QString::number(date.year()) + "-" + QString::number(date.month()) + "-" + QString::number(date.day());
+//    for(int i=0;i<strl.size();i++){
+//        QStringList strl2 = strl[i].split(' ');
+//        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
+//                                                            QString(" VALUES('%1',%2,%3,%4,%5,%6)")
+//                                                            .arg(strl2[0]).arg(myStore).arg(newPurchaseN)
+//                                                            .arg(strl2[1].toInt()).arg(strl2[2].toDouble()).arg(dateStr));
+//    }
+
 
 }
 void ModelController::onDataChanged(){

@@ -64,6 +64,7 @@ Item {
             button_text: qsTr("Log in");
             onButton_clicked: {
                 rootCanvas.my_market = rootLogInPage.market_id = backend_id.getMarket(loginfield.text,passwordfield.text);
+                simpleModelController.setMyStore(rootLogInPage.market_id);
                 rootCanvas.my_role = rootLogInPage.role = backend_id.sendRequest(loginfield.text,passwordfield.text);
                 loginfield.text = "";
                 passwordfield.text = "";

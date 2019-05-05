@@ -2,67 +2,117 @@
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import backend.login 1.0
 import "../MyUIs"
 
-
-
 Item{
-    id:rootAdminPage
-    width: rootAdminCanvas.width
-    height: rootAdminCanvas.height
+    id:rootStorageManPage
+    anchors.fill: parent
 
     Rectangle{
-        id:rootAdminCanvas;
-        width: Screen.width-60
-        height: Screen.height-68
-        x:30;y:40
-        radius: 15
-        color:"white"
+        id:localHub_StorageMan
+        width: 80
+        anchors.left: parent.left
+        color:"blue"
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
 
-
-        Loader{
-            id:adminPartsPage
-            visible: true;
-            width: rootAdminCanvas.width-16;
-            height: rootAdminCanvas.height-16;
-            y:8;x:8;
-            source: "../MyUIs/InformationPage.qml"
-        }
-        ScrollBar {
-                id: vbar
-                hoverEnabled: true
-                active: hovered || pressed
-                orientation: Qt.Vertical
-                size: rootAdminCanvas.height / adminPartsPage.height
-                anchors.top: parent.top
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
+        Column{
+            width: 80
+            anchors.topMargin: 40
+            spacing: 15;
+            anchors.fill: localHub_StorageMan;
+            Image {
+                id: dataBasePart
+                width: 64;height: 64;
+                source: "../MyUIs/dbicon.png"
+                MouseArea{
+                    id:second
+                    anchors.fill: dataBasePart
+                    onClicked: storageManPartsPage.source="AdminSubUIs/usersPage.qml";
+                }
             }
-
-        MyHub{
-            id:hub
-            visible: true
-            x: ((rootCanvas.width/2)-(hub.hub_main_width/2));
-            y:-40
-            hub_main_width:360
-            hub_main_height: 100
-            hub_label_width: 120
-            hub_label_height: 52
-            onCurrent_pageChanged: {
-                console.log(current_page);
-                switch(current_page)
-                {
-                    case 0:adminPartsPage.source="../MyUIs/InformationPage.qml";break;
-                    case 1:adminPartsPage.source="ManagerSubUIs/dataBasePart.qml";break;
-                    case 2:adminPartsPage.source="ManagerSubUIs/analyzePart.qml";break;
-
+            Image {
+                id: analyzePart
+                width: 64;height: 64;
+                source: "../MyUIs/brain.png"
+                MouseArea{
+                    id:third
+                    anchors.fill: analyzePart
+                    onClicked: storageManPartsPage.source="AdminSubUIs/networkSettings.qml";
 
                 }
             }
         }
 
+        Image {
+            id: exit_btn
+            x: 8
+            y: 271
+            width: 64
+            height: 64
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 40
+            source:"../MyUIs/door.png"
+            MouseArea {
+                id: exitArea
+                anchors.fill: exit_btn
+                onClicked:{
+                    logout_backend.getDisconnect();
+                    rootCanvas.my_role = 0;
+                    rootCanvas.my_market = 0;
+                    rootCanvas.state = "LogIn";
+                }
+            }
+        }
 
     }
 
+    Rectangle{
+        id:rootStorageManCanvas;
+        color:"white"
+        anchors.left: localHub_StorageMan.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+        anchors.leftMargin: 0
+
+
+        Loader{
+            id:storageManPartsPage
+            anchors.fill: parent
+            visible: true;
+            source: "AdminSubUIs/usersPage.qml"
+        }
+    }
+    Backend_logIn{
+        id:logout_backend
+    }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:480;anchors_width:80;anchors_x:0;anchors_y:0}
+D{i:1;anchors_height:832;anchors_width:1540}
+}
+ ##^##*/

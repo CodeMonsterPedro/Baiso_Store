@@ -5,6 +5,8 @@ InformationListModel::InformationListModel(QObject *parent) : QAbstractListModel
     sourceList.append("ProductList");
     sourceList.append("ProductSaleFull");
     sourceList.append("ProductPlan");
+    sourceList.append("ProductSaleFull");
+    market_id = 1;
 }
 
 QHash<int, QByteArray> InformationListModel::roleNames() const
@@ -22,6 +24,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[DateRole] = "m_Date";
     roles[SupplyerRole] = "m_Supplyer";
     roles[CompanyRole] = "m_Company";
+    roles[DifferenceRole] = "m_Difference";
     qDebug()<<"roleNames\n";
     return roles;
 }
@@ -44,6 +47,7 @@ QVariant InformationListModel::data(const QModelIndex &index, int role) const
     case 2:
         return getLikePlan(index,role);
     case 3:
+        return getLikeBigSale(index,role);
     case 4:
     default:
         break;
@@ -92,6 +96,16 @@ void InformationListModel::showfrom(int source)
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
     // lastQuery.
     // columnsNames;
+    this->fillUpPage();
+    this->UpdateMaxPage();
+}
+
+void InformationListModel::showfromPlan(int x)
+{
+    this->cleanUp();
+    market_id = x;
+    currentTable = 2;
+    lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductPlan\" WHERE market_id = %1").arg(market_id));
     this->fillUpPage();
     this->UpdateMaxPage();
 }
@@ -192,7 +206,7 @@ QVariant InformationListModel::getLikeAccounts(const QModelIndex &index, int rol
 
 QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) const
 {
-    //qDebug()<<"getLikePlan";
+    qDebug()<<"getLikePlan";
     QSqlRecord temp = listData.at(index.row());
     switch (role) {
     case NameRole:
@@ -201,6 +215,8 @@ QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) c
         return temp.value(temp.indexOf("bar-code"));
     case ProductCountRole:
         return temp.value(temp.indexOf("count"));
+    case DifferenceRole:
+        return temp.value(temp.indexOf("difference"));
     default:
         break;
     }
@@ -209,7 +225,25 @@ QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) c
 
 QVariant InformationListModel::getLikeBigSale(const QModelIndex &index, int role) const
 {
-
+    BigSaleElement temp = bigSaleList.at(index.row());
+    QString str;
+    switch (role) {
+    case NameRole:
+        return str = temp.productNames.join('\n');
+    case MainIdRole:
+        return temp.purchaseId;
+    case PriceRole:
+        for(int i=0;i<temp.productPrice.size();i++)str+= "" + QString::number(temp.productPrice[i]) + "\n";
+        return str;
+    case DateRole:
+        return temp.date;
+    case ProductCountRole:
+        for(int i=0;i<temp.productCount.size();i++)str+= "" + QString::number(temp.productCount[i]) + "\n";
+        return str;
+    default:
+        break;
+    }
+    return QVariant();
 }
 
 void InformationListModel::goNext()

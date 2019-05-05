@@ -12,7 +12,7 @@ Item{
     width: rootbigsaleCanvas.width
     height: rootbigsaleCanvas.height;
     Component.onCompleted: {
-        simpleModelController.showFrom(2);
+        simpleModelController.showFrom(3);
     }
 
     Rectangle {
@@ -198,7 +198,7 @@ Item{
                             y: 8
                             width: 152
                             height: 46
-                            text: qsTr("Date")
+                            text: qsTr("" + m_Date)
                             font.pixelSize: 16
                         }
 

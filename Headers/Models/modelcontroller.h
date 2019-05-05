@@ -42,19 +42,21 @@ public:
 	QStringList productColumnNames();
     InformationListModel* bsList();
     
-
+    int myStore;
     void PlanCheck();
 
     Q_INVOKABLE void showFrom(int source);
-    Q_INVOKABLE void showFromPlan(int source);
+    Q_INVOKABLE void showFromPlan(int source, QString str);
     Q_INVOKABLE int addNewProductToRep(QString str);
     Q_INVOKABLE int addNewPurchaseToRep(QString str);
     Q_INVOKABLE int addNewFullPurchaseToRep(QString str, QStringList strl);
+    Q_INVOKABLE int addNewAccountToRep(QString str);
     Q_INVOKABLE void goNext();
     Q_INVOKABLE void goPrev();
     Q_INVOKABLE void toggleListType();
+    Q_INVOKABLE void setMyStore(int x);
     Q_INVOKABLE void deleteItems(QString,int,QString teble);
-    Q_INVOKABLE void updatePlan(QString, int);
+    Q_INVOKABLE void updatePlan(QString, int, QString);
     Q_INVOKABLE void updateProduct(QString, QString);
     Q_INVOKABLE void updateFullPurchase(QString, QStringList);
 
