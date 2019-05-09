@@ -11,9 +11,6 @@ Item{
     property int pCount: 0
     width: rootbigsaleCanvas.width
     height: rootbigsaleCanvas.height;
-    Component.onCompleted: {
-        simpleModelController.showFrom(3);
-    }
 
     Rectangle {
         id: rootbigsaleCanvas
@@ -120,12 +117,11 @@ Item{
 
             Component{
                 id:bigsaleDelegate
-
                 Item{
                     id:bigsaleDelegateItem
                     property bool isOpen: false;
                     width: bigsaleList.width
-                    height: isOpen? 400 : 60;
+                    height: bigsaleDelegateItem.isOpen? rectangle.height+20 : 60;
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     Rectangle{
@@ -133,7 +129,7 @@ Item{
                         anchors.fill: parent
                         anchors.leftMargin: 10
                         anchors.rightMargin: 15;
-                        height: bigsaleDelegateItem.isOpen? 400 : 60;
+                        height: bigsaleDelegateItem.isOpen? rectangle.height+20 : 60;
                         color:"#e7e2e2"
                         border.width: 2
                         border.color: "blue"
@@ -141,12 +137,14 @@ Item{
                             id: rectangle
                             x: 0
                             color: "lightgray"
-                            visible: false
+                            height: m_BRows * 50;
+                            visible: bigsaleDelegateItem.isOpen;
                             anchors.rightMargin: 2
                             anchors.leftMargin: 2
-                            anchors.bottomMargin: 2
                             anchors.topMargin: 60
-                            anchors.fill: parent
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.top: parent.top
                             Text {
                                 x: 15
                                 width: 300
@@ -206,7 +204,9 @@ Item{
                             id: mouseArea
                             anchors.rightMargin: 40
                             anchors.fill: parent
-                            onClicked: bigsaleDelegateItem.isOpen = !bigsaleDelegateItem.isOpen;
+                            onClicked:{
+                                bigsaleDelegateItem.isOpen = !bigsaleDelegateItem.isOpen;
+                            }
                         }
                         Button{
                             width: 40
@@ -221,11 +221,29 @@ Item{
                         }
                         CheckBox{
                             height: 30
+                            visible: false
                             anchors.right: parent.right
                             anchors.rightMargin: 0
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 0
 
+                        }
+                        MyButton{
+                            id:printBtn
+                            button_height: 50
+                            button_width: 50;
+                            visible: true
+                            x:700
+                            y:30;
+                            z:1
+                            button_image_source: "print.png"
+                            onButton_clicked: simpleModelController.printBigSale(m_MainId);
+                        }
+                        MouseArea{
+                            anchors.rightMargin: -82
+                            anchors.bottomMargin: -30
+                            anchors.fill: printBtn;
+                            onClicked: simpleModelController.printBigSale(m_MainId);
                         }
                     }
                 }
@@ -322,7 +340,7 @@ Item{
                 id: bigSale_element_add
                 property var newBigSaleList: []
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -357,6 +375,7 @@ Item{
                         button_text: "Добавить"
                         button_round: 15
                         onButton_clicked:{
+                            simpleModelController.addNewFullPurchaseToRep(" ", bigSale_element_add.newBigSaleList);
                             bigSale_element_add.visible = false;
                             textField_ProductName.text = "";
                             textField_Price.text = " ";
@@ -432,6 +451,7 @@ Item{
                             MyButton {
                                 width: 40
                                 height: 40
+                                button_image_source: qsTr("")
                                 visible: true
                                 button_height: 40
                                 button_width: 40
@@ -507,8 +527,10 @@ Item{
 
 
 
+
+
 /*##^## Designer {
-    D{i:34;anchors_height:40;anchors_width:120;anchors_y:598}D{i:30;anchors_width:659}
+    D{i:30;anchors_width:659}D{i:34;anchors_height:40;anchors_width:120;anchors_y:598}
 D{i:29;anchors_height:387}
 }
  ##^##*/

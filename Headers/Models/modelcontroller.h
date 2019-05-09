@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QTextDocument>
+#include <QPrinter>
+#include <QPrintDialog>
 #include"informationlistmodel.h"
 
 class ModelController : public QObject
@@ -59,6 +62,8 @@ public:
     Q_INVOKABLE void updatePlan(QString, int, QString);
     Q_INVOKABLE void updateProduct(QString, QString);
     Q_INVOKABLE void updateFullPurchase(QString, QStringList);
+    Q_INVOKABLE void printBigSale(int id);
+    Q_INVOKABLE void printPlan(int store);
 
 public slots:
     void onDataChanged();

@@ -25,6 +25,7 @@ QHash<int, QByteArray> InformationListModel::roleNames() const
     roles[SupplyerRole] = "m_Supplyer";
     roles[CompanyRole] = "m_Company";
     roles[DifferenceRole] = "m_Difference";
+    roles[BigSaleRowsCount] = "m_BRows";
     qDebug()<<"roleNames\n";
     return roles;
 }
@@ -33,7 +34,7 @@ int InformationListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 //            qDebug()<<"LIST DATA SIZE - " + QString::number(listData.size()) + " xx " + QString::number(parent.row()) + " yy " + QString::number(parent.column());
-    return listData.count();
+    return currentTable == 3? bigSaleList.size() : listData.count();
 }
 
 QVariant InformationListModel::data(const QModelIndex &index, int role) const
@@ -96,7 +97,8 @@ void InformationListModel::showfrom(int source)
     lastQuery = RepositoryU::GetRequest(QString("SELECT * FROM public.\"%1\" ").arg(table));
     // lastQuery.
     // columnsNames;
-    this->fillUpPage();
+    if(source == 3)this->fillUpBigSale();
+    else this->fillUpPage();
     this->UpdateMaxPage();
 }
 
@@ -112,6 +114,7 @@ void InformationListModel::showfromPlan(int x)
 
 void InformationListModel::cleanUp()
 {
+   bigSaleList.clear();
    while(!listData.isEmpty())delElementLast();
 }
 
@@ -217,6 +220,8 @@ QVariant InformationListModel::getLikePlan(const QModelIndex &index, int role) c
         return temp.value(temp.indexOf("count"));
     case DifferenceRole:
         return temp.value(temp.indexOf("difference"));
+    case MarketIdRole:
+        return market_id;
     default:
         break;
     }
@@ -240,6 +245,8 @@ QVariant InformationListModel::getLikeBigSale(const QModelIndex &index, int role
     case ProductCountRole:
         for(int i=0;i<temp.productCount.size();i++)str+= "" + QString::number(temp.productCount[i]) + "\n";
         return str;
+    case BigSaleRowsCount:
+        return temp.productPrice.size();
     default:
         break;
     }

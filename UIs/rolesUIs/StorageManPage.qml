@@ -32,7 +32,10 @@ Item{
                 MouseArea{
                     id:second
                     anchors.fill: dataBasePart
-                    onClicked: storageManPartsPage.source="StorageManSubUIs/Products_and_supplys.qml";
+                    onClicked: {
+                        simpleModelController.showFrom(0);
+                        storageManPartsPage.source="StorageManSubUIs/Products_and_supplys.qml";
+                    }
                 }
             }
             Image {
@@ -42,8 +45,10 @@ Item{
                 MouseArea{
                     id:third
                     anchors.fill: analyzePart
-                    onClicked: storageManPartsPage.source="StorageManSubUIs/markets_and_suplySends.qml";
-
+                    onClicked: {
+                        simpleModelController.showFrom(3);
+                        storageManPartsPage.source="StorageManSubUIs/markets_and_suplySends.qml";
+                    }
                 }
             }
         }

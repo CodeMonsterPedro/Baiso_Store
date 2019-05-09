@@ -48,6 +48,22 @@ Item{
                 anchors.bottomMargin: 20
                 anchors.topMargin: 20
                 anchors.fill: parent
+                MyButton{
+                    id:printBtn
+                    button_height: 40
+                    button_width: 50;
+                    button_text: ""
+                    button_border_color: "blue"
+                    button_round: 10;
+                    visible: true
+                    x:785
+                    y:30
+                    width: 50
+                    height: 40
+                    z:1
+                    button_image_source: "print.png"
+                    onButton_clicked: simpleModelController.printPlan(parseInt(textField.text,10));
+                }
                 TextField {
                     id: textField
                     x: 62
@@ -698,7 +714,10 @@ Item{
 
 
 
+
+
 /*##^## Designer {
-    D{i:4;anchors_height:200;anchors_width:200}D{i:40;anchors_height:30;anchors_y:598}
+    D{i:4;anchors_height:200;anchors_width:200}D{i:41;anchors_height:30;anchors_y:598}
+D{i:40;anchors_height:30;anchors_y:598}
 }
  ##^##*/

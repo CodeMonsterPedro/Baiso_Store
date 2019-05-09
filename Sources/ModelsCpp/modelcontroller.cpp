@@ -120,13 +120,13 @@ int ModelController::addNewFullPurchaseToRep(QString str2, QStringList strl)
 {
     QSqlQuery tempq = RepositoryU::GetRequest(QString("Select max(purchase_id) from public.\"ProductSaleFull\""));
     tempq.next();
-    int newPurchaseN = tempq.record().value(tempq.record().indexOf("purchase_id")).toInt();
+    int newPurchaseN = tempq.record().value(tempq.record().indexOf("max")).toInt() + 1;
     QDate date = QDate::currentDate();
     QString dateStr = "" +QString::number(date.year()) + "-" + QString::number(date.month()) + "-" + QString::number(date.day());
     for(int i=0;i<strl.size();i++){
         QStringList strl2 = strl[i].split(' ');
-        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
-                                                            QString(" VALUES('%1',%2,%3,%4,%5,%6)")
+        RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_id\",\"product_count\",\"price\",\"date\")") +
+                                                            QString(" VALUES('%1',%2,%3,%4,%5,'%6')")
                                                             .arg(strl2[0]).arg(myStore).arg(newPurchaseN)
                                                             .arg(strl2[1].toInt()).arg(strl2[2].toDouble()).arg(dateStr));
     }
@@ -242,6 +242,69 @@ void ModelController::updateFullPurchase(QString ss, QStringList strl)
 //                                                            .arg(strl2[1].toInt()).arg(strl2[2].toDouble()).arg(dateStr));
 //    }
 
+
+}
+
+void ModelController::printBigSale(int id)
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductSaleFull\" WHERE purchase_id=%1").arg(id));
+    tempq.next();
+    QDate date = tempq.record().value(tempq.record().indexOf("date")).toDate();
+    QString dateStr = "" + QString::number(date.day()) + "." + QString::number(date.month()) + "." + QString::number(date.year());
+    QString html = QString("<h1> Расчетная квитаниция №%1 от %2</h1>").arg(id).arg(dateStr);
+    html += "</br><table width=600px border=2 align=center><tr><td width=300><center>Продукт</center></td><td width=80><center>Кол-во</center></td><td width=100><center>Цена</center></td></tr>";
+    for(int i=0;i<tempq.size();i++){
+        QSqlRecord tempr = tempq.record();
+        html+=QString("<tr><td> %1</td><td><center>%2</center></td><td><center>%3</center></td></tr>").arg(tempr.value(tempr.indexOf("product_name")).toString()).arg(tempr.value(tempr.indexOf("product_count")).toString()).arg(tempr.value(tempr.indexOf("price")).toString());
+        tempq.next();
+    }
+    html+="</table>";
+    QTextDocument document;
+    document.setHtml(html);
+    QPrinter printer(QPrinter::PrinterResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName("decl.pdf");
+    QPrintDialog printDialog(&printer);
+    if (printDialog.exec() == QDialog::Accepted) {
+        document.print(&printer);
+    }
+
+}
+
+void ModelController::printPlan(int store)
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductPlan\" WHERE market_id=%1").arg(store));tempq.next();
+    QDate date = tempq.record().value(tempq.record().indexOf("date")).toDate();
+    QString dateStr = "" + QString::number(date.day()) + "." + QString::number(date.month()) + "." + QString::number(date.year());
+    QString html = QString("<h1> План закупок магазина №%1 </h1>").arg(store);
+    html += "<br><table width=600px border=2><tr><td width=300><center>Продукт</center></td><td width=80><center>К закупке</center></td><td width=100><center>Цена закупки</center></td></tr>";
+
+    QSqlQuery tempq2;
+    QSqlRecord tempr;
+    double fullPrice=0;
+    for(int i=0;i<tempq.size();i++){
+        tempr = tempq.record();
+        tempq2  = RepositoryU::GetRequest(QString("Select price from public.\"ProductList\" Where bar_code='%1'").arg(tempr.value(tempr.indexOf("bar-code")).toString()));tempq2.first();
+        double price = (tempq2.record().value(tempq2.record().indexOf("price")).toDouble()) *  tempr.value(tempr.indexOf("count")).toInt();
+        fullPrice += price;
+        html+=QString("<tr><td>%1</td><td><center>%2</center></td><td><center>%3</center></td></tr>")
+                .arg(tempr.value(tempr.indexOf("product")).toString())
+                .arg(tempr.value(tempr.indexOf("count")).toString())
+                .arg(price);
+        tempq.next();
+    }
+    html += QString("<tr><td colspan=3> Общая стоимость закупки: %1</td></tr>").arg(fullPrice);
+    html += QString("<tr><td colspan=3> ПДВ 18%: %1</td></tr>").arg(fullPrice * 1.18);
+    html += "</table>";
+    QTextDocument document;
+    document.setHtml(html);
+    QPrinter printer(QPrinter::PrinterResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName("decl.pdf");
+    QPrintDialog printDialog(&printer);
+    if (printDialog.exec() == QDialog::Accepted) {
+        document.print(&printer);
+    }
 
 }
 void ModelController::onDataChanged(){

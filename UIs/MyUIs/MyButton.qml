@@ -43,9 +43,7 @@ Item {
      Image {
          id: icon;
          source: button_image_source;
-         width: 128;
-         height: 128;
-         onSourceChanged: {if(button_image_source!=""){button_width=icon.width;button_height=icon.height}}
+         onSourceChanged: {if(button_image_source!=""){icon.width=button_width;icon.height=button_height}}
      }
     }
     Rectangle{
