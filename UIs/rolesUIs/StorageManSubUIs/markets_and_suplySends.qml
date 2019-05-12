@@ -135,7 +135,6 @@ Item{
                         border.color: "blue"
                         Rectangle {
                             id: rectangle
-                            x: 0
                             color: "lightgray"
                             height: m_BRows * 50;
                             visible: bigsaleDelegateItem.isOpen;
@@ -216,8 +215,9 @@ Item{
                             anchors.topMargin: 0
                             anchors.right: parent.right
                             anchors.rightMargin: 0
-                            onClicked: element_chag.visible = true;
-
+                            onClicked:{
+                                simpleModelController.setCurrentBigSale(m_MainId);
+                            }
                         }
                         CheckBox{
                             height: 30
@@ -232,27 +232,27 @@ Item{
                             id:printBtn
                             button_height: 50
                             button_width: 50;
+                            width: 50;
+                            height: 50;
                             visible: true
                             x:700
                             y:30;
-                            z:1
                             button_image_source: "print.png"
                             onButton_clicked: simpleModelController.printBigSale(m_MainId);
                         }
-                        MouseArea{
-                            anchors.rightMargin: -82
-                            anchors.bottomMargin: -30
-                            anchors.fill: printBtn;
-                            onClicked: simpleModelController.printBigSale(m_MainId);
-                        }
+
                     }
                 }
             }
 
             Item{
+                property int pId: 0;
+                property string dateStr: "";
+                property variant pNames: [];
+                property variant pCount: [];
                 id: element_chag
                 anchors.fill: parent
-                visible: false
+                visible: true
                 Rectangle {
                     id: rectangle_chag
                     color: "#090808"
@@ -262,7 +262,7 @@ Item{
 
                 Rectangle {
                     id: rectangle_element_chag
-                    height: 300
+                    height: 780
                     width: 700
                     color: "#ffffff"
                     border.color:"blue"
@@ -270,7 +270,90 @@ Item{
                     visible: true
                     anchors.centerIn: rectangle_chag;
 
+                    ListView{
+                        property bool counter: false;
+                        anchors.bottomMargin: 120
+                        id:listViewSaleDetails
+                        anchors.topMargin: 0
+                        anchors.fill: parent
+                        contentHeight: 10
+                        contentWidth: 10
+                        spacing: 8;
+                        clip: true
+                        model:listViewSaleDetails.counter, element_chag.pNames;
+                        delegate: Item{
+                            width: listViewSaleDetails.width
+                            height: 40;
+                            Row{
+                                visible: true
+                                anchors.fill: parent
+                                Rectangle{
+                                    width: listViewSaleDetails.width/2;
+                                    height: 40;
+                                    border.color: "black"
+                                    border.width: 2;
+                                    Text{
+                                        text: "" +  element_chag.pNames[index];
+                                        anchors.centerIn: parent;
+                                        font.pointSize: 14
+                                    }
+                                }
+                                Rectangle{
+                                    width: listViewSaleDetails.width/2;
+                                    height: 40;
+                                    border.color: "black"
+                                    border.width: 2;
+                                    SpinBox{
+                                        id:spin
+                                        width: 200;
+                                        value: element_chag.pCount[index];
+                                        from:1
+                                        to:20000;
+                                        anchors.centerIn: parent;
+                                        font.pointSize: 14
+                                        onValueChanged: {
+                                            if(simpleModelController.isCorrectCount(element_chag.pNames[index],spin.value))element_chag.pCount[index] = spin.value;
+                                            else {
+                                                spin.to = spin.value;
+                                                spin.value = element_chag.pCount[index];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        header: Item{
+                            height: 50;
+                            Row{
+                                anchors.fill: parent
+                                Rectangle{
+                                    width: listViewSaleDetails.width/2;
+                                    height: 40
+                                    Text{
+                                        anchors.centerIn: parent;
+                                        text: "Название продукта";
+                                        font.pointSize: 14
+                                    }
+                                }
+                                Rectangle{
+                                    width: listViewSaleDetails.width/2;
+                                    height: 40
+                                    Text {
+                                        anchors.centerIn: parent;
+                                        text: "Кол-во проданого"
+                                        font.pointSize: 14
+                                    }
+                                }
+                            }
+                        }
+                        headerPositioning: ListView.OverlayHeader
+                    }
+
+
+
                     MyButton{
+                        property variant resultL: [];
                         id:accept_btn_chag
                         y: 598
                         width: 120
@@ -285,7 +368,10 @@ Item{
                         button_text: "Изменить"
                         button_round: 15
                         onButton_clicked:{
-                            simpleModelController.updatePlan(informationPage.pBarCode, spinBox.value);
+                            for(var i=0;i<element_chag.pNames.length;i++){
+                                accept_btn_chag.resultL.push("" + element_chag.pNames + " " + element_chag.pCount)
+                            }
+                            simpleModelController.updateFullPurchase(element_chag.pId,accept_btn_chag.resultL);
                             element_chag.visible = false;
                         }
                     }
@@ -309,32 +395,9 @@ Item{
                             element_chag.visible = false;
                         }
                     }
-
-                    Text {
-                        id: element
-                        x: 44
-                        y: 32
-                        width: 612
-                        height: 81
-                        text: qsTr("Установите новое кол-во для закупки продукта " + bigsalePage.pName);
-                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        visible: true
-                        font.pixelSize: 22
-                    }
-
-                    SpinBox {
-                        id: spinBox
-                        x: 243
-                        y: 119
-                        width: 214
-                        height: 40
-                        to: 1000000
-                        from: 0
-                        value: bigsalePage.pCount;
-                        visible: true
-                    }
                 }
             }
+
 
             Item{
                 id: bigSale_element_add
@@ -376,10 +439,10 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             simpleModelController.addNewFullPurchaseToRep(" ", bigSale_element_add.newBigSaleList);
+                            simpleModelController.refreshProducts();
                             bigSale_element_add.visible = false;
                             textField_ProductName.text = "";
-                            textField_Price.text = " ";
-                            textField_Count.text = " ";
+                            textField_Count.text = "";
                             bigSale_element_add.newBigSaleList = [];
                         }
                     }
@@ -399,10 +462,10 @@ Item{
                         button_text: "Отмена"
                         button_round: 15
                         onButton_clicked: {
+                            simpleModelController.refreshProducts();
                             bigSale_element_add.visible = false;
                             textField_ProductName.text = "";
-                            textField_Price.text = " ";
-                            textField_Count.text = " ";
+                            textField_Count.text = "";
                             bigSale_element_add.newBigSaleList = [];
                         }
                     }
@@ -427,12 +490,13 @@ Item{
                             anchors.right: parent.right
                             anchors.rightMargin: 1
 
-                            TextField {
+                            ComboBox{
+                                property bool updater: true
                                 id: textField_ProductName
                                 width: 251
                                 height: 40
-                                text: qsTr("")
-                                placeholderText: "Название продукта"
+                                model:updater, simpleModelController.productNames;
+
                             }
                             TextField {
                                 id: textField_Count
@@ -440,13 +504,6 @@ Item{
                                 height: 40
                                 text: qsTr("")
                                 placeholderText: "Кол-во проданного"
-                            }
-                            TextField {
-                                id: textField_Price
-                                width: 134
-                                height: 40
-                                text: qsTr("")
-                                placeholderText: "Цена за еденицу"
                             }
                             MyButton {
                                 width: 40
@@ -460,12 +517,15 @@ Item{
                                 button_border_color: "#0000ff"
                                 button_round: 3
                                 onButton_clicked: {
-                                    bigSale_element_add.newBigSaleList.push("" + textField_ProductName.text + " " + textField_Count.text + " " + textField_Price.text);
-                                    textField_ProductName.text = "";
-                                    textField_Price.text = " ";
-                                    textField_Count.text = " ";
-                                    rectangle1.counter = !rectangle1.counter;
-                                    console.log(bigSale_element_add.newBigSaleList);
+                                    if(simpleModelController.isCorrectCount(textField_ProductName.currentText, parseInt(textField_Count.text,10))){
+                                        simpleModelController.useProduct(textField_ProductName.currentText);
+                                        bigSale_element_add.newBigSaleList.push("" + textField_ProductName.currentText + " " + textField_Count.text);
+                                        textField_Count.text = "";
+                                        rectangle1.counter = !rectangle1.counter;
+                                        textField_ProductName.updater = !textField_ProductName.updater;
+                                    }else{
+                                        textField_Count.text = "";
+                                    }
                                 }
                             }
                         }
@@ -513,7 +573,22 @@ Item{
                     }
                 }
             }
-
+                Connections{
+                    target: simpleModelController
+                    onProductNamesChanged:{
+                         textField_ProductName.updater = !textField_ProductName.updater;
+                    }
+                    onCurrentBigSaleSetted:{
+                        element_chag.pNames = [];
+                        element_chag.pCount = [];
+                        for(var i=0;i<simpleModelController.bigSaleProducts.length;i++){
+                            element_chag.pNames.push(simpleModelController.bigSaleProducts[i]);
+                            element_chag.pCount.push(simpleModelController.bigSaleCount[i]);
+                        }
+                        listViewSaleDetails.counter = !listViewSaleDetails.counter;
+                        element_chag.visible = true;
+                    }
+                }
         }
     }
 }

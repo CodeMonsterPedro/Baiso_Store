@@ -60,7 +60,6 @@ Item{
                     y:30
                     width: 50
                     height: 40
-                    z:1
                     button_image_source: "print.png"
                     onButton_clicked: simpleModelController.printPlan(parseInt(textField.text,10));
                 }
@@ -252,139 +251,6 @@ Item{
                         }
                     }
                 }
-                Item{
-                    id: element_add
-                    anchors.fill: parent
-                    visible: false
-                    Rectangle {
-                        id: rectangle
-                        color: "#090808"
-                        opacity: 0.5
-                        anchors.fill: parent
-                    }
-                    Rectangle {
-                        id: rectangle_element
-                        height: 702
-                        color: "#ffffff"
-                        border.color:"blue"
-                        radius: 3
-                        anchors.rightMargin: 100
-                        anchors.leftMargin: 100
-                        anchors.bottom: parent.bottom
-                        anchors.right: parent.right
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.bottomMargin: 50
-                        anchors.topMargin: 50
-                        MyButton{
-                            id:accept_btn
-                            width: 30
-                            height: 30
-                            anchors.right: parent.right
-                            anchors.rightMargin: 20
-                            anchors.top: parent.top
-                            anchors.topMargin: 20
-                            button_border_color: "red"
-                            button_text_color: "red"
-                            button_text: "X"
-                            button_round: 15
-                            onButton_clicked: {
-                                element_add.visible = false;
-                            }
-                        }
-                        Rectangle {
-                            id: rectangle3
-                            anchors.topMargin: 60
-                            anchors.fill: parent
-                            visible: true
-
-                            ChartView {
-                                id: area1
-                                antialiasing: true
-                                anchors.rightMargin: 20
-                                anchors.bottomMargin: 20
-                                title: "Статистика продаж"
-                                LineSeries {
-                                    id: cc
-                                    name: "Текущая статистика"
-                                    axisX: ValueAxis {
-                                        id: x2
-                                        min: 0
-                                        max: analyzePageItem.days
-                                        visible: false
-                                    }
-                                    axisY: ValueAxis {
-                                        id: x1
-                                        min: 0
-                                        max: analitic_part.topValueMargin+40
-                                        visible: false
-                                    }
-                                }
-
-                                LineSeries {
-                                    id: cc1
-                                    name: "Предшествующая статистика"
-                                    axisX: ValueAxis {
-                                        id: x4
-                                        min: 0
-                                        max: analyzePageItem.days
-                                        visible: false
-                                    }
-                                    axisY: ValueAxis {
-                                        id: x3
-                                        min: 0
-                                        max: analitic_part.topValueMargin+40
-                                        visible: false
-                                    }
-                                }
-
-                                LineSeries {
-                                    id: cc2
-                                    name: "Прогноз"
-                                    axisX: ValueAxis {
-                                        id: x6
-                                        min: 0
-                                        max: analyzePageItem.days
-                                        visible: true
-                                    }
-                                    axisY: ValueAxis {
-                                        id: x5
-                                        min: 0
-                                        max: analitic_part.topValueMargin+40
-                                        visible: true
-                                    }
-                                }
-                                anchors.fill: parent
-                                anchors.leftMargin: 20
-                                anchors.topMargin: 20
-                            }
-
-                            Text {
-                                id: element2
-                                x: 31
-                                y: 149
-                                width: 139
-                                height: 24
-                                text: qsTr("Кол-во продаж")
-                                font.pixelSize: 16
-                                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                            }
-
-                            Text {
-                                id: element3
-                                y: 718
-                                width: 113
-                                height: 23
-                                text: qsTr("Кол-во дней")
-                                anchors.bottom: area1.bottom
-                                anchors.bottomMargin: 20
-                                font.pixelSize: 16
-                                anchors.leftMargin: 0
-                                anchors.left: parent.horizontalCenter
-                            }
-                        }
-                    }
-                }
             }
             Item{
                 id: element
@@ -489,90 +355,227 @@ Item{
                 }
                 onDaysCountChanged: analyzePageItem.days = analitic_part.daysCount;
             }
-        }
-        Item{
-            id: element_chag
-            anchors.fill: parent
-            visible: false
-            Rectangle {
-                id: rectangle_chag
-                color: "#090808"
-                opacity: 0.5
+
+            Item{
+                id: element_add
+                x: 300
+                y: 20
                 anchors.fill: parent
-            }
-
-            Rectangle {
-                id: rectangle_element_chag
-                height: 300
-                width: 700
-                color: "#ffffff"
-                border.color:"blue"
-                radius: 3
                 visible: true
-                anchors.centerIn: rectangle_chag;
-
-                MyButton{
-                    id:accept_btn_chag
-                    y: 598
-                    width: 120
-                    height: 40
-                    visible: true
-                    anchors.left: parent.left
+                Rectangle {
+                    id: rectangle
+                    color: "#090808"
+                    opacity: 0.5
+                    anchors.fill: parent
+                }
+                Rectangle {
+                    id: rectangle_element
+                    height: 702
+                    color: "#ffffff"
+                    border.color:"blue"
+                    radius: 3
+                    anchors.rightMargin: 100
                     anchors.leftMargin: 100
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 70
-                    button_border_color: "blue"
-                    button_text_color: "blue"
-                    button_text: "Изменить"
-                    button_round: 15
-                    onButton_clicked:{
-                        simpleModelController.updatePlan(analyzePage.pBarCode, spinBox.value, textField.text);
-                        element_chag.visible = false;
-                    }
-                }
-
-                MyButton{
-                    id:decline_btn_chag
-                    x: 318
-                    y: 592
-                    width: 120
-                    height: 40
-                    visible: true
                     anchors.right: parent.right
-                    anchors.rightMargin: 100
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 70
-                    button_border_color: "red"
-                    button_text_color: "red"
-                    button_text: "Отмена"
-                    button_round: 15
-                    onButton_clicked: {
-                        element_chag.visible = false;
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.bottomMargin: 50
+                    anchors.topMargin: 50
+                    MyButton{
+                        id:accept_btn
+                        width: 30
+                        height: 30
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        anchors.top: parent.top
+                        anchors.topMargin: 20
+                        button_border_color: "red"
+                        button_text_color: "red"
+                        button_text: "X"
+                        button_round: 15
+                        onButton_clicked: {
+                            element_add.visible = false;
+                        }
+                    }
+                    Rectangle {
+                        id: rectangle3
+                        anchors.topMargin: 60
+                        anchors.fill: parent
+                        visible: true
+
+                        ChartView {
+                            id: area1
+                            antialiasing: true
+                            anchors.rightMargin: 20
+                            anchors.bottomMargin: 20
+                            title: "Статистика продаж"
+                            LineSeries {
+                                id: cc
+                                name: "Текущая статистика"
+                                axisX: ValueAxis {
+                                    id: x2
+                                    min: 0
+                                    max: analyzePageItem.days
+                                    visible: false
+                                }
+                                axisY: ValueAxis {
+                                    id: x1
+                                    min: 0
+                                    max: analitic_part.topValueMargin+40
+                                    visible: false
+                                }
+                            }
+
+                            LineSeries {
+                                id: cc1
+                                name: "Предшествующая статистика"
+                                axisX: ValueAxis {
+                                    id: x4
+                                    min: 0
+                                    max: analyzePageItem.days
+                                    visible: false
+                                }
+                                axisY: ValueAxis {
+                                    id: x3
+                                    min: 0
+                                    max: analitic_part.topValueMargin+40
+                                    visible: false
+                                }
+                            }
+
+                            LineSeries {
+                                id: cc2
+                                name: "Прогноз"
+                                axisX: ValueAxis {
+                                    id: x6
+                                    min: 0
+                                    max: analyzePageItem.days
+                                    visible: true
+                                }
+                                axisY: ValueAxis {
+                                    id: x5
+                                    min: 0
+                                    max: analitic_part.topValueMargin+40
+                                    visible: true
+                                }
+                            }
+                            anchors.fill: parent
+                            anchors.leftMargin: 20
+                            anchors.topMargin: 20
+                        }
+
+                        Text {
+                            id: element2
+                            x: 31
+                            y: 66
+                            width: 139
+                            height: 24
+                            text: qsTr("Кол-во продаж")
+                            font.pixelSize: 16
+                            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        }
+
+                        Text {
+                            id: element3
+                            y: 718
+                            width: 113
+                            height: 23
+                            text: qsTr("Кол-во дней")
+                            anchors.bottom: area1.bottom
+                            anchors.bottomMargin: 10
+                            font.pixelSize: 16
+                            anchors.leftMargin: 0
+                            anchors.left: parent.horizontalCenter
+                        }
                     }
                 }
+            }
 
-                Text {
-                    id: textMessage
-                    x: 44
-                    y: 32
-                    width: 612
-                    height: 81
-                    text: qsTr("Установите новое кол-во для закупки продукта " + analyzePage.pName);
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                    visible: true
-                    font.pixelSize: 22
+            Item{
+                id: element_chag
+                anchors.fill: parent
+                visible: false
+                Rectangle {
+                    id: rectangle_chag
+                    color: "#090808"
+                    opacity: 0.5
+                    anchors.fill: parent
                 }
 
-                SpinBox {
-                    id: spinBox
-                    x: 243
-                    y: 119
-                    width: 214
-                    height: 40
-                    to: 1000000
-                    from: 0
-                    value: analyzePage.pCount;
+                Rectangle {
+                    id: rectangle_element_chag
+                    height: 300
+                    width: 700
+                    color: "#ffffff"
+                    border.color:"blue"
+                    radius: 3
                     visible: true
+                    anchors.centerIn: rectangle_chag;
+
+                    MyButton{
+                        id:accept_btn_chag
+                        y: 598
+                        width: 120
+                        height: 40
+                        visible: true
+                        anchors.left: parent.left
+                        anchors.leftMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "blue"
+                        button_text_color: "blue"
+                        button_text: "Изменить"
+                        button_round: 15
+                        onButton_clicked:{
+                            simpleModelController.updatePlan(analyzePage.pBarCode, spinBox.value, textField.text);
+                            element_chag.visible = false;
+                        }
+                    }
+
+                    MyButton{
+                        id:decline_btn_chag
+                        x: 318
+                        y: 592
+                        width: 120
+                        height: 40
+                        visible: true
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "red"
+                        button_text_color: "red"
+                        button_text: "Отмена"
+                        button_round: 15
+                        onButton_clicked: {
+                            element_chag.visible = false;
+                        }
+                    }
+
+                    Text {
+                        id: textMessage
+                        x: 44
+                        y: 32
+                        width: 612
+                        height: 81
+                        text: qsTr("Установите новое кол-во для закупки продукта " + analyzePage.pName);
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        visible: true
+                        font.pixelSize: 22
+                    }
+
+                    SpinBox {
+                        id: spinBox
+                        x: 243
+                        y: 119
+                        width: 214
+                        height: 40
+                        to: 1000000
+                        from: 0
+                        value: analyzePage.pCount;
+                        visible: true
+                    }
                 }
             }
         }
@@ -716,8 +719,12 @@ Item{
 
 
 
+
+
+
+
 /*##^## Designer {
-    D{i:4;anchors_height:200;anchors_width:200}D{i:41;anchors_height:30;anchors_y:598}
-D{i:40;anchors_height:30;anchors_y:598}
+    D{i:4;anchors_height:200;anchors_width:200}D{i:24;anchors_height:30;anchors_y:598}
+D{i:23;anchors_height:30;anchors_y:598}
 }
  ##^##*/

@@ -18,6 +18,12 @@ class ModelController : public QObject
     QStringList* m_list;
     QStringList columnsNameL;
 	QStringList productColumns;
+    QStringList products;
+    QStringList products_const;
+    QStringList bsProducts;
+    QStringList bsCount;
+    QStringList bsPrice;
+
 
     int maxPageCount, currentPageCount;
     int currentTableColumnsCount;
@@ -32,6 +38,10 @@ public:
     Q_PROPERTY(InformationListModel* bsList READ bsList WRITE setbsList NOTIFY bsListChanged)
     Q_PROPERTY(QStringList columnsNames READ colName WRITE setcolName NOTIFY colNameChanged)
     Q_PROPERTY(QStringList productColumnNames READ productColumnNames WRITE setProductColumnNames NOTIFY productColumnNamesChanged)
+    Q_PROPERTY(QStringList productNames READ productNames WRITE setProductNames NOTIFY productNamesChanged)
+    Q_PROPERTY(QStringList bigSaleProducts READ bigSaleProducts WRITE setBigSaleProducts NOTIFY bigSaleProductsChanged)
+    Q_PROPERTY(QStringList bigSaleCount READ bigSaleCount WRITE setBigSaleCount NOTIFY bigSaleCountChanged)
+    Q_PROPERTY(QStringList bigSalePrice READ bigSalePrice WRITE setBigSalePrice NOTIFY bigSalePriceChanged)
 
     ModelController(QObject *parent = Q_NULLPTR);
     ~ModelController();
@@ -43,7 +53,12 @@ public:
     int currentPage();
     QStringList colName();
 	QStringList productColumnNames();
+    QStringList productNames();
     InformationListModel* bsList();
+    QStringList bigSaleProducts();
+    QStringList bigSaleCount();
+    QStringList bigSalePrice();
+
     
     int myStore;
     void PlanCheck();
@@ -64,6 +79,11 @@ public:
     Q_INVOKABLE void updateFullPurchase(QString, QStringList);
     Q_INVOKABLE void printBigSale(int id);
     Q_INVOKABLE void printPlan(int store);
+    Q_INVOKABLE void useProduct(QString str);
+    Q_INVOKABLE void refreshProducts();
+    Q_INVOKABLE bool isCorrectCount(QString str,int count);
+    Q_INVOKABLE void setCurrentBigSale(int id);
+
 
 public slots:
     void onDataChanged();
@@ -75,6 +95,10 @@ public slots:
     void setcolName(QStringList strl);
     void setProductColumnNames(QStringList strl);
     void setbsList(InformationListModel* list);
+    void setProductNames(QStringList strl);
+    void setBigSaleProducts(QStringList strl);
+    void setBigSaleCount(QStringList strl);
+    void setBigSalePrice(QStringList strl);
 
 signals:
     void myModelChanged();
@@ -85,6 +109,11 @@ signals:
     void colNameChanged();
     void productColumnNamesChanged();
     void bsListChanged();
+    void productNamesChanged();
+    void currentBigSaleSetted();
+    void bigSaleProductsChanged();
+    void bigSaleCountChanged();
+    void bigSalePriceChanged();
 
 };
 

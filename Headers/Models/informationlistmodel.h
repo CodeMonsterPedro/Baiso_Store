@@ -33,6 +33,7 @@ public:
     struct BigSaleElement
     {
         int purchaseId;
+		int storeId;
         QString date;
         QStringList productNames;
         QList<int> productCount;

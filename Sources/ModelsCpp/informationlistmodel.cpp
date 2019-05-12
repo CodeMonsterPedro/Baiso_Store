@@ -247,6 +247,8 @@ QVariant InformationListModel::getLikeBigSale(const QModelIndex &index, int role
         return str;
     case BigSaleRowsCount:
         return temp.productPrice.size();
+    case MarketIdRole:
+        return temp.storeId;
     default:
         break;
     }
@@ -309,7 +311,7 @@ void InformationListModel::fillUpBigSale()
     }
     for(int i=0;i<purchaseList.size();i++){
         BigSaleElement sbE;
-        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1").arg(purchaseList[i]));
+        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date, \"market_Id\"  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1").arg(purchaseList[i]));
         while(tempq.next()){
             sbE.productNames.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
             sbE.productCount.append(tempq.record().value(tempq.record().indexOf("product_count")).toInt());
@@ -317,6 +319,7 @@ void InformationListModel::fillUpBigSale()
         }
         sbE.date = tempq.record().value(tempq.record().indexOf("date")).toString();
         sbE.purchaseId = purchaseList[i];
+        sbE.storeId = tempq.record().value(tempq.record().indexOf("market_Id")).toInt();
         bigSaleList.append(sbE);
     }
 }
