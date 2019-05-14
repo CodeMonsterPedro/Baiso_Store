@@ -145,7 +145,7 @@ QVariant InformationListModel::getLikeProduct(const QModelIndex &index, int role
     case InBoxCountRole:
         return temp.value(temp.indexOf("in_box_count"));
     case CountSystemRole:
-        return temp.value(temp.indexOf("count_sys")).toInt()? "item" : "kgs";
+        return temp.value(temp.indexOf("count_sys")).toInt()? "Шт" : "Кг";
     case BarCodeRole:
         return temp.value(temp.indexOf("bar_code"));
     case PriceRole:

@@ -13,8 +13,11 @@ Item {
     property color button_text_color: "black"
     property int button_width: 50;
     property int button_height: 20;
+    property int button_image_width: button_width;
+    property int button_image_height: button_height;
     property int button_round: 0;
     property int button_shadow_round: backbgound.radius;
+    property int button_border_width: 1;
     signal button_clicked;
     signal button_hover;
     signal button_unhover;
@@ -26,6 +29,7 @@ Item {
      width:button_width;
      height: button_height;
      border.color: button_border_color;
+     border.width: button_border_width;
      radius: button_round;
 
      Text{
@@ -42,8 +46,10 @@ Item {
         }
      Image {
          id: icon;
+         anchors.centerIn: parent;
+         width: button_image_width;
+         height: button_image_height
          source: button_image_source;
-         onSourceChanged: {if(button_image_source!=""){icon.width=button_width;icon.height=button_height}}
      }
     }
     Rectangle{

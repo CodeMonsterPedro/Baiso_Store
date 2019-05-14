@@ -21,6 +21,7 @@ Item{
         anchors.leftMargin: 0
 
         Column{
+            id: column
             width: 80
             anchors.topMargin: 40
             spacing: 15;
@@ -28,58 +29,72 @@ Item{
             Image {
                 id: informationPart
                 width: 64;height: 64;
-                source: "../MyUIs/graph.png"
+                visible: false
+                source: "graph.png"
                 MouseArea{
                     id:first
                     anchors.fill: informationPart
                     onClicked: managerPartsPage.source="../MyUIs/InformationPage.qml";
                 }
             }
-
-            Image {
+            MyButton{
                 id: dataBasePart
-                width: 64;height: 64;
-                source: "../MyUIs/dbicon.png"
-                MouseArea{
-                    id:second
-                    anchors.fill: dataBasePart
-                    onClicked: managerPartsPage.source="ManagerSubUIs/dataBasePart.qml";
-                }
+                button_height: 70
+                button_width: 70
+                button_text: ""
+                button_border_color: "blue"
+                button_image_height: 64;
+                button_image_width: 64;
+                button_round: 15;
+                visible: true
+                width: 70
+                height: 70
+                anchors.horizontalCenter: parent.horizontalCenter
+                button_image_source: "dbicon.png"
+                onButton_clicked: managerPartsPage.source="ManagerSubUIs/dataBasePart.qml";
             }
-
-            Image {
+            MyButton{
                 id: analyzePart
-                width: 64;height: 64;
-                source: "../MyUIs/brain.png"
-                MouseArea{
-                    id:third
-                    anchors.fill: analyzePart
-                    onClicked: managerPartsPage.source="ManagerSubUIs/analyzePart.qml";
-
-                }
+                button_height: 70
+                button_width: 70
+                button_text: ""
+                button_border_color: "blue"
+                button_image_height: 64;
+                button_image_width: 64;
+                button_round: 15;
+                visible: true
+                width: 70
+                height: 70
+                anchors.horizontalCenter: parent.horizontalCenter
+                button_image_source: "brain.png"
+                onButton_clicked: managerPartsPage.source="ManagerSubUIs/analyzePart.qml";
             }
         }
-
-        Image {
+        MyButton{
             id: exit_btn
             x: 8
-            y: 271
-            width: 64
-            height: 64
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 40
-            source: "../MyUIs/door.png"
-            MouseArea {
-                id: exitArea
-                anchors.fill: exit_btn
-                onClicked:{
-                    logout_backend.getDisconnect();
-                    rootCanvas.my_role = 0;
-                    rootCanvas.my_market = 0;
-                    rootCanvas.state = "LogIn";
-                }
+            anchors.bottomMargin: 50
+            button_height: 70
+            button_width: 70
+            button_text: ""
+            button_border_color: "blue"
+            button_image_height: 64;
+            button_image_width: 64;
+            button_round: 15;
+            visible: true
+            width: 70
+            height: 70
+            anchors.horizontalCenter: parent.horizontalCenter
+            button_image_source: "door.png"
+            onButton_clicked:{
+                logout_backend.getDisconnect();
+                rootCanvas.my_role = 0;
+                rootCanvas.my_market = 0;
+                rootCanvas.state = "LogIn";
             }
         }
+
     }
 
     Rectangle{
@@ -120,8 +135,38 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_height:480;anchors_width:80;anchors_x:0;anchors_y:0}
-D{i:10;anchors_height:464;anchors_width:544;anchors_x:8;anchors_y:8}D{i:1;anchors_height:832;anchors_width:1540}
+D{i:1;anchors_height:832;anchors_width:1540}
 }
  ##^##*/

@@ -83,6 +83,7 @@ public:
     Q_INVOKABLE void refreshProducts();
     Q_INVOKABLE bool isCorrectCount(QString str,int count);
     Q_INVOKABLE void setCurrentBigSale(int id);
+    Q_INVOKABLE int getProductMaxValue(QString str);
 
 
 public slots:

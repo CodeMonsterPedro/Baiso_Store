@@ -11,7 +11,8 @@ Item{
     width: rootDataBaseCanvas.width;
     height: rootDataBaseCanvas.height
     property var deleteList: []
-    property int tableFontSize: 11
+    property int tableFontSize: 14;
+    property int tableItemHeight: 50;
     property string pName: ""
     property string sup: ""
     property string com: ""
@@ -37,6 +38,7 @@ Item{
         Rectangle {
             id: dbTableItem
             color:"lightgray"
+            visible: true
             anchors.top: parent.top
             anchors.topMargin: 60
             anchors.bottom: parent.bottom
@@ -51,6 +53,8 @@ Item{
                 id: rectangle2
                 height: 50
                 color: "white"
+                visible: true
+                radius: 8
                 border.color: "gray"
                 border.width: 2
                 anchors.right: rectangle1.right
@@ -251,6 +255,7 @@ Item{
             Rectangle {
                 id: rectangle1
                 color: "#ffffff"
+                radius: 8
                 anchors.top: rectangle2.bottom
                 anchors.topMargin: 19
                 border.color: "gray"
@@ -299,7 +304,7 @@ Item{
                     visible: !btn_ToggleListType.listType
                     id: listHeaderItem;
                     z:2;
-                    height: 45;
+                    height: rootDataBase.tableItemHeight+5;
                     Rectangle{
 
                         id:productHead
@@ -309,7 +314,7 @@ Item{
                             anchors.fill: parent
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40;
+                                height: rootDataBase.tableItemHeight;
                                 CheckBox{
                                     opacity: 0.0
                                     anchors.centerIn:parent;
@@ -317,7 +322,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 Text{
                                     anchors.centerIn: parent;
                                     text: "Id";
@@ -326,7 +331,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Название продукта"
@@ -335,7 +340,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Штрих-код"
@@ -344,7 +349,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 Text {
                                     anchors.centerIn: parent
                                     text: "Цена за еденицу";
@@ -353,7 +358,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 Text {
                                     anchors.centerIn: parent;
                                     text: "Кол-во в одном ящике"
@@ -371,7 +376,7 @@ Item{
                             anchors.fill: parent;
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
-                                height: 40;
+                                height: rootDataBase.tableItemHeight;
                                 CheckBox{
                                     opacity: 0.0
                                     anchors.centerIn:parent;
@@ -379,7 +384,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
-                                height: 40;
+                                height: rootDataBase.tableItemHeight;
                                 Text {
                                     text: "Номер чека";
                                     anchors.centerIn: parent;
@@ -388,7 +393,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
-                                height: 40;
+                                height: rootDataBase.tableItemHeight;
                                 Text {
                                     text: "Номер магазина";
                                     anchors.centerIn: parent;
@@ -397,7 +402,7 @@ Item{
                             }
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth;
-                                height: 40;
+                                height: rootDataBase.tableItemHeight;
                                 Text {
                                     text: "Дата продажи";
                                     anchors.centerIn: parent;
@@ -416,7 +421,7 @@ Item{
                     id:productDelegateItem
                     property real tableItemWidth: listView.width/6;
                     width: listView.width
-                    height: btn_ToggleListType.listType? 100 : 40;
+                    height: btn_ToggleListType.listType? 100 : rootDataBase.tableItemHeight;
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
 
@@ -427,34 +432,47 @@ Item{
                             anchors.fill: parent
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth;
-                                height: 40;
-                                border.color: "black"
-                                border.width: 2;
-                                CheckBox{
-                                    anchors.centerIn:parent;
-                                    onCheckedChanged: {deleteList.push(m_MainId);}
-                                }
+                                height: rootDataBase.tableItemHeight;
+                                Row{
+                                    anchors.fill: parent
+                                    spacing: 20;
+                                    leftPadding: 20;
+                                    MyButton {
+                                        id: button
+                                        width: 110;
+                                        height: 40;
+                                        button_round: 15
+                                        button_height: button.height;
+                                        button_width: button.width;
+                                        button_text:"Изменить"
+                                        button_border_color: "blue"
+                                        button_border_width: 2;
+                                        anchors.horizontalCenter: parent.horizontalCenter;
+                                        onButton_clicked:  {
+                                            product_element_chag.visible = true;
+                                            rootDataBase.pName = m_Name;
+                                            rootDataBase.sup = m_Supplyer;
+                                            rootDataBase.com = m_Company;
+                                            rootDataBase.sys = m_CountSys;
+                                            rootDataBase.price = m_Price;
+                                            rootDataBase.inBox = m_InBoxCount;
+                                            rootDataBase.bcode = m_BarCode;
 
-                                Button {
-                                    id: button
-                                    text: qsTr("Button")
-                                    onClicked: {
-                                        product_element_chag.visible = true;
-                                        rootDataBase.pName = m_Name;
-                                        rootDataBase.sup = m_Supplyer;
-                                        rootDataBase.com = m_Company;
-                                        rootDataBase.sys = m_CountSys;
-                                        rootDataBase.price = m_Price;
-                                        rootDataBase.inBox = m_InBoxCount;
-                                        rootDataBase.bcode = m_BarCode;
-
+                                        }
                                     }
+                                    CheckBox{
+                                        width: 30
+                                        anchors.top: parent.top;
+                                        anchors.bottom: parent.bottom
+                                        onCheckedChanged: {deleteList.push(m_MainId);}
+                                    }
+
                                 }
                             }
 
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 border.color: "black"
                                 border.width: 2;
                                 Text{
@@ -465,7 +483,7 @@ Item{
                             }
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
@@ -476,7 +494,7 @@ Item{
                             }
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
@@ -487,7 +505,7 @@ Item{
                             }
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
@@ -498,7 +516,7 @@ Item{
                             }
                             Rectangle{
                                 width: productDelegateItem.tableItemWidth
-                                height: 40
+                                height: rootDataBase.tableItemHeight
                                 border.color: "black"
                                 border.width: 2;
                                 Text {
@@ -594,7 +612,7 @@ Item{
                     id:saleDelegateItem
                     property real tableItemWidth2: listView.width/7;
                     width: listView.width
-                    height: btn_ToggleListType.listType? 100 : 40;
+                    height: btn_ToggleListType.listType? 100 : rootDataBase.tableItemHeight;
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
 
@@ -603,7 +621,7 @@ Item{
                         anchors.fill: parent;
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             CheckBox{
@@ -613,7 +631,7 @@ Item{
                         }
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text{
@@ -624,7 +642,7 @@ Item{
                         }
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -635,7 +653,7 @@ Item{
                         }
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -646,7 +664,7 @@ Item{
                         }
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text{
@@ -657,7 +675,7 @@ Item{
                         }
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -669,7 +687,7 @@ Item{
 
                         Rectangle{
                             width: saleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -759,7 +777,7 @@ Item{
                     property bool isOpen: false;
                     property real tableItemWidth2: listView.width/4;
                     width: listView.width;
-                    height: btn_ToggleListType.listType? 100 : 40;
+                    height: btn_ToggleListType.listType? 70 : rootDataBase.tableItemHeight;
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     Row{
@@ -767,26 +785,36 @@ Item{
                         anchors.fill: parent;
                         Rectangle{
                             width: bigsaleDelegateItem.tableItemWidth2;
-                            height: 40;
-                            CheckBox{
-                                anchors.centerIn:parent;
-                                onCheckedChanged: {deleteList.push(m_MainId);}
-                            }
-                            MyButton{
-                                x: 20
-                                y: 0
-                                button_height: 50
-                                button_width: 50;
-                                visible: true
-                                width: 54
-                                height: 40
-                                button_image_source: "print.png"
-                                onButton_clicked: simpleModelController.printBigSale(m_MainId);
+                            height: rootDataBase.tableItemHeight;
+                            Row{
+                                anchors.fill: parent
+                                spacing: 20;
+                                leftPadding: 20;
+                                MyButton{
+                                    y:-4
+                                    button_height: 58
+                                    button_width: 58;
+                                    button_border_color: "blue"
+                                    button_image_width:50;
+                                    button_image_height: 50;
+                                    button_round: 15
+                                    visible: true
+                                    width: 58
+                                    height: 58
+                                    button_image_source: "print.png"
+                                    onButton_clicked: simpleModelController.printBigSale(m_MainId);
+                                }
+                                CheckBox{
+                                    width: 30
+                                    anchors.top: parent.top;
+                                    anchors.bottom: parent.bottom
+                                    onCheckedChanged: {deleteList.push(m_MainId);}
+                                }
                             }
                         }
                         Rectangle{
                             width: bigsaleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text{
@@ -797,7 +825,7 @@ Item{
                         }
                         Rectangle{
                             width: bigsaleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -808,7 +836,7 @@ Item{
                         }
                         Rectangle{
                             width: bigsaleDelegateItem.tableItemWidth2;
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             border.color: "black"
                             border.width: 2;
                             Text {
@@ -833,7 +861,7 @@ Item{
 
 
                         Text{
-                            x:25;
+                            x:45;
                             y: 15
                             text: "id:" +  m_MainId;
                             font.pointSize: 16
@@ -843,21 +871,25 @@ Item{
 
                         Text {
                             x: 240
-                            y: 8
+                            y: 15
                             width: 152
                             height: 46
-                            text: qsTr("" + m_Date)
+                            text: qsTr("" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear())
                             font.pixelSize: 16
                         }
                         MyButton{
                             id:printBtn
-                            button_height: 50
-                            button_width: 50;
-                            visible: true
                             x:599
                             y:8
-                            width: 74
-                            height: 49
+                            button_height: 64
+                            button_width: 64;
+                            button_border_color: "blue"
+                            button_image_width:50;
+                            button_image_height: 50;
+                            button_round: 15
+                            visible: true
+                            width: 64
+                            height: 64
                             button_image_source: "print.png"
                             onButton_clicked: simpleModelController.printBigSale(m_MainId);
                         }
@@ -946,18 +978,13 @@ Item{
 
                 Rectangle {
                     id: rectangle_element
-                    height: 702
+                    width: 640
+                    height: 580
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
-                    anchors.rightMargin: 400
-                    anchors.leftMargin: 400
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottomMargin: 60
-                    anchors.topMargin: 110
+                    radius: 8
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
 //                    ComboBox{
 //                        id:element_add_combobox
 //                        x: 236
@@ -972,7 +999,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.left: parent.left
-                        anchors.leftMargin: 190
+                        anchors.leftMargin: 140
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "blue"
@@ -984,15 +1011,14 @@ Item{
                             if(element_add_combobox.currentIndex==0){
                                 //"product_name","In_box_count","supplyer","company","price","count_sys","bar_code")
                                 //"10","14","11","12","15","16","13"
-                                var str = "" + textField10.text + "|" + textField14.text + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.text + "|" + textField13.text
+                                var str = "" + textField10.text + "|" + textField14.value + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.currentIndex + "|" + textField13.text
                                 simpleModelController.addNewProductToRep(str);
                                 textField10.text="";
                                 textField11.text="";
                                 textField12.text="";
                                 textField13.text="";
-                                textField14.text="";
+                                textField14.value=2;
                                 textField15.text="";
-                                textField16.text="";
                             } else if(element_add_combobox.currentIndex==1){
                                 var str = "" + textField21.text + "|" + textField22.text + "|" + textField23.text + "|" + textField24.text + "|" + textField25.text + "|" + textField26.text;
                                 simpleModelController.addNewPurchaseToRep(str);
@@ -1008,7 +1034,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.right: parent.right
-                        anchors.rightMargin: 190
+                        anchors.rightMargin: 140
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "red"
@@ -1021,9 +1047,8 @@ Item{
                             textField11.text="";
                             textField12.text="";
                             textField13.text="";
-                            textField14.text="";
+                            textField14.value=2;
                             textField15.text="";
-                            textField16.text="";
 //                            textField21.text="";
 //                            textField22.text="";
 //                            textField23.text="";
@@ -1033,15 +1058,15 @@ Item{
                         }
                     }
                     Rectangle {
-                        height: 387
+                        height: 322
                         visible: true
                         anchors.right: parent.right
                         anchors.leftMargin: 28
 
                         TextField {
                             id: textField10
-                            x: 69
-                            y: 29
+                            x: 23
+                            y: 26
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -1050,8 +1075,8 @@ Item{
 
                         TextField {
                             id: textField11
-                            x: 69
-                            y: 104
+                            x: 23
+                            y: 101
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -1060,8 +1085,8 @@ Item{
 
                         TextField {
                             id: textField12
-                            x: 69
-                            y: 180
+                            x: 23
+                            y: 177
                             width: 251
                             height: 40
                             text: qsTr("")
@@ -1070,35 +1095,39 @@ Item{
 
                         TextField {
                             id: textField13
-                            x: 69
-                            y: 257
+                            x: 23
+                            y: 254
                             width: 251
                             height: 40
                             text: qsTr("")
                             placeholderText: "Штрихкод"
                         }
 
-                        TextField {
+                        SpinBox {
                             id: textField14
-                            x: 413
-                            y: 29
-                            text: qsTr("")
-                            placeholderText: "Кол-во в одной коробке"
+                            x: 338
+                            y: 26
+                            width: 200
+                            height: 40
+                            value: 1
+                            from:2
+                            to:1000
                         }
 
                         TextField {
                             id: textField15
-                            x: 413
-                            y: 104
+                            x: 338
+                            y: 101
                             text: qsTr("")
                             placeholderText: "Цена за еденицу"
                         }
-                        TextField {
+                        ComboBox {
                             id: textField16
-                            x: 413
-                            y: 180
-                            text: qsTr("")
-                            placeholderText: "Система исчисления"
+                            x: 338
+                            y: 177
+                            width: 200
+                            height: 40
+                            model:["Кг","шт"]
                         }
                         anchors.left: parent.left
                         anchors.top: parent.top
@@ -1174,12 +1203,13 @@ Item{
 
                     Text {
                         id: element1
-                        x: 99
-                        y: 40
-                        width: 129
+                        x: 51
+                        y: 30
+                        width: 240
                         height: 40
                         text: qsTr("Добавить продукт")
-                        font.pixelSize: 26
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.pixelSize: 30
                     }
                 }
             }
@@ -1198,11 +1228,11 @@ Item{
 
                 Rectangle {
                     id: rectangle_element_del
-                    height: 300
+                    height: 240
                     width: 700
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
+                    radius: 8
                     anchors.centerIn: rectangle_del;
 
                     MyButton{
@@ -1213,7 +1243,7 @@ Item{
                         anchors.left: parent.left
                         anchors.leftMargin: 100
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 70
+                        anchors.bottomMargin: 60
                         button_border_color: "blue"
                         button_text_color: "blue"
                         button_text: "Удалить"
@@ -1240,7 +1270,7 @@ Item{
                         anchors.right: parent.right
                         anchors.rightMargin: 100
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 70
+                        anchors.bottomMargin: 60
                         button_border_color: "red"
                         button_text_color: "red"
                         button_text: "Отмена"
@@ -1260,7 +1290,7 @@ Item{
                         anchors.right: decline_btn_del.left
                         anchors.rightMargin: 60
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 70
+                        anchors.bottomMargin: 60
                         button_border_color: "gray"
                         button_text_color: "gray"
                         button_text: "В архив"
@@ -1281,9 +1311,12 @@ Item{
                         id: element
                         x: 115
                         y: 86
-                        width: 389
-                        height: 81
+                        width: 440
+                        height: 43
                         text: qsTr("Удалить выбранные элементы?")
+                        anchors.verticalCenterOffset: -40
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
                         font.pixelSize: 28
                     }
                 }
@@ -1303,18 +1336,14 @@ Item{
 
                 Rectangle {
                     id: rectangle_element_sort
-                    height: 702
+                    y: 46
+                    width: 600
+                    height: 440
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
-                    anchors.rightMargin: 400
-                    anchors.leftMargin: 400
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.bottomMargin: 150
-                    anchors.topMargin: 150
+                    radius: 8
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
 
                     MyButton{
                         id:accept_btn_sort
@@ -1322,7 +1351,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.left: parent.left
-                        anchors.leftMargin: 190
+                        anchors.leftMargin: 130
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "blue"
@@ -1341,7 +1370,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.right: parent.right
-                        anchors.rightMargin: 190
+                        anchors.rightMargin: 130
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "red"
@@ -1442,55 +1471,68 @@ Item{
                 }
                 Rectangle {
                     id: product_rectangle_element_chag
-                    height: 500
+                    height: 400
                     width: 700
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
+                    radius: 8
                     visible: true
                     anchors.centerIn: rectangle_chag;
                     TextField {
                         id: textField_Name
-                        x: 69
-                        y: 29
+                        x: 71
+                        y: 50
                         width: 251
                         height: 40
                         text: qsTr(rootDataBase.pName)
                     }
+
                     TextField {
                         id: textField_Supllyer
-                        x: 69
-                        y: 104
+                        x: 71
+                        y: 125
                         width: 251
                         height: 40
                         text: qsTr(rootDataBase.sup)
                     }
+
                     TextField {
                         id: textField_Company
-                        x: 69
-                        y: 180
+                        x: 71
+                        y: 201
                         width: 251
                         height: 40
                         text: qsTr(rootDataBase.com)
                     }
-                    TextField {
+                    SpinBox {
                         id: textField_InBoxCount
-                        x: 413
-                        y: 29
-                        text: qsTr("" + rootDataBase.inBox)
+                        x: 415
+                        y: 50
+                        width: 200
+                        height: 40
+                        value: rootDataBase.inBox
+                        from:2
+                        to:simpleModelController.getProductMaxValue(rootDataBase.pName)
                     }
+
                     TextField {
                         id: textField_Price
-                        x: 413
-                        y: 104
+                        x: 415
+                        y: 125
                         text: qsTr("" + rootDataBase.price)
                     }
-                    TextField {
+                    ComboBox {
                         id: textField_SysCount
-                        x: 413
-                        y: 180
-                        text: qsTr(rootDataBase.sys)
+                        x: 415
+                        y: 201
+                        width: 200
+                        height: 40
+                        model:["Кг","шт"]
+                        onVisibleChanged: {
+                            if(textField_SysCount.visible)textField_SysCount.currentIndex = rootDataBase.sys=="item"? 1 : 0;
+                        }
                     }
+
                     MyButton{
                         id:accept_btn_chag
                         y: 598
@@ -1506,12 +1548,11 @@ Item{
                         button_text: "Изменить"
                         button_round: 15
                         onButton_clicked:{
-                            var str = "" + textField_Name.text + "|" + textField_InBoxCount.text + "|" + textField_Supllyer.text + "|" + textField_Company.text + "|" + textField_Price.text + "|" + textField_SysCount.text;
+                            var str = "" + textField_Name.text + "|" + textField_InBoxCount.value + "|" + textField_Supllyer.text + "|" + textField_Company.text + "|" + textField_Price.text + "|" + textField_SysCount.index;
                             simpleModelController.updateProduct(rootDataBase.bcode,str);
                             product_element_chag.visible = false;
                         }
                     }
-
                     MyButton{
                         id:decline_btn_chag
                         x: 318
@@ -1540,7 +1581,7 @@ Item{
                 property variant pPrice: []
                 id: bigSale_element_details
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle_details
                     color: "#090808"
@@ -1554,11 +1595,14 @@ Item{
                     width: 800
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 0
+                    radius: 8
                     visible: true
                     anchors.centerIn: rectangle_details;
                     ListView{
                         id:listViewSaleDetails
+                        anchors.bottomMargin: 6
+                        anchors.rightMargin: 6
+                        anchors.leftMargin: 6
                         anchors.topMargin: 60
                         anchors.fill: parent
                         contentHeight: 10
@@ -1568,13 +1612,13 @@ Item{
                         model:bigSale_rectangle_element_details.counter, bigSale_element_details.pNames;
                         delegate: Item{
                             width: listView.width
-                            height: 40;
+                            height: rootDataBase.tableItemHeight;
                             Row{
                                 visible: !btn_ToggleListType.listType
                                 anchors.fill: parent
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40;
+                                    height: rootDataBase.tableItemHeight;
                                     border.color: "black"
                                     border.width: 2;
                                     Text{
@@ -1585,7 +1629,7 @@ Item{
                                 }
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40;
+                                    height: rootDataBase.tableItemHeight;
                                     border.color: "black"
                                     border.width: 2;
                                     Text{
@@ -1596,7 +1640,7 @@ Item{
                                 }
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40;
+                                    height: rootDataBase.tableItemHeight;
                                     border.color: "black"
                                     border.width: 2;
                                     Text {
@@ -1609,12 +1653,12 @@ Item{
                         }
 
                         header: Item{
-                            height: 50;
+                            height: rootDataBase.tableItemHeight;
                             Row{
                                 anchors.fill: parent
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40
+                                    height: rootDataBase.tableItemHeight
                                     Text{
                                         anchors.centerIn: parent;
                                         text: "Название продукта";
@@ -1623,7 +1667,7 @@ Item{
                                 }
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40
+                                    height: rootDataBase.tableItemHeight
                                     Text {
                                         anchors.centerIn: parent;
                                         text: "Кол-во проданого"
@@ -1632,7 +1676,7 @@ Item{
                                 }
                                 Rectangle{
                                     width: listViewSaleDetails.width/3;
-                                    height: 40
+                                    height: rootDataBase.tableItemHeight
                                     Text {
                                         anchors.centerIn: parent;
                                         text: "Цена"
@@ -1694,7 +1738,45 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:76;anchors_width:120;anchors_x:318}D{i:144;anchors_height:200;anchors_y:46}D{i:145;anchors_height:200;anchors_y:46}
+    D{i:76;anchors_width:120;anchors_x:318}D{i:127;anchors_x:69}D{i:128;anchors_x:69}
+D{i:145;anchors_height:200;anchors_y:46}D{i:146;anchors_height:200;anchors_y:46}D{i:144;anchors_height:200;anchors_y:46}
 }
  ##^##*/

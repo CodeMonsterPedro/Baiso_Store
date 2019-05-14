@@ -108,6 +108,7 @@ void AnaliticItem::startAnalize(QString prodInfo, QString date)
         //else R = MyMath::getLineRegression(prevValues,curValues);
         R = MyMath::getLineRegression(prevValues,curValues);
         //else R = MyMath::getRectRegression(curValues,prevValues);
+
         for(int i=0;i<curValues.size();i++){
             result.append(floor((R.a*curValues[i])+R.b));
             newPlannedCount+=floor((R.a*curValues[i])+R.b);
@@ -122,8 +123,8 @@ void AnaliticItem::startAnalize(QString prodInfo, QString date)
         setRList(result);
         setCList(curValues);
         setPList(prevValues);
+        RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET difference = %1 WHERE product = '%2' AND \"market_id\"=%3").arg(newPlannedCount).arg(prodInfo).arg(storeId));
         emit algorithmEnded();
-        RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET difference = %1 WHERE product = '%2' AND \"market_id\"=%3").arg(newCoefficient).arg(prodInfo).arg(storeId));
         mainPlanList.append(pe);
     }
 }

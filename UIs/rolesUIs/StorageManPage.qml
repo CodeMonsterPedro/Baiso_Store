@@ -25,52 +25,68 @@ Item{
             anchors.topMargin: 40
             spacing: 15;
             anchors.fill: localHub_StorageMan;
-            Image {
+            MyButton{
                 id: dataBasePart
-                width: 64;height: 64;
-                source: "../MyUIs/dbicon.png"
-                MouseArea{
-                    id:second
-                    anchors.fill: dataBasePart
-                    onClicked: {
-                        simpleModelController.showFrom(0);
-                        storageManPartsPage.source="StorageManSubUIs/Products_and_supplys.qml";
-                    }
+                button_height: 70
+                button_width: 70
+                button_text: ""
+                button_border_color: "blue"
+                button_image_height: 64;
+                button_image_width: 64;
+                button_round: 15;
+                visible: true
+                width: 70
+                height: 70
+                anchors.horizontalCenter: parent.horizontalCenter
+                button_image_source: "dbicon.png"
+                onButton_clicked: {
+                    simpleModelController.showFrom(0);
+                    storageManPartsPage.source="StorageManSubUIs/Products_and_supplys.qml";
                 }
             }
-            Image {
+            MyButton{
                 id: analyzePart
-                width: 64;height: 64;
-                source: "../MyUIs/brain.png"
-                MouseArea{
-                    id:third
-                    anchors.fill: analyzePart
-                    onClicked: {
-                        simpleModelController.showFrom(3);
-                        storageManPartsPage.source="StorageManSubUIs/markets_and_suplySends.qml";
-                    }
+                button_height: 70
+                button_width: 70
+                button_text: ""
+                button_border_color: "blue"
+                button_image_height: 64;
+                button_image_width: 64;
+                button_round: 15;
+                visible: true
+                width: 70
+                height: 70
+                anchors.horizontalCenter: parent.horizontalCenter
+                button_image_source: "brain.png"
+                onButton_clicked: {
+                    simpleModelController.showFrom(3);
+                    storageManPartsPage.source="StorageManSubUIs/markets_and_suplySends.qml";
                 }
             }
         }
 
-        Image {
+        MyButton{
             id: exit_btn
             x: 8
-            y: 271
-            width: 64
-            height: 64
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 40
-            source:"../MyUIs/door.png"
-            MouseArea {
-                id: exitArea
-                anchors.fill: exit_btn
-                onClicked:{
-                    logout_backend.getDisconnect();
-                    rootCanvas.my_role = 0;
-                    rootCanvas.my_market = 0;
-                    rootCanvas.state = "LogIn";
-                }
+            anchors.bottomMargin: 50
+            button_height: 70
+            button_width: 70
+            button_text: ""
+            button_border_color: "blue"
+            button_image_height: 64;
+            button_image_width: 64;
+            button_round: 15;
+            visible: true
+            width: 70
+            height: 70
+            anchors.horizontalCenter: parent.horizontalCenter
+            button_image_source: "door.png"
+            onButton_clicked:{
+                logout_backend.getDisconnect();
+                rootCanvas.my_role = 0;
+                rootCanvas.my_market = 0;
+                rootCanvas.state = "LogIn";
             }
         }
 

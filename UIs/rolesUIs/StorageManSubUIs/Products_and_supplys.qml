@@ -183,7 +183,7 @@ Item{
                 id:listHeader
                 Item {
                     property real tableItemWidth: listView.width/7;
-                    property real tableItemWidth2: listView.width/6;
+                    property real tableItemWidth2: listView.width/5;
                     visible: tableType.position==1.0
                     id: listHeaderItem;
                     z:2;
@@ -194,15 +194,6 @@ Item{
                         color:"lightgray"
                         Row{
                             anchors.fill: parent
-                            Rectangle{
-                                width: listHeaderItem.tableItemWidth2;
-                                height: 40;
-                                CheckBox{
-                                    opacity: 0.0
-                                    anchors.centerIn:parent;
-                                }
-                            }
-
                             Rectangle{
                                 width: listHeaderItem.tableItemWidth2;
                                 height: 40

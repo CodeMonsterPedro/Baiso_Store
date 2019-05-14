@@ -43,6 +43,7 @@ Item{
             Rectangle {
                 id: rectangle1
                 color: "#ffffff"
+                radius: 8
                 anchors.rightMargin: 300
                 anchors.leftMargin: 300
                 anchors.bottomMargin: 20
@@ -50,16 +51,16 @@ Item{
                 anchors.fill: parent
                 MyButton{
                     id:printBtn
-                    button_height: 40
-                    button_width: 50;
+                    button_height: 64
+                    button_width: 64
                     button_text: ""
                     button_border_color: "blue"
                     button_round: 10;
                     visible: true
-                    x:785
-                    y:30
-                    width: 50
-                    height: 40
+                    x:810
+                    y:22
+                    width: 64
+                    height: 64
                     button_image_source: "print.png"
                     onButton_clicked: simpleModelController.printPlan(parseInt(textField.text,10));
                 }
@@ -68,7 +69,7 @@ Item{
                     x: 62
                     y: 29
                     width: 256
-                    height: 38
+                    height: 50
                     text: qsTr("")
                     placeholderText: "№ Магазина"
                     font.pointSize: 18
@@ -76,10 +77,10 @@ Item{
 
                 MyButton{
                     id:btn_AnalyzeStart
-                    x: 542
+                    x: 529
                     y: 29
-                    width: 218
-                    height: 38
+                    width: 266
+                    height: 50
                     button_border_color: "blue"
                     button_text_color: "blue"
                     button_text: "Проанализировать"
@@ -95,10 +96,10 @@ Item{
                 }
                 TextField {
                     id: textField1
-                    x: 333
+                    x: 328
                     y: 29
                     width: 188
-                    height: 38
+                    height: 50
                     text: qsTr("")
                     placeholderText: "Дата начала"
                     font.pointSize: 18
@@ -127,7 +128,7 @@ Item{
                     anchors.bottom: parent.bottom
                     anchors.leftMargin: -400
                     anchors.bottomMargin: 0
-                    anchors.topMargin: 80
+                    anchors.topMargin: 92
                     anchors.top: parent.top
                     border.color: "gray"
                     border.width: 0
@@ -172,15 +173,15 @@ Item{
                                 width: 214
                                 height: 39
                                 text: qsTr("Продукт: " + m_Name)
-                                font.pointSize:18;
+                                font.pointSize:15
                             }
                             Text{
                                 x: 130
-                                y: 41
+                                y: 25
                                 width: 167
                                 height: 34
-                                text: qsTr("Ящиков к закупке: " + m_ProductCount);
-                                font.pointSize: 18
+                                text: qsTr("Закупка: " + m_ProductCount);
+                                font.pointSize: 16
                             }
                             Image {
                                 id: image1
@@ -202,12 +203,12 @@ Item{
                             }
                             Text {
                                 x: 15
-                                y: 42
+                                y: 47
                                 width: 120
                                 height: 25
-                                text: "" + m_Difference;
-                                font.pointSize: 18
-                                anchors.leftMargin: 561
+                                text: "Рекомендовано к закупке: " + m_Difference
+                                font.pointSize: 16
+                                anchors.leftMargin: 130
                                 anchors.left: parent.left
                             }
                             MouseArea{
@@ -229,18 +230,22 @@ Item{
                                 }
                             }
 
-                            Button{
+                            MyButton{
                                 id:btn_Change
-                                x: 607
-                                width: 85
-                                text:"Изменить"
+                                width: 110
+                                button_round: 15
+                                button_height: btn_Change.height;
+                                button_width: btn_Change.width;
+                                button_text:"Изменить"
+                                button_border_color: "blue"
+                                button_border_width: 2;
                                 anchors.right: parent.right
                                 anchors.rightMargin: 8
                                 anchors.top: parent.top
-                                anchors.topMargin: 8
+                                anchors.topMargin: 20
                                 anchors.bottom: parent.bottom
-                                anchors.bottomMargin: 8
-                                onClicked: {
+                                anchors.bottomMargin: 20
+                                onButton_clicked: {
                                     analyzePage.pName = m_Name;
                                     analyzePage.pBarCode = m_BarCode;
                                     analyzePage.pCount = m_ProductCount;
@@ -268,7 +273,7 @@ Item{
                     height: 702
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
+                    radius: 8
                     anchors.rightMargin: 400
                     anchors.leftMargin: 400
                     anchors.bottom: parent.bottom
@@ -361,7 +366,7 @@ Item{
                 x: 300
                 y: 20
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -373,19 +378,20 @@ Item{
                     height: 702
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
+                    radius: 8
                     anchors.rightMargin: 100
                     anchors.leftMargin: 100
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    anchors.bottomMargin: 50
-                    anchors.topMargin: 50
+                    anchors.bottomMargin: 30
+                    anchors.topMargin: 30
                     MyButton{
                         id:accept_btn
                         width: 30
                         height: 30
+                        z: 1
                         anchors.right: parent.right
                         anchors.rightMargin: 20
                         anchors.top: parent.top
@@ -400,7 +406,10 @@ Item{
                     }
                     Rectangle {
                         id: rectangle3
-                        anchors.topMargin: 60
+                        anchors.rightMargin: 10
+                        anchors.leftMargin: 10
+                        anchors.bottomMargin: 10
+                        anchors.topMargin: 10
                         anchors.fill: parent
                         visible: true
 
@@ -467,7 +476,7 @@ Item{
 
                         Text {
                             id: element2
-                            x: 31
+                            x: 20
                             y: 66
                             width: 139
                             height: 24
@@ -482,11 +491,10 @@ Item{
                             width: 113
                             height: 23
                             text: qsTr("Кол-во дней")
+                            anchors.horizontalCenter: parent.horizontalCenter
                             anchors.bottom: area1.bottom
                             anchors.bottomMargin: 10
                             font.pixelSize: 16
-                            anchors.leftMargin: 0
-                            anchors.left: parent.horizontalCenter
                         }
                     }
                 }
@@ -509,7 +517,7 @@ Item{
                     width: 700
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
+                    radius: 8
                     visible: true
                     anchors.centerIn: rectangle_chag;
 
@@ -556,10 +564,11 @@ Item{
                     Text {
                         id: textMessage
                         x: 44
-                        y: 32
-                        width: 612
-                        height: 81
-                        text: qsTr("Установите новое кол-во для закупки продукта " + analyzePage.pName);
+                        y: 50
+                        width: 512
+                        height: 37
+                        text: "Установите новое кол-во для закупки продукта "
+                        anchors.horizontalCenter: parent.horizontalCenter
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                         visible: true
                         font.pixelSize: 22
@@ -582,133 +591,6 @@ Item{
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
