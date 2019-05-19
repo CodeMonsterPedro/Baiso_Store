@@ -50,6 +50,7 @@ Item{
             Rectangle {
                 id: rectangle1
                 color: "#ffffff"
+                radius: 8
                 anchors.rightMargin: 400
                 anchors.leftMargin: 400
                 anchors.bottomMargin: 40
@@ -111,6 +112,76 @@ Item{
                     }
 
                 }
+
+                Text {
+                    id: element5
+                    x: 62
+                    y: 67
+                    width: 100
+                    height: 22
+                    text: qsTr("Имя")
+                    font.pixelSize: 12
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    anchors.bottom: loginfield.top
+                    anchors.bottomMargin: 1
+                }
+
+                Text {
+                    id: element6
+                    x: 62
+                    y: 142
+                    width: 100
+                    height: 22
+                    text: qsTr("Роль")
+                    font.pixelSize: 12
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    anchors.bottom: loginfield.top
+                    anchors.bottomMargin: 1
+                }
+
+                Text {
+                    id: element7
+                    x: 62
+                    y: 219
+                    width: 100
+                    height: 22
+                    text: qsTr("№ магазина")
+                    font.pixelSize: 12
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    anchors.bottom: loginfield.top
+                    anchors.bottomMargin: 1
+                }
+
+                Text {
+                    id: element9
+                    x: 361
+                    y: 67
+                    width: 135
+                    height: 22
+                    text: qsTr("Логин")
+                    font.pixelSize: 12
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    anchors.bottom: loginfield.top
+                    anchors.bottomMargin: 1
+                }
+
+                Text {
+                    id: element10
+                    x: 361
+                    y: 142
+                    width: 135
+                    height: 22
+                    text: qsTr("Цена за еденицу")
+                    font.pixelSize: 12
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    anchors.bottom: loginfield.top
+                    anchors.bottomMargin: 1
+                }
             }
 
 
@@ -141,7 +212,12 @@ Item{
 
 
 
+
+
+
+
 /*##^## Designer {
-    D{i:4;anchors_height:200;anchors_width:200}
+    D{i:11;anchors_x:15}D{i:12;anchors_x:15}D{i:13;anchors_x:15}D{i:14;anchors_x:15}D{i:15;anchors_x:15}
+D{i:4;anchors_height:200;anchors_width:200}
 }
  ##^##*/

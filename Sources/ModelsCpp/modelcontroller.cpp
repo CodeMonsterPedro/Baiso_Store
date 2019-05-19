@@ -9,6 +9,7 @@ ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(ne
     }
     products_const = products;
     PlanCheck();
+    //DataGenerator();
     m_myModel = new InformationListModel();
     m_myPlan = new InformationListModel();
     bigSaleList = new InformationListModel();
@@ -89,9 +90,44 @@ void ModelController::PlanCheck()
         tempq.seek(-1);
     }
 }
+
+void ModelController::DataGenerator()
+{
+    int diap = 45;
+    int daipp = 400;
+    int marketsCount=5;
+    int purchaseCount = 500;
+    QSqlQuery prodq = RepositoryU::GetRequest(QString("Select * from public.\"ProductList\""));prodq.first();
+    int marketId = 0;
+    unsigned long purchse = 1;
+    while(marketId<marketsCount){
+
+        for(int j=0;j<prodq.size();j++){
+            QSqlRecord product = prodq.record();
+            QDate date = QDate::currentDate();
+            for(int i=0;i<purchaseCount;i++){
+                RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_id\",\"product_count\",\"price\",\"date\")") +
+                                        QString(" VALUES('%1',%2,%3,%4,%5,'%6'::date)")
+                                        .arg(product.value(product.indexOf("product_name")).toString())
+                                        .arg(marketId)
+                                        .arg(purchse + i)
+                                        .arg((rand()%diap)+daipp)
+                                        .arg(product.value(product.indexOf("price")).toDouble())
+                                        .arg("" + QString::number(date.year()) + "-" + QString::number(date.month()) + "-" + QString::number(date.day())));
+            date = date.addDays(-1);
+            }
+            prodq.next();
+        }purchse += purchaseCount;
+        prodq.first();
+        marketId++;
+    }
+
+
+}
 //main functions
 void ModelController::showFrom(int source)
 {
+    m_myModel->market_id = myStore;
     m_myModel->showfrom(source);
     setMyModel(m_myModel);
     setMaxPage(m_myModel->maxPage);
@@ -118,7 +154,7 @@ int ModelController::addNewProductToRep(QString str)
     RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductList\"(\"product_name\",\"in_box_count\",\"supplyer\",\"company\",\"price\",\"count_sys\",\"bar_code\",\"last_suplyed\")") +
                                               QString(" VALUES('%1',%2,'%3','%4',%5,%6,'%7','%8')")
                                               .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2]).arg(strl[3]).arg(strl[4].toDouble()).arg(strl[5].toInt()).arg(strl[6]).arg(dateStr));
-    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\") VALUES('%1','%2',0)").arg(strl[0]).arg(strl[6]));
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductPlan\"(\"product\",\"bar-code\",\"count\",\"difference\",\"market_id\",\"current_count\") VALUES('%1','%2',0,0,1,0)").arg(strl[0]).arg(strl[6]));
     m_myModel->Refresh();
     return 1;
 }
@@ -127,7 +163,7 @@ int ModelController::addNewPurchaseToRep(QString str)
 {
     //INSERT INTO public."ProductSaleFull"("product_name","market_Id","purchase_Id","product_count","price","date") VALUES('Igor',1,1,1,2.5,2.2019);
     QStringList strl = str.split('|');
-    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_Id\",\"product_count\",\"price\",\"date\")") +
+    RepositoryU::SetRequest(QString("INSERT INTO public.\"ProductSaleFull\"(\"product_name\",\"market_Id\",\"purchase_id\",\"product_count\",\"price\",\"date\")") +
                                                         QString(" VALUES('%1',%2,%3,%4,%5,%6)")
                                                        .arg(strl[0]).arg(strl[1].toInt()).arg(strl[2].toInt()).arg(strl[3].toInt()).arg(strl[4].toDouble()).arg(strl[5]));
     m_myModel->Refresh();
@@ -230,6 +266,7 @@ void ModelController::deleteItems(QString str,int isArhive, QString table)
         }
     }
     m_myModel->Refresh();
+    emit myModelChanged();
 }
 
 void ModelController::updatePlan(QString str, int x, QString y){
@@ -389,6 +426,13 @@ int ModelController::getProductMaxValue(QString str)
     QSqlQuery tempq = RepositoryU::GetRequest(QString("Select * from public.\"ProductPlan\" Where product='%1' AND market_id=%2").arg(str).arg(myStore));tempq.first();
     maxCount = tempq.record().value(tempq.record().indexOf("current_count")).toInt();
     return maxCount;
+}
+
+void ModelController::sortBy(int id)
+{
+    if(id<3)m_myModel->SortProduct(id);
+    else if(id>=3)m_myModel->SortBigSale(id);
+    emit myModelChanged();
 }
 void ModelController::onDataChanged(){
     emit myModelChanged();

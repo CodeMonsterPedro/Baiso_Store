@@ -64,6 +64,8 @@ public:
     void goNext();
     void goPrev();
     void Refresh();
+    void SortProduct(int id);
+    void SortBigSale(int id);
 
     void addElement(QSqlRecord value);
     void delElementLast();

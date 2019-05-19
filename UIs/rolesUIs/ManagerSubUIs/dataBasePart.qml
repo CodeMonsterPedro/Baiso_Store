@@ -66,7 +66,8 @@ Item{
 
                 ComboBox {
                     id: comboBox1
-                    width: 180
+                    width: 230
+                    font.pointSize: 14
                     anchors.top: parent.top
                     anchors.topMargin: (parent.height-comboBox1.height)/2
                     anchors.bottom: parent.bottom
@@ -202,21 +203,22 @@ Item{
 
                 Row{
                     id:funcItems
-                    width: 300
+                    width: 400
                     anchors.top: parent.top
                     anchors.topMargin: 5
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 0
                     anchors.right: parent.right
-                    anchors.rightMargin: 0
+                    anchors.rightMargin: 10
                     visible: !btn_ToggleListType.listType;
                     spacing: 10;
                     MyButton{
                         id:addbutton_2_1
-                        width: 85
+                        enabled: comboBox1.currentIndex==0;
+                        width: 120
                         height: 40
                         button_round: 15
-                        button_text: "+"
+                        button_text: "Добавить"
                         button_text_color: "green"
                         button_width: rectangle4.width;
                         button_height: 40;
@@ -226,10 +228,10 @@ Item{
 
                     MyButton{
                         id:deletebutton_2_2
-                        width: 85
+                        width: 120
                         height: 40
                         button_round: 15
-                        button_text: "-"
+                        button_text: "Удалить"
                         button_text_color: "red"
                         button_width: rectangle4.width;
                         button_height: 40;
@@ -239,10 +241,10 @@ Item{
 
                     MyButton{
                         id:sortbuton_2_3
-                        width: 85
+                        width: 140
                         height: 40
                         button_round: 15
-                        button_text: "Фильтр"
+                        button_text: "Сортировка"
                         button_text_color: "blue"
                         button_width: rectangle4.width;
                         button_height: 40;
@@ -910,10 +912,10 @@ Item{
                 visible: btn_ToggleListType.listType
                 id: rectangle4
                 x: 1424
-                width: 123
+                width: 190
                 height: 192
                 color: "#ffffff"
-                radius: 15
+                radius: 5
                 anchors.top: rectangle1.top
                 anchors.topMargin: 0
                 anchors.right: parent.right
@@ -923,10 +925,10 @@ Item{
                     id:addbutton_2
                     x: 13
                     y: 13
-                    width: 85
+                    width: 140
                     height: 40
                     button_round: 15
-                    button_text: "+"
+                    button_text: "Добавить"
                     button_text_color: "green"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -938,10 +940,10 @@ Item{
                     id:deletebutton_2
                     x: 13
                     y: 75
-                    width: 85
+                    width: 140
                     height: 40
                     button_round: 15
-                    button_text: "-"
+                    button_text: "Удалить"
                     button_text_color: "red"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -953,10 +955,10 @@ Item{
                     id:sortbuton_2
                     x: 13
                     y: 140
-                    width: 85
+                    width: 140
                     height: 40
                     button_round: 15
-                    button_text: "Фильтр"
+                    button_text: "Сортировка"
                     button_text_color: "blue"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -1008,7 +1010,6 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             element_add.visible = false;
-                            if(element_add_combobox.currentIndex==0){
                                 //"product_name","In_box_count","supplyer","company","price","count_sys","bar_code")
                                 //"10","14","11","12","15","16","13"
                                 var str = "" + textField10.text + "|" + textField14.value + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.currentIndex + "|" + textField13.text
@@ -1019,11 +1020,6 @@ Item{
                                 textField13.text="";
                                 textField14.value=2;
                                 textField15.text="";
-                            } else if(element_add_combobox.currentIndex==1){
-                                var str = "" + textField21.text + "|" + textField22.text + "|" + textField23.text + "|" + textField24.text + "|" + textField25.text + "|" + textField26.text;
-                                simpleModelController.addNewPurchaseToRep(str);
-
-                            }
                         }
                     }
 
@@ -1058,7 +1054,7 @@ Item{
                         }
                     }
                     Rectangle {
-                        height: 322
+                        height: 353
                         visible: true
                         anchors.right: parent.right
                         anchors.leftMargin: 28
@@ -1129,9 +1125,107 @@ Item{
                             height: 40
                             model:["Кг","шт"]
                         }
+
+                        Text {
+                            id: element5
+                            x: 23
+                            y: 8
+                            width: 100
+                            height: 22
+                            text: qsTr("Название продукта")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element6
+                            x: 23
+                            y: 83
+                            width: 100
+                            height: 22
+                            text: qsTr("Поставщик")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element7
+                            x: 23
+                            y: 160
+                            width: 100
+                            height: 22
+                            text: qsTr("Производитель")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element8
+                            x: 23
+                            y: 236
+                            width: 100
+                            height: 22
+                            text: qsTr("Штрих-код")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element9
+                            x: 338
+                            y: 8
+                            width: 135
+                            height: 22
+                            text: qsTr("Кол-во в одном ящике")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element10
+                            x: 338
+                            y: 83
+                            width: 135
+                            height: 22
+                            text: qsTr("Цена за еденицу")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element11
+                            x: 338
+                            y: 160
+                            width: 135
+                            height: 22
+                            text: qsTr("Система измерения")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
                         anchors.left: parent.left
                         anchors.top: parent.top
-                        anchors.topMargin: 91
+                        anchors.topMargin: 66
                         anchors.rightMargin: 37
                     }
 //                    Rectangle {
@@ -1204,10 +1298,11 @@ Item{
                     Text {
                         id: element1
                         x: 51
-                        y: 30
+                        y: 15
                         width: 240
                         height: 40
                         text: qsTr("Добавить продукт")
+                        anchors.horizontalCenterOffset: 0
                         anchors.horizontalCenter: parent.horizontalCenter
                         font.pixelSize: 30
                     }
@@ -1414,13 +1509,6 @@ Item{
                             text: qsTr("Табличный вид")
                         }
 
-                        Switch {
-                            id: element4
-                            x: 51
-                            y: 158
-                            text: qsTr("Switch")
-                        }
-
                         ComboBox {
                             id: comboBox
                             x: 299
@@ -1453,6 +1541,48 @@ Item{
                                 textField2.text = date;
                                 calendarS.visible = false;
                             }
+                        }
+
+                        Text {
+                            id: element12
+                            x: 51
+                            y: 21
+                            width: 100
+                            height: 22
+                            text: qsTr("Данные с")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element13
+                            x: 299
+                            y: 21
+                            width: 100
+                            height: 22
+                            text: qsTr("по")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
+                        }
+
+                        Text {
+                            id: element14
+                            x: 299
+                            y: 87
+                            width: 100
+                            height: 22
+                            text: qsTr("Сортировка")
+                            font.pixelSize: 12
+                            anchors.leftMargin: 0
+                            anchors.left: loginfield.left
+                            anchors.bottom: loginfield.top
+                            anchors.bottomMargin: 1
                         }
                     }
 
@@ -1512,7 +1642,7 @@ Item{
                         height: 40
                         value: rootDataBase.inBox
                         from:2
-                        to:simpleModelController.getProductMaxValue(rootDataBase.pName)
+                        to:1000
                     }
 
                     TextField {
@@ -1571,6 +1701,90 @@ Item{
                         onButton_clicked: {
                             product_element_chag.visible = false;
                         }
+                    }
+
+                    Text {
+                        id: element15
+                        x: 71
+                        y: 34
+                        width: 100
+                        height: 22
+                        text: qsTr("Название продукта")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
+                    }
+
+                    Text {
+                        id: element16
+                        x: 71
+                        y: 109
+                        width: 100
+                        height: 22
+                        text: qsTr("Поставщик")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
+                    }
+
+                    Text {
+                        id: element17
+                        x: 71
+                        y: 186
+                        width: 100
+                        height: 22
+                        text: qsTr("Производитель")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
+                    }
+
+                    Text {
+                        id: element19
+                        x: 415
+                        y: 34
+                        width: 135
+                        height: 22
+                        text: qsTr("Кол-во в одном ящике")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
+                    }
+
+                    Text {
+                        id: element20
+                        x: 415
+                        y: 109
+                        width: 135
+                        height: 22
+                        text: qsTr("Цена за еденицу")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
+                    }
+
+                    Text {
+                        id: element21
+                        x: 415
+                        y: 186
+                        width: 135
+                        height: 22
+                        text: qsTr("Система измерения")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
                     }
                 }
             }
@@ -1644,7 +1858,7 @@ Item{
                                     border.color: "black"
                                     border.width: 2;
                                     Text {
-                                        text: "" +  bigSale_element_details.pPrice[index];
+                                        text: "$" +  bigSale_element_details.pPrice[index];
                                         anchors.centerIn: parent;
                                         font.pointSize: rootDataBase.tableFontSize
                                     }
@@ -1775,8 +1989,42 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:76;anchors_width:120;anchors_x:318}D{i:127;anchors_x:69}D{i:128;anchors_x:69}
-D{i:145;anchors_height:200;anchors_y:46}D{i:146;anchors_height:200;anchors_y:46}D{i:144;anchors_height:200;anchors_y:46}
+    D{i:76;anchors_width:120;anchors_x:318}D{i:127;anchors_x:69}D{i:136;anchors_x:15}
+D{i:137;anchors_x:15}D{i:138;anchors_x:15}D{i:139;anchors_x:15}D{i:140;anchors_x:15}
+D{i:141;anchors_x:15}D{i:142;anchors_x:15}D{i:128;anchors_x:69}D{i:152;anchors_height:200;anchors_y:46}
+D{i:163;anchors_x:15}D{i:164;anchors_x:15}D{i:165;anchors_x:15}D{i:153;anchors_height:200;anchors_y:46}
+D{i:151;anchors_height:200;anchors_y:46}D{i:177;anchors_x:15}D{i:178;anchors_x:15}
+D{i:179;anchors_x:15}D{i:180;anchors_x:15}D{i:181;anchors_x:15}D{i:182;anchors_x:15}
 }
  ##^##*/

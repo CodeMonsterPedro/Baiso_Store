@@ -90,17 +90,28 @@ QVector<int> AnaliticItem::setCurrentDate(QString date)
 
 void AnaliticItem::startAnalize(QString prodInfo, QString date)
 {
+    mainPlanList.clear();
     storeId = prodInfo.toInt();
     QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT distinct product_name FROM public.\"ProductSaleFull\" WHERE \"market_Id\"=%1").arg(prodInfo.toInt()));
     while(tempq.next()){
         result.clear();
+        newPlannedCount=0;
         prodInfo = tempq.record().value(tempq.record().indexOf("product_name")).toString();
         PlanElement pe;
         pe.productName = prodInfo;
+        QSqlQuery testq = RepositoryU::GetRequest(QString("SELECT bar_code FROM public.\"ProductList\" WHERE product_name='%1'").arg(prodInfo));testq.first();
+        pe.barCode = testq.record().value(testq.record().indexOf("bar_code")).toString();
         setCurrentProductInfo(prodInfo);
         QVector<int> prevDate = setCurrentDate(date);
         QVector<double> curValues = getProductValues(selectedDate);
         QVector<double> prevValues = getProductValuesFrom(prevDate,selectedDate);
+        if(curValues.size()>prevValues.size()){
+            int x=curValues.size() - prevValues.size();
+            for(int i=0;i<x;i++)if(prevValues.isEmpty())prevValues.append(1); else prevValues.append(prevValues.last());
+        }else if(curValues.size()<prevValues.size()){
+            int x= prevValues.size() - curValues.size();
+            for(int i=0;i<x;i++)if(curValues.isEmpty())curValues.append(1); else curValues.append(curValues.last());
+        }
         //double coef = MyMath::getCorrelationCoef(prevValues, curValues);
         // if coef equals or more then 0.8 use Line regressing, if it less use Rect Resression
         MyMath::Regression R;
@@ -110,8 +121,9 @@ void AnaliticItem::startAnalize(QString prodInfo, QString date)
         //else R = MyMath::getRectRegression(curValues,prevValues);
 
         for(int i=0;i<curValues.size();i++){
-            result.append(floor((R.a*curValues[i])+R.b));
-            newPlannedCount+=floor((R.a*curValues[i])+R.b);
+            double x = floor((R.a*curValues[i])+R.b);
+            result.append(x);
+            newPlannedCount+=x;
         }
         pe.result = result;
         pe.current = curValues;

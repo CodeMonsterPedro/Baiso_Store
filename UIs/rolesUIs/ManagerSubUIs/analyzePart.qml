@@ -256,6 +256,30 @@ Item{
                         }
                     }
                 }
+
+                Text {
+                    id: element5
+                    x: 62
+                    y: 1
+                    width: 147
+                    height: 22
+                    text: qsTr("№ магазина")
+                    font.pixelSize: 18
+                    anchors.leftMargin: 0
+                    anchors.bottomMargin: 1
+                }
+
+                Text {
+                    id: element9
+                    x: 328
+                    y: 1
+                    width: 135
+                    height: 22
+                    text: qsTr("Дата начала")
+                    font.pixelSize: 18
+                    anchors.leftMargin: 0
+                    anchors.bottomMargin: 1
+                }
             }
             Item{
                 id: element
@@ -605,8 +629,14 @@ Item{
 
 
 
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:4;anchors_height:200;anchors_width:200}D{i:24;anchors_height:30;anchors_y:598}
-D{i:23;anchors_height:30;anchors_y:598}
+    D{i:23;anchors_x:15}D{i:24;anchors_x:15}D{i:4;anchors_height:200;anchors_width:200}
+D{i:26;anchors_height:30;anchors_y:598}D{i:25;anchors_height:30;anchors_y:598}
 }
  ##^##*/

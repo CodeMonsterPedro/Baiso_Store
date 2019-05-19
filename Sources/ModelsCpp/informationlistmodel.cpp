@@ -258,7 +258,10 @@ QVariant InformationListModel::getLikeBigSale(const QModelIndex &index, int role
 void InformationListModel::goNext()
 {
     this->cleanUp();
-    this->fillUpPage();
+    for(int i=0;i<(lastQuery.size()>1000? 1000 : lastQuery.size());i++){
+        addElement(lastQuery.record());
+        lastQuery.next();
+    }
     currentPage++;
 }
 
@@ -302,16 +305,26 @@ void InformationListModel::Refresh()
     }
 }
 
+void InformationListModel::SortProduct(int id)
+{
+
+}
+
+void InformationListModel::SortBigSale(int id)
+{
+
+}
+
 void InformationListModel::fillUpBigSale()
 {
-    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT distinct purchase_id FROM public.\"ProductSaleFull\""));
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT distinct purchase_id FROM public.\"ProductSaleFull\" where \"market_Id\"=%1").arg(market_id));
     QList<int> purchaseList;
     while(tempq.next()){
         purchaseList.append(tempq.record().value(tempq.record().indexOf("purchase_id")).toInt());
     }
     for(int i=0;i<purchaseList.size();i++){
         BigSaleElement sbE;
-        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date, \"market_Id\"  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1").arg(purchaseList[i]));
+        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1 AND \"market_Id\"=%2").arg(purchaseList[i]).arg(market_id));
         while(tempq.next()){
             sbE.productNames.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
             sbE.productCount.append(tempq.record().value(tempq.record().indexOf("product_count")).toInt());
@@ -319,7 +332,7 @@ void InformationListModel::fillUpBigSale()
         }
         sbE.date = tempq.record().value(tempq.record().indexOf("date")).toString();
         sbE.purchaseId = purchaseList[i];
-        sbE.storeId = tempq.record().value(tempq.record().indexOf("market_Id")).toInt();
+        sbE.storeId = market_id;
         bigSaleList.append(sbE);
     }
 }

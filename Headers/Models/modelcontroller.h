@@ -62,6 +62,7 @@ public:
     
     int myStore;
     void PlanCheck();
+    void DataGenerator();
 
     Q_INVOKABLE void showFrom(int source);
     Q_INVOKABLE void showFromPlan(int source, QString str);
@@ -84,6 +85,7 @@ public:
     Q_INVOKABLE bool isCorrectCount(QString str,int count);
     Q_INVOKABLE void setCurrentBigSale(int id);
     Q_INVOKABLE int getProductMaxValue(QString str);
+    Q_INVOKABLE void sortBy(int id);
 
 
 public slots:

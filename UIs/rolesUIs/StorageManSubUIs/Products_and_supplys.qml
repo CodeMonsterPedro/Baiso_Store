@@ -121,7 +121,7 @@ Item{
                 }
                 MyButton{
                     id:sortbuton_2_3
-                    width: 85
+                    width: 140
                     anchors.right: parent.right
                     anchors.rightMargin: 40
                     anchors.top: parent.top
@@ -129,7 +129,7 @@ Item{
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 5
                     button_round: 15
-                    button_text: "Фильтр"
+                    button_text: "Сортировка"
                     button_text_color: "blue"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -813,7 +813,7 @@ Item{
             Item{
                 id: element_sort
                 anchors.fill: parent
-                visible: false
+                visible: true
                 Rectangle {
                     id: rectangle_sort
                     color: "#090808"
@@ -826,15 +826,15 @@ Item{
                     height: 702
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 3
-                    anchors.rightMargin: 400
-                    anchors.leftMargin: 400
+                    radius: 8
+                    anchors.rightMargin: 460
+                    anchors.leftMargin: 460
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
                     anchors.left: parent.left
                     anchors.top: parent.top
                     anchors.bottomMargin: 150
-                    anchors.topMargin: 150
+                    anchors.topMargin: 180
 
                     MyButton{
                         id:accept_btn_sort
@@ -842,7 +842,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.left: parent.left
-                        anchors.leftMargin: 190
+                        anchors.leftMargin: 140
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "blue"
@@ -861,7 +861,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.right: parent.right
-                        anchors.rightMargin: 190
+                        anchors.rightMargin: 140
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "red"
@@ -873,82 +873,13 @@ Item{
                         }
                     }
 
-                    Rectangle {
-                        border.width: 0
-                        anchors.rightMargin: 20
-                        anchors.leftMargin: 20
-                        anchors.bottomMargin: 120
-                        anchors.topMargin: 20
-                        anchors.fill: parent
-                        visible: true
-
-                        TextField {
-                            id: textField1
-                            x: 51
-                            y: 39
-                            text: qsTr("С даты")
-                            onPressed: calendarF.visible = true;
-                        }
-
-
-                        TextField {
-                            id: textField2
-                            x: 299
-                            y: 39
-                            text: qsTr("по дату")
-                            onPressed: calendarS.visible = true;
-                        }
-
-
-                        Switch {
-                            id: tableType;
-                            position: 1.0;
-                            x: 51
-                            y: 105
-                            text: qsTr("Табличный вид");
-
-                        }
-
-                        Switch {
-                            id: element4
-                            x: 51
-                            y: 158
-                            text: qsTr("Switch")
-                        }
-
-                        ComboBox {
-                            id: comboBox
-                            x: 299
-                            y: 105
-                            width: 200
-                            height: 40
-                        }
-                        Calendar{
-                            id:calendarF;
-                            visible: false;
-                            anchors.left: textField1.left;
-                            anchors.right: textField1.right;
-                            anchors.top: textField1.top
-                            anchors.topMargin: textField1.height;
-                            onSelectedDateChanged:{
-                                var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
-                                textField1.text = date;
-                                calendarF.visible = false;
-                            }
-                        }
-                        Calendar{
-                            id:calendarS;
-                            visible: false;
-                            anchors.left: textField2.left;
-                            anchors.right: textField2.right;
-                            anchors.top: textField2.top
-                            anchors.topMargin: textField2.height;
-                            onSelectedDateChanged: {
-                                var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
-                                textField2.text = date;
-                                calendarS.visible = false;
-                            }
-                        }
+                    ComboBox {
+                        id: comboBox
+                        x: 131
+                        y: 119
+                        width: 200
+                        height: 40
+                        model:["Название продукта","Цена за еденицу"]
                     }
 
                 }
@@ -968,8 +899,13 @@ Item{
 
 
 
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:11;anchors_height:40}D{i:70;anchors_width:120;anchors_x:318}D{i:98;anchors_height:40;anchors_width:260}
-D{i:100;anchors_height:40;anchors_width:360}D{i:97;anchors_width:360;anchors_x:220}
+    D{i:11;anchors_height:40}D{i:70;anchors_width:120;anchors_x:318}
 }
  ##^##*/

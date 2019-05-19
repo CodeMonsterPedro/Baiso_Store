@@ -273,9 +273,13 @@ Item{
                         Text {
                             x: 238
                             y: 16
-                            width: 152
+                            width: 293
                             height: 28
                             text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
+                            anchors.bottom: printBtn.bottom
+                            anchors.bottomMargin: 50
+                            anchors.right: printBtn.left
+                            anchors.rightMargin: 20
                             font.pixelSize: 16
                         }
 

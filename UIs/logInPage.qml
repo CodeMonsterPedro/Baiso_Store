@@ -22,9 +22,9 @@ Item {
 
         Text{
             color:"blue"
-            width:100;height:40;
+            width:347;height:40;
             x:15;y:15;
-            text:qsTr("Welcome ;)");
+            text:qsTr("Добро пожаловать");
             font.pixelSize: 25;
         }
 
@@ -61,7 +61,7 @@ Item {
             button_text_color: "blue"
             button_border_color: "blue"
             button_round: 25;
-            button_text: qsTr("Log in");
+            button_text: qsTr("Войти")
             onButton_clicked: {
                 rootCanvas.my_market = rootLogInPage.market_id = backend_id.getMarket(loginfield.text,passwordfield.text);
                 simpleModelController.setMyStore(rootLogInPage.market_id);
@@ -80,8 +80,43 @@ Item {
 
         }
 
+        Text {
+            id: element
+            y: 157
+            width: 100
+            height: 22
+            text: qsTr("Логин")
+            anchors.bottom: loginfield.top
+            anchors.bottomMargin: 1
+            anchors.left: loginfield.left
+            anchors.leftMargin: 0
+            font.pixelSize: 16
+        }
+
+        Text {
+            id: element1
+            y: 283
+            width: 100
+            height: 22
+            text: qsTr("Пароль")
+            font.pixelSize: 16
+            anchors.leftMargin: 0
+            anchors.left: passwordfield.left
+            anchors.bottom: passwordfield.top
+            anchors.bottomMargin: 1
+        }
+
     }
     Backend_logIn{
         id:backend_id
     }
 }
+
+
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}D{i:8;anchors_x:15}D{i:9;anchors_x:15}
+}
+ ##^##*/
