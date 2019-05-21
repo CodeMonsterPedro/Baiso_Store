@@ -23,6 +23,8 @@ class ModelController : public QObject
     QStringList bsProducts;
     QStringList bsCount;
     QStringList bsPrice;
+    QStringList searchProduct;
+    QString inputString;
 
 
     int maxPageCount, currentPageCount;
@@ -39,9 +41,11 @@ public:
     Q_PROPERTY(QStringList columnsNames READ colName WRITE setcolName NOTIFY colNameChanged)
     Q_PROPERTY(QStringList productColumnNames READ productColumnNames WRITE setProductColumnNames NOTIFY productColumnNamesChanged)
     Q_PROPERTY(QStringList productNames READ productNames WRITE setProductNames NOTIFY productNamesChanged)
+    Q_PROPERTY(QStringList productSearch READ productSearch WRITE setProductSearch NOTIFY productSearchChanged)
     Q_PROPERTY(QStringList bigSaleProducts READ bigSaleProducts WRITE setBigSaleProducts NOTIFY bigSaleProductsChanged)
     Q_PROPERTY(QStringList bigSaleCount READ bigSaleCount WRITE setBigSaleCount NOTIFY bigSaleCountChanged)
     Q_PROPERTY(QStringList bigSalePrice READ bigSalePrice WRITE setBigSalePrice NOTIFY bigSalePriceChanged)
+    Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY searchStringChanged)
 
     ModelController(QObject *parent = Q_NULLPTR);
     ~ModelController();
@@ -58,6 +62,8 @@ public:
     QStringList bigSaleProducts();
     QStringList bigSaleCount();
     QStringList bigSalePrice();
+    QStringList productSearch();
+    QString searchString();
 
     
     int myStore;
@@ -86,6 +92,10 @@ public:
     Q_INVOKABLE void setCurrentBigSale(int id);
     Q_INVOKABLE int getProductMaxValue(QString str);
     Q_INVOKABLE void sortBy(int id);
+    Q_INVOKABLE void search(QString str);
+    Q_INVOKABLE void resetProductSearch();
+    Q_INVOKABLE void resetBarCodeSearch();
+
 
 
 public slots:
@@ -102,6 +112,8 @@ public slots:
     void setBigSaleProducts(QStringList strl);
     void setBigSaleCount(QStringList strl);
     void setBigSalePrice(QStringList strl);
+    void setProductSearch(QStringList strl);
+    void setSearchString(QString str);
 
 signals:
     void myModelChanged();
@@ -117,6 +129,8 @@ signals:
     void bigSaleProductsChanged();
     void bigSaleCountChanged();
     void bigSalePriceChanged();
+    void productSearchChanged();
+    void searchStringChanged();
 
 };
 

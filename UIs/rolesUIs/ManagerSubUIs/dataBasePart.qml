@@ -987,12 +987,12 @@ Item{
                     radius: 8
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
-//                    ComboBox{
-//                        id:element_add_combobox
-//                        x: 236
-//                        y: 40
-//                        model:["Продукт","Продажу"];
-//                    }
+                    //                    ComboBox{
+                    //                        id:element_add_combobox
+                    //                        x: 236
+                    //                        y: 40
+                    //                        model:["Продукт","Продажу"];
+                    //                    }
 
 
                     MyButton{
@@ -1010,16 +1010,16 @@ Item{
                         button_round: 15
                         onButton_clicked:{
                             element_add.visible = false;
-                                //"product_name","In_box_count","supplyer","company","price","count_sys","bar_code")
-                                //"10","14","11","12","15","16","13"
-                                var str = "" + textField10.text + "|" + textField14.value + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.currentIndex + "|" + textField13.text
-                                simpleModelController.addNewProductToRep(str);
-                                textField10.text="";
-                                textField11.text="";
-                                textField12.text="";
-                                textField13.text="";
-                                textField14.value=2;
-                                textField15.text="";
+                            //"product_name","In_box_count","supplyer","company","price","count_sys","bar_code")
+                            //"10","14","11","12","15","16","13"
+                            var str = "" + textField10.text + "|" + textField14.value + "|" + textField11.text + "|" + textField12.text + "|" + textField15.text + "|" + textField16.currentIndex + "|" + textField13.text
+                            simpleModelController.addNewProductToRep(str);
+                            textField10.text="";
+                            textField11.text="";
+                            textField12.text="";
+                            textField13.text="";
+                            textField14.value=2;
+                            textField15.text="";
                         }
                     }
 
@@ -1045,12 +1045,12 @@ Item{
                             textField13.text="";
                             textField14.value=2;
                             textField15.text="";
-//                            textField21.text="";
-//                            textField22.text="";
-//                            textField23.text="";
-//                            textField24.text="";
-//                            textField25.text="";
-//                            textField26.text="";
+                            //                            textField21.text="";
+                            //                            textField22.text="";
+                            //                            textField23.text="";
+                            //                            textField24.text="";
+                            //                            textField25.text="";
+                            //                            textField26.text="";
                         }
                     }
                     Rectangle {
@@ -1228,72 +1228,72 @@ Item{
                         anchors.topMargin: 66
                         anchors.rightMargin: 37
                     }
-//                    Rectangle {
-//                        height: 387
-//                        visible: element_add_combobox.currentindex===1 ? true : false;
-//                        anchors.right: parent.right
-//                        anchors.leftMargin: 28
-//                        anchors.left: parent.left
-//                        anchors.top: parent.top
-//                        anchors.topMargin: 91
-//                        anchors.rightMargin: 37
+                    //                    Rectangle {
+                    //                        height: 387
+                    //                        visible: element_add_combobox.currentindex===1 ? true : false;
+                    //                        anchors.right: parent.right
+                    //                        anchors.leftMargin: 28
+                    //                        anchors.left: parent.left
+                    //                        anchors.top: parent.top
+                    //                        anchors.topMargin: 91
+                    //                        anchors.rightMargin: 37
 
-//                        TextField {
-//                            id: textField21
-//                            x: 69
-//                            y: 29
-//                            width: 251
-//                            height: 40
-//                            text: qsTr("")
-//                            placeholderText: "Название продукта"
-//                        }
+                    //                        TextField {
+                    //                            id: textField21
+                    //                            x: 69
+                    //                            y: 29
+                    //                            width: 251
+                    //                            height: 40
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Название продукта"
+                    //                        }
 
-//                        TextField {
-//                            id: textField22
-//                            x: 69
-//                            y: 104
-//                            width: 251
-//                            height: 40
-//                            text: qsTr("")
-//                            placeholderText: "Номер магазина"
-//                        }
+                    //                        TextField {
+                    //                            id: textField22
+                    //                            x: 69
+                    //                            y: 104
+                    //                            width: 251
+                    //                            height: 40
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Номер магазина"
+                    //                        }
 
-//                        TextField {
-//                            id: textField23
-//                            x: 69
-//                            y: 180
-//                            width: 251
-//                            height: 40
-//                            text: qsTr("")
-//                            placeholderText: "Номер чека"
-//                        }
+                    //                        TextField {
+                    //                            id: textField23
+                    //                            x: 69
+                    //                            y: 180
+                    //                            width: 251
+                    //                            height: 40
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Номер чека"
+                    //                        }
 
-//                        TextField {
-//                            id: textField24
-//                            x: 69
-//                            y: 257
-//                            width: 251
-//                            height: 40
-//                            text: qsTr("")
-//                            placeholderText: "Кол-во продукта"
-//                        }
+                    //                        TextField {
+                    //                            id: textField24
+                    //                            x: 69
+                    //                            y: 257
+                    //                            width: 251
+                    //                            height: 40
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Кол-во продукта"
+                    //                        }
 
-//                        TextField {
-//                            id: textField25
-//                            x: 413
-//                            y: 29
-//                            text: qsTr("")
-//                            placeholderText: "Цена за еденицу"
-//                        }
+                    //                        TextField {
+                    //                            id: textField25
+                    //                            x: 413
+                    //                            y: 29
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Цена за еденицу"
+                    //                        }
 
-//                        TextField {
-//                            id: textField26
-//                            x: 413
-//                            y: 104
-//                            text: qsTr("")
-//                            placeholderText: "Дата продажи"
-//                        }
-//                    }
+                    //                        TextField {
+                    //                            id: textField26
+                    //                            x: 413
+                    //                            y: 104
+                    //                            text: qsTr("")
+                    //                            placeholderText: "Дата продажи"
+                    //                        }
+                    //                    }
 
                     Text {
                         id: element1
@@ -1432,11 +1432,11 @@ Item{
                 Rectangle {
                     id: rectangle_element_sort
                     y: 46
-                    width: 600
-                    height: 440
+                    width: 500
+                    height: 380
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 8
+                    radius: 2
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -1446,7 +1446,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.left: parent.left
-                        anchors.leftMargin: 130
+                        anchors.leftMargin: 100
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "blue"
@@ -1465,7 +1465,7 @@ Item{
                         width: 120
                         height: 40
                         anchors.right: parent.right
-                        anchors.rightMargin: 130
+                        anchors.rightMargin: 100
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 70
                         button_border_color: "red"
@@ -1477,114 +1477,29 @@ Item{
                         }
                     }
 
-                    Rectangle {
-                        border.width: 0
-                        anchors.rightMargin: 20
-                        anchors.leftMargin: 20
-                        anchors.bottomMargin: 120
-                        anchors.topMargin: 20
-                        anchors.fill: parent
-                        visible: true
-
-                        TextField {
-                            id: textField1
-                            x: 51
-                            y: 39
-                            text: qsTr("С даты")
-                            onPressed: calendarF.visible = true;
-                        }
-
-                        TextField {
-                            id: textField2
-                            x: 299
-                            y: 39
-                            text: qsTr("по дату")
-                            onPressed: calendarS.visible = true;
-                        }
-
-                        Switch {
-                            id: element2
-                            x: 51
-                            y: 105
-                            text: qsTr("Табличный вид")
-                        }
-
-                        ComboBox {
-                            id: comboBox
-                            x: 299
-                            y: 105
-                            width: 200
-                            height: 40
-                        }
-                        Calendar{
-                            id:calendarF;
-                            visible: false;
-                            anchors.left: textField1.left;
-                            anchors.right: textField1.right;
-                            anchors.top: textField1.top
-                            anchors.topMargin: textField1.height;
-                            onSelectedDateChanged:{
-                                var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
-                                textField1.text = date;
-                                calendarF.visible = false;
-                            }
-                        }
-                        Calendar{
-                            id:calendarS;
-                            visible: false;
-                            anchors.left: textField2.left;
-                            anchors.right: textField2.right;
-                            anchors.top: textField2.top
-                            anchors.topMargin: textField2.height;
-                            onSelectedDateChanged: {
-                                var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
-                                textField2.text = date;
-                                calendarS.visible = false;
-                            }
-                        }
-
-                        Text {
-                            id: element12
-                            x: 51
-                            y: 21
-                            width: 100
-                            height: 22
-                            text: qsTr("Данные с")
-                            font.pixelSize: 12
-                            anchors.leftMargin: 0
-                            anchors.left: loginfield.left
-                            anchors.bottom: loginfield.top
-                            anchors.bottomMargin: 1
-                        }
-
-                        Text {
-                            id: element13
-                            x: 299
-                            y: 21
-                            width: 100
-                            height: 22
-                            text: qsTr("по")
-                            font.pixelSize: 12
-                            anchors.leftMargin: 0
-                            anchors.left: loginfield.left
-                            anchors.bottom: loginfield.top
-                            anchors.bottomMargin: 1
-                        }
-
-                        Text {
-                            id: element14
-                            x: 299
-                            y: 87
-                            width: 100
-                            height: 22
-                            text: qsTr("Сортировка")
-                            font.pixelSize: 12
-                            anchors.leftMargin: 0
-                            anchors.left: loginfield.left
-                            anchors.bottom: loginfield.top
-                            anchors.bottomMargin: 1
-                        }
+                    Text {
+                        id: element14
+                        x: 95
+                        y: 77
+                        width: 100
+                        height: 22
+                        text: qsTr("Сортировка")
+                        font.pixelSize: 12
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        anchors.bottom: loginfield.top
+                        anchors.bottomMargin: 1
                     }
+
+                    ComboBox {
+                        id: comboBox
+                        x: 95
+                        y: 95
+                        width: 200
+                        height: 40
+                        model:["Названние продукта", "Цена за еденицу"]
+                    }
+
 
                 }
             }
@@ -2019,12 +1934,18 @@ Item{
 
 
 
+
+
+
+
+
+
 /*##^## Designer {
     D{i:76;anchors_width:120;anchors_x:318}D{i:127;anchors_x:69}D{i:136;anchors_x:15}
 D{i:137;anchors_x:15}D{i:138;anchors_x:15}D{i:139;anchors_x:15}D{i:140;anchors_x:15}
 D{i:141;anchors_x:15}D{i:142;anchors_x:15}D{i:128;anchors_x:69}D{i:152;anchors_height:200;anchors_y:46}
-D{i:163;anchors_x:15}D{i:164;anchors_x:15}D{i:165;anchors_x:15}D{i:153;anchors_height:200;anchors_y:46}
-D{i:151;anchors_height:200;anchors_y:46}D{i:177;anchors_x:15}D{i:178;anchors_x:15}
-D{i:179;anchors_x:15}D{i:180;anchors_x:15}D{i:181;anchors_x:15}D{i:182;anchors_x:15}
+D{i:156;anchors_x:15}D{i:153;anchors_height:200;anchors_y:46}D{i:151;anchors_height:200;anchors_y:46}
+D{i:169;anchors_x:15}D{i:170;anchors_x:15}D{i:171;anchors_x:15}D{i:172;anchors_x:15}
+D{i:173;anchors_x:15}D{i:174;anchors_x:15}
 }
  ##^##*/

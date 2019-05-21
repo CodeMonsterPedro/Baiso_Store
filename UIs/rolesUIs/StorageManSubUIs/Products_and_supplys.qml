@@ -103,7 +103,7 @@ Item{
                             id: textField
                             x: 41
                             y: 0
-                            width: 82
+                            width: 69
                             height: 40
                             text: qsTr("" + simpleModelController.currentPage)
                         }
@@ -141,6 +141,8 @@ Item{
             Rectangle {
                 id: rectangle1
                 color: "#ffffff"
+                anchors.rightMargin: 40
+                anchors.leftMargin: 40
                 anchors.top: rectangle2.bottom
                 anchors.topMargin: 19
                 border.color: "gray"
@@ -148,9 +150,7 @@ Item{
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 20
                 anchors.left: parent.left
-                anchors.leftMargin: tableType.position==0.0? 400 : 20;
                 anchors.right: parent.right;
-                anchors.rightMargin: tableType.position==0.0? 400 : 20;
 
                 ListView {
                     property int counter: 0;
@@ -250,12 +250,12 @@ Item{
                     id:productDelegateItem
                     property real tableItemWidth: listView.width/5;
                     width: listView.width
-                    height: tableType.position==0.0? 100 : 40;
+                    height: 40;
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
 
                     Rectangle{
-                        visible: tableType.position==1.0;
+                        visible: true;
                         anchors.fill: parent;
                         Row{
                             anchors.fill: parent
@@ -317,141 +317,7 @@ Item{
                         }
                     }
 
-                    Rectangle{
-                        visible: tableType.position==0.0
-                        anchors.fill: parent
-                        anchors.leftMargin: 15;
-                        anchors.rightMargin: 15;
-                        height: 120;
-                        color:"#e4dfdf"
-                        border.width: 2
-                        border.color: "blue"
-                        Image {
-                            id: image1
-                            x: 0
-                            y: 31
-                            width: 98
-                            height: 69
-                            fillMode: Image.PreserveAspectFit
-                            source: "../../MyUIs/barcode.jpg"
-                        }
-
-                        Rectangle {
-                            id: rectangle
-                            x: 3
-                            y: 4
-                            width: 28
-                            height: 25
-                            color: "#000000"
-                            radius: 13
-                        }
-
-                        Text{
-                            x:15;
-                            y: 8
-                            color: "#ffffff"
-                            text: "" +  m_MainId;
-                            anchors.leftMargin: 8
-                            anchors.left: parent.left;
-                        }
-
-                        Text {
-                            x: 15
-                            y: 14
-                            width: 455
-                            height: 45
-                            color:"blue"
-                            text: "" +  m_Name
-                            font.pointSize: 15
-                            anchors.leftMargin: 128
-                            anchors.left: parent.left
-                        }
-
-                        Text {
-                            x: 15
-                            y: 83
-                            width: 95
-                            height: 17
-                            text: "" + m_BarCode;
-                            anchors.leftMargin: 3
-                            anchors.left: parent.left
-                        }
-
-                        Text {
-                            x: 15
-                            y: 65
-                            text: "$" + m_Price + "\\" + m_CountSys;
-                            font.pointSize: rootDataBase.tableFontSize
-                            anchors.leftMargin: 128
-                            anchors.left: parent.left
-                        }
-
-                        Text {
-                            x: 423
-                            y: 75
-                            text: m_InBoxCount +"\\" + m_CountSys + " in one box";
-                        }
                     }
-                }
-            }
-
-            Rectangle {
-                visible: tableType.position==0.0
-                id: rectangle4
-                x: 1424
-                width: 123
-                height: 192
-                color: "#ffffff"
-                radius: 15
-                anchors.top: rectangle1.top
-                anchors.topMargin: 0
-                anchors.right: parent.right
-                anchors.rightMargin: -23
-
-                MyButton{
-                    id:addbutton_2
-                    x: 13
-                    y: 13
-                    width: 85
-                    height: 40
-                    button_round: 15
-                    button_text: "+"
-                    button_text_color: "green"
-                    button_width: rectangle4.width;
-                    button_height: 40;
-                    button_border_color: "green"
-                    onButton_clicked: element_add.visible=true;
-                }
-
-                MyButton{
-                    id:deletebutton_2
-                    x: 13
-                    y: 75
-                    width: 85
-                    height: 40
-                    button_round: 15
-                    button_text: "-"
-                    button_text_color: "red"
-                    button_width: rectangle4.width;
-                    button_height: 40;
-                    button_border_color:"red"
-                    onButton_clicked: element_del.visible=true;
-                }
-
-                MyButton{
-                    id:sortbuton_2
-                    x: 13
-                    y: 140
-                    width: 85
-                    height: 40
-                    button_round: 15
-                    button_text: "Фильтр"
-                    button_text_color: "blue"
-                    button_width: rectangle4.width;
-                    button_height: 40;
-                    button_border_color:"blue"
-                    onButton_clicked: element_sort.visible=true;
-                }
             }
 
             Item{
@@ -813,7 +679,7 @@ Item{
             Item{
                 id: element_sort
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle_sort
                     color: "#090808"

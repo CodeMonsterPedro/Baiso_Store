@@ -38,10 +38,10 @@ Item{
                 visible: true
                 id: rectangle4
                 x: 1424
-                width: 123
+                width: 180
                 height: 132
                 color: "#ffffff"
-                radius: 15
+                radius: 8
                 anchors.top: parent.top
                 anchors.topMargin: 40
                 anchors.right: parent.right
@@ -51,10 +51,10 @@ Item{
                     id:addbutton_2
                     x: 13
                     y: 13
-                    width: 85
+                    width: 120
                     height: 40
                     button_round: 15
-                    button_text: "+"
+                    button_text: "Добавить"
                     button_text_color: "green"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -66,10 +66,10 @@ Item{
                     id:deletebutton_2
                     x: 13
                     y: 75
-                    width: 85
+                    width: 120
                     height: 40
                     button_round: 15
-                    button_text: "-"
+                    button_text: "Удалить"
                     button_text_color: "red"
                     button_width: rectangle4.width;
                     button_height: 40;
@@ -275,7 +275,7 @@ Item{
                             y: 16
                             width: 293
                             height: 28
-                            text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
+                            text: m_Date;
                             anchors.bottom: printBtn.bottom
                             anchors.bottomMargin: 50
                             anchors.right: printBtn.left
@@ -496,7 +496,7 @@ Item{
                 property variant newBigSaleCountList: []
                 property variant newBigSaleList: []
                 anchors.fill: parent
-                visible: false
+                visible: true
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -578,25 +578,32 @@ Item{
                         Row {
                             id: element_add_row
                             height: 40
+                            anchors.top: parent.top
+                            anchors.topMargin: 0
                             spacing: 5
-                            anchors.bottom: parent.bottom
-                            anchors.bottomMargin: 1
                             anchors.left: parent.left
                             anchors.leftMargin: 2
                             anchors.right: parent.right
                             anchors.rightMargin: 1
 
-                            ComboBox{
-                                property bool updater: true
+                            TextField{
+                                property bool updater: false
                                 id: textField_ProductName
                                 width: 351
                                 height: 40
-                                model:updater, simpleModelController.productNames;
-                                onCurrentTextChanged: {
-                                    textField_Count.to = simpleModelController.getProductMaxValue(textField_ProductName.currentText);
+                                text: ""
+                                onTextChanged: {
+                                    if(textField_ProductName.text.length>=1){
+                                        simpleModelController.search(textField_ProductName.text);
+                                        searchList.visible = true;
+                                    }
+                                    else{
+                                        simpleModelController.resetProductSearch();
+                                        searchList.visible = false;
+                                    }
                                 }
                             }
-                           SpinBox{
+                            SpinBox{
                                 id: textField_Count
                                 width: 170
                                 height: 40
@@ -615,12 +622,12 @@ Item{
                                 button_border_color: "#0000ff"
                                 button_round: 3
                                 onButton_clicked: {
-                                    if(simpleModelController.isCorrectCount(textField_ProductName.currentText, parseInt(textField_Count.value,10))){
-                                        bigSale_element_add.newBigSaleList.push("" + textField_ProductName.currentText + "|" + textField_Count.value);
-                                        bigSale_element_add.newBigSaleNameList.push("" + textField_ProductName.currentText);
+                                    if(simpleModelController.isCorrectCount(textField_ProductName.text, parseInt(textField_Count.value,10))){
+                                        bigSale_element_add.newBigSaleList.push("" + textField_ProductName.text + "|" + textField_Count.value);
+                                        bigSale_element_add.newBigSaleNameList.push("" + textField_ProductName.text);
                                         bigSale_element_add.newBigSaleCountList.push("" + textField_Count.value);
                                         textField_Count.value = 1;
-                                        simpleModelController.useProduct(textField_ProductName.currentText);
+                                        simpleModelController.useProduct(textField_ProductName.text);
                                         rectangle1.counter = !rectangle1.counter;
                                         textField_ProductName.updater = !textField_ProductName.updater;
                                     }else{
@@ -632,7 +639,8 @@ Item{
 
                         ListView {
                             id: bigSaleItemsList
-                            anchors.bottomMargin: 42
+                            anchors.topMargin: 42
+                            anchors.bottomMargin: 0
                             anchors.fill: parent
                             model:rectangle1.counter, bigSale_element_add.newBigSaleNameList;
                             clip: true;
@@ -658,10 +666,15 @@ Item{
                                         height: 50
                                         border.color: "black"
                                         border.width: 2;
-                                        Text {
+                                        SpinBox {
                                             anchors.centerIn: parent;
-                                            text: "" +  bigSale_element_add.newBigSaleCountList[index]
+                                            value: parseInt(bigSale_element_add.newBigSaleCountList[index],10);
+                                            from: 1
+                                            to:simpleModelController.getProductMaxValue(bigSale_element_add.newBigSaleNameList[index]);
                                             font.pointSize: 14
+                                            onValueChanged: {
+                                                bigSale_element_add.newBigSaleCountList[index] = value;
+                                            }
                                         }
                                     }
                                 }
@@ -694,6 +707,44 @@ Item{
                                 }
                             }
                         }
+
+                        ListView {
+                            id: searchList
+                            visible: false
+                            property bool counter: false;
+                            x: 353
+                            y: 40
+                            height: simpleModelController.productSearch.length > 10? 400 : simpleModelController.productSearch.length*40;
+                            anchors.top: element_add_row.bottom
+                            anchors.topMargin: 0
+                            anchors.left: element_add_row.left
+                            anchors.leftMargin: 0
+                            anchors.right: element_add_row.right
+                            anchors.rightMargin: 610
+                            model:counter, simpleModelController.productSearch
+
+                            delegate: Item {
+                                width: searchList.width
+                                height: 40
+                                Rectangle{
+                                    anchors.fill: parent
+                                    Text {
+                                        anchors.fill: parent
+                                        text: qsTr("" + simpleModelController.productSearch[index])
+                                        font.pixelSize: 14;
+                                    }
+                                }
+                                MouseArea{
+                                    anchors.fill:parent
+                                    onClicked:{
+                                        searchList.visible = false;
+                                        textField_ProductName.text = simpleModelController.productSearch[index];
+                                        textField_Count.to = simpleModelController.getProductMaxValue(textField_ProductName.text);
+                                    }
+                                }
+
+                            }
+                        }
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.topMargin: 70
@@ -710,22 +761,25 @@ Item{
                     }
                 }
             }
-                Connections{
-                    target: simpleModelController
-                    onProductNamesChanged:{
-                         textField_ProductName.updater = !textField_ProductName.updater;
-                    }
-                    onCurrentBigSaleSetted:{
-                        element_chag.pNames = [];
-                        element_chag.pCount = [];
-                        for(var i=0;i<simpleModelController.bigSaleProducts.length;i++){
-                            element_chag.pNames.push(simpleModelController.bigSaleProducts[i]);
-                            element_chag.pCount.push(simpleModelController.bigSaleCount[i]);
-                        }
-                        listViewSaleDetails.counter = !listViewSaleDetails.counter;
-                        element_chag.visible = true;
-                    }
+            Connections{
+                target: simpleModelController
+                onProductNamesChanged:{
+                    textField_ProductName.updater = !textField_ProductName.updater;
                 }
+                onCurrentBigSaleSetted:{
+                    element_chag.pNames = [];
+                    element_chag.pCount = [];
+                    for(var i=0;i<simpleModelController.bigSaleProducts.length;i++){
+                        element_chag.pNames.push(simpleModelController.bigSaleProducts[i]);
+                        element_chag.pCount.push(simpleModelController.bigSaleCount[i]);
+                    }
+                    listViewSaleDetails.counter = !listViewSaleDetails.counter;
+                    element_chag.visible = true;
+                }
+                onProductSearchChanged:{
+                    searchList.counter = !searchList.counter;
+                }
+            }
         }
     }
 }
@@ -761,7 +815,59 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:30;anchors_width:659}D{i:29;anchors_height:387}D{i:34;anchors_height:40;anchors_width:120;anchors_y:598}
+    D{i:30;anchors_width:659}D{i:34;anchors_height:40;anchors_width:120;anchors_y:598}
+D{i:29;anchors_height:387}D{i:70;anchors_width:110;anchors_x:353;anchors_y:40}
 }
  ##^##*/

@@ -324,13 +324,13 @@ void InformationListModel::fillUpBigSale()
     }
     for(int i=0;i<purchaseList.size();i++){
         BigSaleElement sbE;
-        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1 AND \"market_Id\"=%2").arg(purchaseList[i]).arg(market_id));
+        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date_part('month', date), date_part('year', date), date_part('day', date)  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1 AND \"market_Id\"=%2").arg(purchaseList[i]).arg(market_id));
         while(tempq.next()){
             sbE.productNames.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
             sbE.productCount.append(tempq.record().value(tempq.record().indexOf("product_count")).toInt());
             sbE.productPrice.append(tempq.record().value(tempq.record().indexOf("price")).toDouble());
         }
-        sbE.date = tempq.record().value(tempq.record().indexOf("date")).toString();
+        sbE.date = "" + tempq.record().value(tempq.record().indexOf("date_part('day', date)")).toString() + "-"+ tempq.record().value(tempq.record().indexOf("date_part('month', date)")).toString() + "-"+ tempq.record().value(tempq.record().indexOf("date_part('year', date)")).toString();
         sbE.purchaseId = purchaseList[i];
         sbE.storeId = market_id;
         bigSaleList.append(sbE);

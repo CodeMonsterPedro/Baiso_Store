@@ -7,7 +7,7 @@ ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(ne
          products.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
          tempq.next();
     }
-    products_const = products;
+    searchProduct = products_const = products;
     PlanCheck();
     //DataGenerator();
     m_myModel = new InformationListModel();
@@ -62,6 +62,12 @@ QStringList ModelController::bigSaleCount(){
 }
 QStringList ModelController::bigSalePrice(){
     return bsPrice;
+}
+QStringList ModelController::productSearch(){
+    return searchProduct;
+}
+QString ModelController::searchString(){
+    return inputString;
 }
 void ModelController::PlanCheck()
 {
@@ -434,6 +440,35 @@ void ModelController::sortBy(int id)
     else if(id>=3)m_myModel->SortBigSale(id);
     emit myModelChanged();
 }
+
+void ModelController::search(QString str)
+{
+    for(int i=0;i<searchProduct.size();i++){
+        if(searchProduct[i].size()<str.size()){
+            searchProduct.removeAt(i);i--;
+        }
+    }
+    bool flag = false;
+    for(int i=0;i<searchProduct.size();i++){
+        flag = false;
+        for(int j=0;j<str.size();j++){
+            if(str[j] != searchProduct[i][j]){flag = true;break;}
+        }
+        if(flag) searchProduct.removeAt(i);
+    }
+    setSearchString(str);
+    setProductSearch(searchProduct);
+}
+
+void ModelController::resetProductSearch()
+{
+    setProductSearch(products_const);
+}
+
+void ModelController::resetBarCodeSearch()
+{
+
+}
 void ModelController::onDataChanged(){
     emit myModelChanged();
 }
@@ -491,6 +526,14 @@ void ModelController::setBigSaleCount(QStringList strl){
 void ModelController::setBigSalePrice(QStringList strl){
     bsPrice = strl;
     emit bigSalePriceChanged();
+}
+void ModelController::setProductSearch(QStringList strl){
+    searchProduct = strl;
+    emit productSearchChanged();
+}
+void ModelController::setSearchString(QString str){
+    inputString = str;
+    emit searchStringChanged();
 }
 
 
