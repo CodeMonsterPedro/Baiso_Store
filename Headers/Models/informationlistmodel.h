@@ -34,7 +34,7 @@ public:
     {
         int purchaseId;
 		int storeId;
-        QString date;
+        QDate date;
         QStringList productNames;
         QList<int> productCount;
         QList<double> productPrice;
@@ -49,6 +49,10 @@ public:
 
     QList<QSqlRecord> listData;
     QList<BigSaleElement> bigSaleList;
+    QList<QSqlRecord> reservListDate;
+    QList<BigSaleElement> reservBigSaleList;
+    bool bsSaved = false;
+    bool saved = false;
 
     QStringList sourceList;
     int currentTable=0;
@@ -70,6 +74,7 @@ public:
     void addElement(QSqlRecord value);
     void delElementLast();
     void delElementAt(int index);
+    void delElementAtBigSale(int index);
 private:
 //universality methods
     QVariant getLikeProduct(const QModelIndex &index, int role = Qt::DisplayRole) const;

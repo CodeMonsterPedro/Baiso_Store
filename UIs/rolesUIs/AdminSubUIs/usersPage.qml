@@ -51,11 +51,14 @@ Item{
                 id: rectangle1
                 color: "#ffffff"
                 radius: 8
-                anchors.rightMargin: 400
-                anchors.leftMargin: 400
+                anchors.left: parent.horizontalCenter
+                anchors.right: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.top: parent.top
+                anchors.rightMargin: -360
+                anchors.leftMargin: -360
                 anchors.bottomMargin: 40
                 anchors.topMargin: 40
-                anchors.fill: parent
 
                 TextField {
                     id: textField
@@ -175,12 +178,112 @@ Item{
                     y: 142
                     width: 135
                     height: 22
-                    text: qsTr("Цена за еденицу")
+                    text: qsTr("Пароль")
                     font.pixelSize: 12
                     anchors.leftMargin: 0
                     anchors.left: loginfield.left
                     anchors.bottom: loginfield.top
                     anchors.bottomMargin: 1
+                }
+
+                TextField {
+                    id: textField5
+                    x: 62
+                    y: 550
+                    text: qsTr("")
+                    placeholderText: "номер магазина"
+                }
+
+                Text {
+                    id: element8
+                    x: 62
+                    y: 534
+                    width: 158
+                    height: 22
+                    text: qsTr("название базы данных")
+                    anchors.bottomMargin: 1
+                    anchors.bottom: loginfield.top
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    font.pixelSize: 12
+                }
+
+                TextField {
+                    id: textField6
+                    x: 62
+                    y: 628
+                    text: qsTr("")
+                    placeholderText: "номер магазина"
+                }
+
+                Text {
+                    id: element11
+                    x: 62
+                    y: 612
+                    width: 100
+                    height: 22
+                    text: qsTr("IP адрес")
+                    anchors.bottomMargin: 1
+                    anchors.bottom: loginfield.top
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    font.pixelSize: 12
+                }
+
+                TextField {
+                    id: textField7
+                    x: 308
+                    y: 550
+                    text: qsTr("")
+                    placeholderText: "номер магазина"
+                }
+
+                Text {
+                    id: element12
+                    x: 308
+                    y: 534
+                    width: 100
+                    height: 22
+                    text: qsTr("Логин")
+                    anchors.bottomMargin: 1
+                    anchors.bottom: loginfield.top
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    font.pixelSize: 12
+                }
+
+                TextField {
+                    id: textField8
+                    x: 308
+                    y: 628
+                    text: qsTr("")
+                    placeholderText: "номер магазина"
+                }
+
+                Text {
+                    id: element13
+                    x: 308
+                    y: 612
+                    width: 100
+                    height: 22
+                    text: qsTr("Пароль")
+                    anchors.bottomMargin: 1
+                    anchors.bottom: loginfield.top
+                    anchors.leftMargin: 0
+                    anchors.left: loginfield.left
+                    font.pixelSize: 12
+                }
+
+                MyButton {
+                    x: 556
+                    y: 631
+                    width: 147
+                    height: 35
+                    button_text: "Принять"
+                    button_border_color: "#0000ff"
+                    button_text_color: "#0000ff"
+                    button_round: 15
+                    button_height: 40
                 }
             }
 
@@ -216,8 +319,12 @@ Item{
 
 
 
+
+
+
+
 /*##^## Designer {
     D{i:11;anchors_x:15}D{i:12;anchors_x:15}D{i:13;anchors_x:15}D{i:14;anchors_x:15}D{i:15;anchors_x:15}
-D{i:4;anchors_height:200;anchors_width:200}
+D{i:17;anchors_x:15}D{i:19;anchors_x:15}D{i:21;anchors_x:15}D{i:23;anchors_x:15}D{i:4;anchors_height:200;anchors_width:200}
 }
  ##^##*/

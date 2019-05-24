@@ -8,6 +8,11 @@ ModelController::ModelController(QObject *parent) : QObject(parent),m_myModel(ne
          tempq.next();
     }
     searchProduct = products_const = products;
+    tempq = RepositoryU::GetRequest(QString("Select DISTINCT bar_code from public.\"ProductList\""));tempq.first();
+        for(int i=0;i<tempq.size();i++){
+             searchBarCode.append(tempq.record().value(tempq.record().indexOf("bar_code")).toString());
+             tempq.next();
+        }
     PlanCheck();
     //DataGenerator();
     m_myModel = new InformationListModel();
@@ -278,9 +283,7 @@ void ModelController::deleteItems(QString str,int isArhive, QString table)
 void ModelController::updatePlan(QString str, int x, QString y){
     QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT count, difference FROM public.\"ProductPlan\" WHERE \"bar-code\"='%1' AND market_id = %2").arg(str).arg(y.toInt()));
     tempq.next();
-    int oldCount = tempq.record().value(tempq.record().indexOf("count")).toInt();
-    int oldDifference = tempq.record().value(tempq.record().indexOf("difference")).toInt();
-    int newDifference = (oldCount + oldDifference) - x;
+    int newDifference = tempq.record().value(tempq.record().indexOf("difference")).toInt();
     RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1, difference = %4 WHERE \"bar-code\"='%2' AND market_id = %3").arg(x).arg(str).arg(y.toInt()).arg(newDifference));
     showFromPlan(2, "" + QString::number(m_myPlan->market_id));
 }
@@ -391,12 +394,14 @@ void ModelController::printPlan(int store)
 void ModelController::useProduct(QString str)
 {
     products.removeAt(products.indexOf(str));
+    searchBarCode.removeAt(products.indexOf(str));
     emit productNamesChanged();
 }
 
 void ModelController::refreshProducts()
 {
     products = products_const;
+    resetBarCodeSearch();
     emit productNamesChanged();
 }
 
@@ -443,18 +448,36 @@ void ModelController::sortBy(int id)
 
 void ModelController::search(QString str)
 {
+    bool isDigigt = false;
+    str.toLong(&isDigigt,10);
     for(int i=0;i<searchProduct.size();i++){
-        if(searchProduct[i].size()<str.size()){
+        if(searchProduct[i].size()<str.size() && !isDigigt){
             searchProduct.removeAt(i);i--;
+        }
+        if(searchBarCode[i].size()<str.size() && isDigigt){
+            searchBarCode.removeAt(i);
+            searchProduct.removeAt(i);
+            i--;
         }
     }
     bool flag = false;
     for(int i=0;i<searchProduct.size();i++){
         flag = false;
-        for(int j=0;j<str.size();j++){
-            if(str[j] != searchProduct[i][j]){flag = true;break;}
+        if(isDigigt){
+            for(int j=0;j<str.size();j++){
+                if(str[j] != searchBarCode[i][j]){flag = true;break;}
+            }
         }
-        if(flag) searchProduct.removeAt(i);
+        else {
+            for(int j=0;j<str.size();j++){
+                if(str[j] != searchProduct[i][j]){flag = true;break;}
+            }
+        }
+        if(flag){
+            searchBarCode.removeAt(i);
+            searchProduct.removeAt(i);
+            i--;
+        }
     }
     setSearchString(str);
     setProductSearch(searchProduct);
@@ -467,10 +490,140 @@ void ModelController::resetProductSearch()
 
 void ModelController::resetBarCodeSearch()
 {
+    searchBarCode.clear();
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("Select DISTINCT bar_code from public.\"ProductList\""));tempq.first();
+        for(int i=0;i<tempq.size();i++){
+             searchBarCode.append(tempq.record().value(tempq.record().indexOf("bar_code")).toString());
+             tempq.next();
+        }
+}
 
+void ModelController::searchPlan(QString str)
+{
+    if(!m_myPlan->saved){
+        m_myPlan->reservListDate = m_myPlan->listData;
+        m_myPlan->saved = true;
+    }
+    for(int i=0;i<m_myPlan->listData.size();i++){
+        QSqlRecord temp = m_myPlan->listData[i];
+        if((temp.value(temp.indexOf("product")).toString()).size()<str.size()){
+            m_myPlan->delElementAt(i);i--;
+        }
+    }
+    bool flag = false;
+    for(int i=0;i<m_myPlan->listData.size();i++){
+        flag = false;
+        QSqlRecord temp = m_myPlan->listData[i];
+        QString temps = temp.value(temp.indexOf("product")).toString();
+            for(int j=0;j<str.size();j++){
+                if(str[j] != temps[j]){flag = true;break;}
+            }
+        if(flag){
+            m_myPlan->delElementAt(i);
+            i--;
+        }
+    }
+    setSearchString(str);
+    setMyPlan(m_myPlan);
+    emit myPlanChanged();
+}
+
+void ModelController::searchBigSale(QString str)
+{
+
+}
+
+void ModelController::searchProducts(QString str)
+{
+    bool isDigigt = false;
+    str.toLong(&isDigigt,10);
+
+    if(!m_myModel->saved){
+        m_myModel->reservListDate = m_myModel->listData;
+        m_myModel->saved = true;
+    }
+    for(int i=0;i<m_myModel->listData.size();i++){
+        QSqlRecord temp = m_myModel->listData[i];
+        if((temp.value(temp.indexOf("product_name")).toString()).size()<str.size() && !isDigigt){
+            m_myModel->delElementAt(i);i--;
+        }
+        if((temp.value(temp.indexOf("bar_code")).toString()).size()<str.size() && isDigigt){
+            m_myModel->delElementAt(i);i--;
+        }
+    }
+    bool flag = false;
+    for(int i=0;i<m_myModel->listData.size();i++){
+        flag = false;
+        QSqlRecord temp = m_myModel->listData[i];
+        QString temps;
+
+        if(isDigigt) temps = temp.value(temp.indexOf("bar_code")).toString();
+        else temps = temp.value(temp.indexOf("product_name")).toString();
+            for(int j=0;j<str.size();j++){
+                if(str[j] != temps[j]){flag = true;break;}
+            }
+        if(flag){
+            m_myModel->delElementAt(i);
+            i--;
+        }
+    }
+    setSearchString(str);
+    setMyModel(m_myModel);
+    emit myModelChanged();
+}
+
+void ModelController::searchReset()
+{
+    showFrom(0);
+    showFromPlan(2, "" + QString::number(m_myPlan->market_id));
+}
+
+void ModelController::acceptAll(QString y)
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT * FROM public.\"ProductPlan\" WHERE market_id = %1").arg(y));
+    while(tempq.next()){
+    QSqlRecord temp = tempq.record();
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1 WHERE \"bar-code\"='%2' AND market_id = %3")
+                            .arg(temp.value(temp.indexOf("difference")).toString())
+                            .arg(temp.value(temp.indexOf("bar-code")).toString())
+                            .arg(y.toInt()));
+    }
+    showFromPlan(2, "" + QString::number(m_myPlan->market_id));
+}
+
+void ModelController::acceptIt(QString str, int x, QString y)
+{
+    QSqlQuery tempq = RepositoryU::GetRequest(QString("SELECT count, difference FROM public.\"ProductPlan\" WHERE \"bar-code\"='%1' AND market_id = %2").arg(str).arg(y.toInt()));
+    tempq.next();
+    int newDifference = tempq.record().value(tempq.record().indexOf("difference")).toInt();
+    RepositoryU::SetRequest(QString("UPDATE public.\"ProductPlan\" SET count = %1, difference = %4 WHERE \"bar-code\"='%2' AND market_id = %3").arg(newDifference).arg(str).arg(y.toInt()).arg(newDifference));
+    showFromPlan(2, "" + QString::number(m_myPlan->market_id));
+}
+
+void ModelController::dateFilter(QString date1, QString date2, int x)
+{
+    QStringList date3 = date1.split('.');
+    QStringList date4 = date2.split('.');
+    QDate startDate = QDate(date3[2].toInt(),date3[1].toInt(),date3[0].toInt());
+    QDate endDate = QDate(date4[2].toInt(),date4[1].toInt(),date4[0].toInt());
+    if(x==0){
+        for(int i=0;i<m_myModel->listData.size();i++){
+            QDate date5 = QDate(m_myModel->listData[i].value(m_myModel->listData[i].indexOf("date")).toDate());
+            QDate elementDate = QDate(date5.year(),date5.month(),date5.day());
+            if(elementDate<startDate || elementDate>endDate){ m_myModel->delElementAt(i);i--;}
+        }
+    }else if(x==1){
+        for(int i=0;i<m_myModel->bigSaleList.size();i++){
+            QDate elementDate = QDate(m_myModel->bigSaleList[i].date);
+            if(elementDate<startDate || elementDate>endDate){ m_myModel->delElementAtBigSale(i);i--;}
+        }
+    }
+    emit myModelChanged();
+    emit bsListChanged();
 }
 void ModelController::onDataChanged(){
     emit myModelChanged();
+    emit bsListChanged();
 }
 //data setters
 void ModelController::setMyModel(InformationListModel* myModel){

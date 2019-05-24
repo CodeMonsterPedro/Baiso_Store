@@ -45,12 +45,11 @@ Item{
             anchors.leftMargin: 0
             Rectangle {
                 id: rectangle2
+                width: 450
                 height: 50
                 color: "white"
                 border.color: "gray"
                 border.width: 2
-                anchors.right: rectangle1.right
-                anchors.rightMargin: 1000
                 anchors.left: rectangle1.left
                 anchors.leftMargin: 0
                 anchors.top: parent.top
@@ -61,7 +60,7 @@ Item{
                     height: 40
                     anchors.rightMargin: 40
                     anchors.left: parent.left
-                    anchors.right: sortbuton_2_3.left
+                    anchors.right: searchProductField.left
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: (parent.height-pageChangeItem.height)/2
                     anchors.top: parent.top
@@ -122,6 +121,7 @@ Item{
                 MyButton{
                     id:sortbuton_2_3
                     width: 140
+                    visible: false
                     anchors.right: parent.right
                     anchors.rightMargin: 40
                     anchors.top: parent.top
@@ -135,6 +135,29 @@ Item{
                     button_height: 40;
                     button_border_color:"blue"
                     onButton_clicked: element_sort.visible=true;
+                }
+                TextField {
+                    id: searchProductField
+                    visible: true;
+                    property int lastLength: 0
+                    x: 280
+                    y: 5
+                    width: 162
+                    height: 40
+                    placeholderText: "Поиск"
+                    onTextChanged: {
+                        if(searchProductField.text.length>=1){
+                            if(searchProductField.text.length<lastLength){
+                                simpleModelController.searchReset();
+                            }
+                            simpleModelController.searchProducts(searchProductField.text);
+                            lastLength = searchProductField.text.length;
+                        }
+                        else{
+                            simpleModelController.searchReset();
+                            lastLength = searchProductField.text.length;
+                        }
+                    }
                 }
             }
 
@@ -771,7 +794,13 @@ Item{
 
 
 
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:11;anchors_height:40}D{i:70;anchors_width:120;anchors_x:318}
+    D{i:11;anchors_height:40}D{i:70;anchors_width:120;anchors_x:318}D{i:71;anchors_width:120;anchors_x:318}
 }
  ##^##*/

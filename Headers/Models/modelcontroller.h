@@ -24,6 +24,7 @@ class ModelController : public QObject
     QStringList bsCount;
     QStringList bsPrice;
     QStringList searchProduct;
+    QStringList searchBarCode;
     QString inputString;
 
 
@@ -95,7 +96,13 @@ public:
     Q_INVOKABLE void search(QString str);
     Q_INVOKABLE void resetProductSearch();
     Q_INVOKABLE void resetBarCodeSearch();
-
+    Q_INVOKABLE void searchPlan(QString str);
+    Q_INVOKABLE void searchBigSale(QString str);
+    Q_INVOKABLE void searchProducts(QString str);
+    Q_INVOKABLE void searchReset();
+    Q_INVOKABLE void acceptAll(QString y);
+    Q_INVOKABLE void acceptIt(QString str, int x, QString y);
+    Q_INVOKABLE void dateFilter(QString date1, QString date2, int x);
 
 
 public slots:

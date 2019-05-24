@@ -76,7 +76,6 @@ Item{
                     anchors.leftMargin: 20
                     model:["Продукты","Продажи"]
                     onCurrentIndexChanged: simpleModelController.showFrom(comboBox1.currentIndex);
-
                     onCurrentTextChanged: {
                         if(comboBox1.currentText=="Продукты")listView.delegate = productDelegate;
                         if(comboBox1.currentText=="Продажи"){
@@ -87,6 +86,7 @@ Item{
 
                 Item{
                     id:btn_ToggleListType
+                    visible: Screen.width>1300;
                     property bool listType: false;
                     x: 220
                     width: btn_ToggleListType.listType? 260 : 360
@@ -142,7 +142,7 @@ Item{
                     height: 40
                     anchors.rightMargin: 20
                     anchors.left: comboBox1.right
-                    anchors.right: btn_ToggleListType.left
+                    anchors.right: Screen.width>1300?btn_ToggleListType.left : funcItems.left;
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: (parent.height-pageChangeItem.height)/2
                     anchors.top: parent.top
@@ -241,15 +241,36 @@ Item{
 
                     MyButton{
                         id:sortbuton_2_3
+                        visible: comboBox1.currentText == "Продажи";
                         width: 140
                         height: 40
                         button_round: 15
-                        button_text: "Сортировка"
+                        button_text: "Фильтр"
                         button_text_color: "blue"
                         button_width: rectangle4.width;
                         button_height: 40;
                         button_border_color:"blue"
                         onButton_clicked: element_sort.visible=true;
+                    }
+                    TextField {
+                        id: searchProductField
+                        visible: comboBox1.currentText == "Продукты";
+                        property int lastLength: 0
+                        width: 140
+                        height: 40
+                        onTextChanged: {
+                            if(searchProductField.text.length>=1){
+                                if(searchProductField.text.length<lastLength){
+                                    simpleModelController.searchReset();
+                                }
+                                simpleModelController.searchProducts(searchProductField.text);
+                                lastLength = searchProductField.text.length;
+                            }
+                            else{
+                                simpleModelController.searchReset();
+                                lastLength = searchProductField.text.length;
+                            }
+                        }
                     }
                 }
             }
@@ -302,7 +323,7 @@ Item{
                 id:listHeader
                 Item {
                     property real tableItemWidth: listView.width/4;
-                    property real tableItemWidth2: listView.width/6;
+                    property real tableItemWidth2: listView.width/5;
                     visible: !btn_ToggleListType.listType
                     id: listHeaderItem;
                     z:2;
@@ -320,15 +341,6 @@ Item{
                                 CheckBox{
                                     opacity: 0.0
                                     anchors.centerIn:parent;
-                                }
-                            }
-                            Rectangle{
-                                width: listHeaderItem.tableItemWidth2;
-                                height: rootDataBase.tableItemHeight
-                                Text{
-                                    anchors.centerIn: parent;
-                                    text: "Id";
-                                    font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
                             Rectangle{
@@ -354,7 +366,7 @@ Item{
                                 height: rootDataBase.tableItemHeight
                                 Text {
                                     anchors.centerIn: parent
-                                    text: "Цена за еденицу";
+                                    text: "Цена за единицу";
                                     font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
@@ -421,7 +433,7 @@ Item{
                 id:productDelegate
                 Item{
                     id:productDelegateItem
-                    property real tableItemWidth: listView.width/6;
+                    property real tableItemWidth: listView.width/5;
                     width: listView.width
                     height: btn_ToggleListType.listType? 100 : rootDataBase.tableItemHeight;
                     anchors.leftMargin: 10
@@ -469,18 +481,6 @@ Item{
                                         onCheckedChanged: {deleteList.push(m_MainId);}
                                     }
 
-                                }
-                            }
-
-                            Rectangle{
-                                width: productDelegateItem.tableItemWidth
-                                height: rootDataBase.tableItemHeight
-                                border.color: "black"
-                                border.width: 2;
-                                Text{
-                                    anchors.centerIn: parent;
-                                    text: "" +  m_MainId;
-                                    font.pointSize: rootDataBase.tableFontSize
                                 }
                             }
                             Rectangle{
@@ -794,6 +794,7 @@ Item{
                                 leftPadding: 20;
                                 MyButton{
                                     y:-4
+                                    z:99
                                     button_height: 58
                                     button_width: 58;
                                     button_border_color: "blue"
@@ -958,13 +959,14 @@ Item{
                     width: 140
                     height: 40
                     button_round: 15
-                    button_text: "Сортировка"
+                    button_text: "Фильтр"
                     button_text_color: "blue"
                     button_width: rectangle4.width;
                     button_height: 40;
                     button_border_color:"blue"
                     onButton_clicked: element_sort.visible=true;
                 }
+
             }
 
             Item{
@@ -1436,7 +1438,8 @@ Item{
                     height: 380
                     color: "#ffffff"
                     border.color:"blue"
-                    radius: 2
+                    radius: 8
+                    visible: true
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
 
@@ -1454,6 +1457,7 @@ Item{
                         button_text: "Применить"
                         button_round: 15
                         onButton_clicked:{
+                            simpleModelController.dateFilter(textField1.text, textField2.text,0);
                             element_sort.visible = false;
                         }
                     }
@@ -1476,31 +1480,73 @@ Item{
                             element_sort.visible = false;
                         }
                     }
-
+                    TextField {
+                        id: textField1
+                        x: 134
+                        y: 71
+                        text: qsTr("С даты")
+                        onPressed: calendarF.visible = true;
+                    }
+                    TextField {
+                        id: textField2
+                        x: 134
+                        y: 144
+                        text: qsTr("по дату")
+                        onPressed: calendarS.visible = true;
+                    }
                     Text {
-                        id: element14
-                        x: 95
-                        y: 77
+                        id: element18
+                        x: 134
+                        y: 54
                         width: 100
                         height: 22
-                        text: qsTr("Сортировка")
-                        font.pixelSize: 12
+                        text: qsTr("Фильтр c")
+                        anchors.bottomMargin: 1
+                        anchors.bottom: loginfield.top
                         anchors.leftMargin: 0
                         anchors.left: loginfield.left
-                        anchors.bottom: loginfield.top
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        id: element22
+                        x: 134
+                        y: 128
+                        width: 100
+                        height: 22
+                        text: qsTr("по")
                         anchors.bottomMargin: 1
+                        anchors.bottom: loginfield.top
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        font.pixelSize: 12
                     }
-
-                    ComboBox {
-                        id: comboBox
-                        x: 95
-                        y: 95
-                        width: 200
-                        height: 40
-                        model:["Названние продукта", "Цена за еденицу"]
+                    Calendar{
+                        id:calendarF;
+                        visible: false;
+                        anchors.left: textField1.left;
+                        anchors.right: textField1.right;
+                        anchors.top: textField1.top
+                        anchors.topMargin: textField1.height;
+                        onSelectedDateChanged:{
+                            var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
+                            textField1.text = date;
+                            calendarF.visible = false;
+                        }
                     }
-
-
+                    Calendar{
+                        id:calendarS;
+                        visible: false;
+                        anchors.left: textField2.left;
+                        anchors.right: textField2.right;
+                        anchors.top: textField2.top
+                        anchors.topMargin: textField2.height;
+                        onSelectedDateChanged: {
+                            var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
+                            textField2.text = date;
+                            calendarS.visible = false;
+                        }
+                    }
                 }
             }
 
@@ -1856,7 +1902,6 @@ Item{
             /////////////////////////////////////////////////////////////////////
         }
     }
-
 }
 
 
@@ -1866,86 +1911,16 @@ Item{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*##^## Designer {
-    D{i:76;anchors_width:120;anchors_x:318}D{i:127;anchors_x:69}D{i:136;anchors_x:15}
-D{i:137;anchors_x:15}D{i:138;anchors_x:15}D{i:139;anchors_x:15}D{i:140;anchors_x:15}
-D{i:141;anchors_x:15}D{i:142;anchors_x:15}D{i:128;anchors_x:69}D{i:152;anchors_height:200;anchors_y:46}
-D{i:156;anchors_x:15}D{i:153;anchors_height:200;anchors_y:46}D{i:151;anchors_height:200;anchors_y:46}
-D{i:169;anchors_x:15}D{i:170;anchors_x:15}D{i:171;anchors_x:15}D{i:172;anchors_x:15}
-D{i:173;anchors_x:15}D{i:174;anchors_x:15}
+    D{i:73;anchors_width:120;anchors_x:318}D{i:76;anchors_width:120;anchors_x:318}D{i:124;anchors_x:69}
+D{i:127;anchors_x:69}D{i:128;anchors_x:69}D{i:133;anchors_x:15}D{i:134;anchors_x:15}
+D{i:135;anchors_x:15}D{i:136;anchors_x:15}D{i:137;anchors_x:15}D{i:138;anchors_x:15}
+D{i:139;anchors_x:15}D{i:125;anchors_x:69}D{i:140;anchors_x:15}D{i:142;anchors_x:15}
+D{i:141;anchors_x:15}D{i:149;anchors_height:200;anchors_y:46}D{i:151;anchors_height:200;anchors_y:46}
+D{i:152;anchors_height:200;anchors_y:46}D{i:153;anchors_height:200;anchors_y:46}D{i:156;anchors_x:15}
+D{i:150;anchors_height:200;anchors_y:46}D{i:148;anchors_height:200;anchors_y:46}D{i:163;anchors_x:15}
+D{i:170;anchors_x:15}D{i:171;anchors_x:15}D{i:172;anchors_x:15}D{i:173;anchors_x:15}
+D{i:174;anchors_x:15}D{i:175;anchors_x:15}D{i:177;anchors_x:15}D{i:180;anchors_x:15}
+D{i:179;anchors_x:15}D{i:178;anchors_x:15}D{i:176;anchors_x:15}
 }
  ##^##*/

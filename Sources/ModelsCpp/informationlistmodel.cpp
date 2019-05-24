@@ -295,6 +295,28 @@ void InformationListModel::delElementLast()
     emit dataChanged();
 }
 
+void InformationListModel::delElementAt(int index)
+{
+    if(listData.isEmpty() || listData.size()<index){
+        return;
+    }
+    beginRemoveRows(QModelIndex(),index,index);
+    listData.removeAt(index);
+    endRemoveRows();
+    emit dataChanged();
+}
+
+void InformationListModel::delElementAtBigSale(int index)
+{
+    if(bigSaleList.isEmpty() || bigSaleList.size()<index){
+        return;
+    }
+    beginRemoveRows(QModelIndex(),index,index);
+    bigSaleList.removeAt(index);
+    endRemoveRows();
+    emit dataChanged();
+}
+
 void InformationListModel::Refresh()
 {
     this->cleanUp();
@@ -324,13 +346,16 @@ void InformationListModel::fillUpBigSale()
     }
     for(int i=0;i<purchaseList.size();i++){
         BigSaleElement sbE;
-        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date_part('month', date), date_part('year', date), date_part('day', date)  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1 AND \"market_Id\"=%2").arg(purchaseList[i]).arg(market_id));
+        tempq = RepositoryU::GetRequest(QString("SELECT product_name, product_count, price, date  FROM public.\"ProductSaleFull\" WHERE purchase_id=%1 AND \"market_Id\"=%2").arg(purchaseList[i]).arg(market_id));
+        QDate elementDate;
         while(tempq.next()){
+            QDate date5 = QDate(tempq.record().value(tempq.record().indexOf("date")).toDate());
+            elementDate = QDate(date5.year(),date5.month(),date5.day());
             sbE.productNames.append(tempq.record().value(tempq.record().indexOf("product_name")).toString());
             sbE.productCount.append(tempq.record().value(tempq.record().indexOf("product_count")).toInt());
             sbE.productPrice.append(tempq.record().value(tempq.record().indexOf("price")).toDouble());
         }
-        sbE.date = "" + tempq.record().value(tempq.record().indexOf("date_part('day', date)")).toString() + "-"+ tempq.record().value(tempq.record().indexOf("date_part('month', date)")).toString() + "-"+ tempq.record().value(tempq.record().indexOf("date_part('year', date)")).toString();
+        sbE.date = elementDate;
         sbE.purchaseId = purchaseList[i];
         sbE.storeId = market_id;
         bigSaleList.append(sbE);

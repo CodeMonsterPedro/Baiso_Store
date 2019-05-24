@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.9
 import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import "../../MyUIs"
@@ -39,13 +40,13 @@ Item{
                 id: rectangle4
                 x: 1424
                 width: 180
-                height: 132
+                height: 186
                 color: "#ffffff"
                 radius: 8
                 anchors.top: parent.top
                 anchors.topMargin: 40
                 anchors.right: parent.right
-                anchors.rightMargin: -15
+                anchors.rightMargin: -35
 
                 MyButton{
                     id:addbutton_2
@@ -65,7 +66,7 @@ Item{
                 MyButton{
                     id:deletebutton_2
                     x: 13
-                    y: 75
+                    y: 72
                     width: 120
                     height: 40
                     button_round: 15
@@ -76,16 +77,32 @@ Item{
                     button_border_color:"red"
                     onButton_clicked: element_del.visible=true;
                 }
+                MyButton{
+                    id:sortbuton_2_3
+                    x: 13
+                    y: 130
+                    visible: comboBox1.currentText == "Продажи";
+                    width: 120
+                    height: 40
+                    button_round: 15
+                    button_text: "Фильтр"
+                    button_text_color: "blue"
+                    button_width: rectangle4.width;
+                    button_height: 40;
+                    button_border_color:"blue"
+                    onButton_clicked: element_sort.visible=true;
+                }
             }
 
             Rectangle {
                 id: bigsaleListBackground
                 color: "#ffffff"
-                anchors.rightMargin: -400
+                radius: 8
+                anchors.rightMargin: -380
                 anchors.left: parent.horizontalCenter
                 anchors.right: parent.horizontalCenter
                 anchors.bottom: parent.bottom
-                anchors.leftMargin: -400
+                anchors.leftMargin: -380
                 anchors.bottomMargin: 30
                 anchors.topMargin: 30
                 anchors.top: parent.top
@@ -114,6 +131,137 @@ Item{
                     }
                 }
             }
+
+            Item{
+                id: element_sort
+                anchors.fill: parent
+                visible: false
+                Rectangle {
+                    id: rectangle_sort
+                    color: "#090808"
+                    opacity: 0.5
+                    anchors.fill: parent
+                }
+
+                Rectangle {
+                    id: rectangle_element_sort
+                    y: 46
+                    width: 500
+                    height: 380
+                    color: "#ffffff"
+                    border.color:"blue"
+                    radius: 8
+                    visible: true
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    MyButton{
+                        id:accept_btn_sort
+                        y: 598
+                        width: 120
+                        height: 40
+                        anchors.left: parent.left
+                        anchors.leftMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "blue"
+                        button_text_color: "blue"
+                        button_text: "Применить"
+                        button_round: 15
+                        onButton_clicked:{
+                            simpleModelController.dateFilter(textField1.text, textField2.text,1);
+                            element_sort.visible = false;
+                        }
+                    }
+
+                    MyButton{
+                        id:decline_btn_sort
+                        x: 318
+                        y: 592
+                        width: 120
+                        height: 40
+                        anchors.right: parent.right
+                        anchors.rightMargin: 100
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 70
+                        button_border_color: "red"
+                        button_text_color: "red"
+                        button_text: "Отмена"
+                        button_round: 15
+                        onButton_clicked: {
+                            element_sort.visible = false;
+                        }
+                    }
+                    TextField {
+                        id: textField1
+                        x: 134
+                        y: 71
+                        text: qsTr("С даты")
+                        onPressed: calendarF.visible = true;
+                    }
+                    TextField {
+                        id: textField2
+                        x: 134
+                        y: 144
+                        text: qsTr("по дату")
+                        onPressed: calendarS.visible = true;
+                    }
+                    Text {
+                        id: element18
+                        x: 134
+                        y: 54
+                        width: 100
+                        height: 22
+                        text: qsTr("Фильтр c")
+                        anchors.bottomMargin: 1
+                        anchors.bottom: loginfield.top
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        font.pixelSize: 12
+                    }
+
+                    Text {
+                        id: element22
+                        x: 134
+                        y: 128
+                        width: 100
+                        height: 22
+                        text: qsTr("по")
+                        anchors.bottomMargin: 1
+                        anchors.bottom: loginfield.top
+                        anchors.leftMargin: 0
+                        anchors.left: loginfield.left
+                        font.pixelSize: 12
+                    }
+                    Calendar{
+                        id:calendarF;
+                        visible: false;
+                        anchors.left: textField1.left;
+                        anchors.right: textField1.right;
+                        anchors.top: textField1.top
+                        anchors.topMargin: textField1.height;
+                        onSelectedDateChanged:{
+                            var date = "" + calendarF.selectedDate.getDate() + "." + (calendarF.selectedDate.getMonth() + 1)+ "." + calendarF.selectedDate.getFullYear();
+                            textField1.text = date;
+                            calendarF.visible = false;
+                        }
+                    }
+                    Calendar{
+                        id:calendarS;
+                        visible: false;
+                        anchors.left: textField2.left;
+                        anchors.right: textField2.right;
+                        anchors.top: textField2.top
+                        anchors.topMargin: textField2.height;
+                        onSelectedDateChanged: {
+                            var date = "" + calendarS.selectedDate.getDate() + "." + (calendarS.selectedDate.getMonth() + 1)+ "." + calendarS.selectedDate.getFullYear();
+                            textField2.text = date;
+                            calendarS.visible = false;
+                        }
+                    }
+                }
+            }
+
 
             Item{
                 id: element_del
@@ -271,15 +419,15 @@ Item{
                         }
 
                         Text {
-                            x: 238
-                            y: 16
+                            x: 204
+                            y: 4
                             width: 293
                             height: 28
-                            text: m_Date;
+                            text: "" + m_Date.getDate() + "." + (m_Date.getMonth() + 1)+ "." + m_Date.getFullYear();
                             anchors.bottom: printBtn.bottom
-                            anchors.bottomMargin: 50
+                            anchors.bottomMargin: 22
                             anchors.right: printBtn.left
-                            anchors.rightMargin: 20
+                            anchors.rightMargin: 102
                             font.pixelSize: 16
                         }
 
@@ -292,7 +440,7 @@ Item{
                             }
                         }
                         MyButton{
-                            x:650
+                            x:594
                             y:12
                             button_text: "Изменить"
                             button_height:34
@@ -315,7 +463,7 @@ Item{
                         }
                         MyButton{
                             id:printBtn
-                            x:599
+                            x:533
                             y:4
                             button_height: 50
                             button_width: 50;
@@ -496,7 +644,7 @@ Item{
                 property variant newBigSaleCountList: []
                 property variant newBigSaleList: []
                 anchors.fill: parent
-                visible: true
+                visible: false
                 Rectangle {
                     id: rectangle
                     color: "#090808"
@@ -509,11 +657,11 @@ Item{
                     color: "#ffffff"
                     border.color:"blue"
                     radius: 8
-                    anchors.rightMargin: 400
-                    anchors.leftMargin: 400
+                    anchors.rightMargin: -400
+                    anchors.leftMargin: -400
                     anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.left: parent.left
+                    anchors.right: parent.horizontalCenter
+                    anchors.left: parent.horizontalCenter
                     anchors.top: parent.top
                     anchors.bottomMargin: 50
                     anchors.topMargin: 50
@@ -588,17 +736,25 @@ Item{
 
                             TextField{
                                 property bool updater: false
+                                property int lastLength: 0
                                 id: textField_ProductName
                                 width: 351
                                 height: 40
                                 text: ""
                                 onTextChanged: {
                                     if(textField_ProductName.text.length>=1){
+                                        if(textField_ProductName.text.length<lastLength){
+                                            simpleModelController.resetBarCodeSearch();
+                                            simpleModelController.resetProductSearch();
+                                        }
                                         simpleModelController.search(textField_ProductName.text);
+                                        lastLength = textField_ProductName.text.length;
                                         searchList.visible = true;
                                     }
                                     else{
                                         simpleModelController.resetProductSearch();
+                                        simpleModelController.resetBarCodeSearch();
+                                        lastLength = textField_ProductName.text.length;
                                         searchList.visible = false;
                                     }
                                 }
@@ -611,7 +767,7 @@ Item{
                                 from:1
                                 to:20000
                             }
-                            MyButton {
+                            MyButton{
                                 width: 110
                                 height: 40
                                 visible: true
@@ -866,8 +1022,20 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:30;anchors_width:659}D{i:34;anchors_height:40;anchors_width:120;anchors_y:598}
-D{i:29;anchors_height:387}D{i:70;anchors_width:110;anchors_x:353;anchors_y:40}
+    D{i:31;anchors_width:659}D{i:35;anchors_height:40;anchors_width:120;anchors_y:598}
+D{i:30;anchors_height:387}D{i:71;anchors_width:110;anchors_x:353;anchors_y:40}
 }
  ##^##*/

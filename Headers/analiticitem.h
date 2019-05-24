@@ -66,6 +66,7 @@ public:
     Q_INVOKABLE void declineRequest();
     Q_INVOKABLE void updateValuesForIt(QString bcode);
 
+
 signals:
     void algorithmEnded();
     void strResultChanged();

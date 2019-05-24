@@ -44,11 +44,14 @@ Item{
                 id: rectangle1
                 color: "#ffffff"
                 radius: 8
-                anchors.rightMargin: 300
-                anchors.leftMargin: 300
+                anchors.right: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                anchors.left: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.rightMargin: -440
+                anchors.leftMargin: -440
                 anchors.bottomMargin: 20
                 anchors.topMargin: 20
-                anchors.fill: parent
                 MyButton{
                     id:printBtn
                     button_height: 64
@@ -128,7 +131,7 @@ Item{
                     anchors.bottom: parent.bottom
                     anchors.leftMargin: -400
                     anchors.bottomMargin: 0
-                    anchors.topMargin: 92
+                    anchors.topMargin: 136
                     anchors.top: parent.top
                     border.color: "gray"
                     border.width: 0
@@ -147,11 +150,12 @@ Item{
                         clip: true;
                         model: counter, simpleModelController.myPlan;
                         delegate:planDelegate;
-                        Connections {
-                            target: simpleModelController
-                            onMyPlanChanged:{
-                                planList.counter++
-                            }
+
+                    }
+                    Connections {
+                        target: simpleModelController
+                        onMyPlanChanged:{
+                            planList.counter++;
                         }
                     }
                 }
@@ -173,6 +177,7 @@ Item{
                                 width: 214
                                 height: 39
                                 text: qsTr("Продукт: " + m_Name)
+                                font.pixelSize: 14
                                 font.pointSize:15
                             }
                             Text{
@@ -253,6 +258,26 @@ Item{
                                 }
                             }
 
+                            MyButton {
+                                id: btn_Change1
+                                width: 110
+                                anchors.bottomMargin: 20
+                                button_width: btn_Change1.width
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                button_text: "Принять"
+                                button_border_color: "green"
+                                anchors.topMargin: 20
+                                button_round: 15
+                                anchors.rightMargin: 130
+                                button_border_width: 2
+                                anchors.right: parent.right
+                                button_height: btn_Change1.height
+                                onButton_clicked: {
+                                    simpleModelController.updatePlan(m_BarCode, m_Difference, textField.text);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -279,6 +304,43 @@ Item{
                     font.pixelSize: 18
                     anchors.leftMargin: 0
                     anchors.bottomMargin: 1
+                }
+
+                TextField {
+                    id: textField2
+                    property int lastLength: 0
+                    x: 62
+                    y: 99
+                    width: 500
+                    height: 41
+                    onTextChanged: {
+                        if(textField2.text.length>=1){
+                            if(textField2.text.length<lastLength){
+                                simpleModelController.searchReset();
+                            }
+                            simpleModelController.searchPlan(textField2.text);
+                            lastLength = textField2.text.length;
+                        }
+                        else{
+                            simpleModelController.searchReset();
+                            lastLength = textField2.text.length;
+                        }
+                    }
+                }
+
+                MyButton {
+                    id: btn_AnalyzeStart1
+                    x: 588
+                    y: 99
+                    width: 149
+                    height: 41
+                    button_text: "Принять все"
+                    button_border_color: "#0000ff"
+                    button_text_color: "#0000ff"
+                    button_round: 15
+                    onButton_clicked: {
+                        simpleModelController.acceptAll(textField.text);
+                    }
                 }
             }
             Item{
@@ -635,8 +697,16 @@ Item{
 
 
 
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:23;anchors_x:15}D{i:24;anchors_x:15}D{i:4;anchors_height:200;anchors_width:200}
-D{i:26;anchors_height:30;anchors_y:598}D{i:25;anchors_height:30;anchors_y:598}
+    D{i:23;anchors_x:15}D{i:24;anchors_x:15}D{i:25;anchors_height:30;anchors_y:598}D{i:4;anchors_height:200;anchors_width:200}
+D{i:28;anchors_height:30;anchors_y:598}
 }
  ##^##*/

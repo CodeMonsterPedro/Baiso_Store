@@ -174,6 +174,7 @@ void AnaliticItem::updateValuesForIt(QString bcode)
     setPList(mainPlanList[i].previos);
 }
 
+
 QVector<double> AnaliticItem::getProductValues(QVector<int> date)
 {
     QString dateStr = "" + QString::number(date[2]) + "-" + QString::number(date[1]) + "-" + QString::number(date[0]);
